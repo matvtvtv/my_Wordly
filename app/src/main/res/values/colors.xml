@@ -4,5 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="background">#F5F4E2</color>
     <color name="profile">#C7D3FF</color>
-
+    <color name="status_bar">#E2DCB2</color>
+    <color name="pressed_color">#080B1E</color>
+    <color name="original_color">#372F2F</color>
 </resources>
