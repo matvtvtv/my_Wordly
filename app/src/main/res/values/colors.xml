@@ -7,4 +7,10 @@
     <color name="status_bar">#E2DCB2</color>
     <color name="pressed_color">#080B1E</color>
     <color name="original_color">#372F2F</color>
+    <color name="cell_background">#9B9595</color>
+
+    <color name="green">#66BB6A</color>
+    <color name="yellow">#FFEB3B</color>
+    <color name="gray">#BDBDBD</color>
+    <color name="key_background">#E2DCB2</color>
 </resources>

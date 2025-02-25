@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-public class fragment_settings extends Fragment {
+public class FragmentSettings extends Fragment {
 
 
 
