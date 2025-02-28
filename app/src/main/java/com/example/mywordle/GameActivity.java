@@ -3,44 +3,35 @@ package com.example.mywordle;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Size;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mywordle.Adapter.KeyboardAdapter;
 import com.example.mywordle.Keyboard.Keyboard;
 import com.example.mywordle.databinding.ActivityGameBinding;
-import com.example.mywordle.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class GameActivity extends AppCompatActivity {
 
     ActivityGameBinding binding;
+    private ImageView exit_button;
 
     private GridLayout gridLetters;
     private List<TextView> letterCells; // Список для всех клеток
     private int currentCellIndex = 0;
     private int currentAttemptIndex = 0;
-    private final int WORD_LENGTH = 5;
+    //private final int WORD_LENGTH;
     private final int MAX_ATTEMPTS = 6;
 
     private GameLogic gameLogic; // Логика игры
@@ -78,19 +69,24 @@ public class GameActivity extends AppCompatActivity {
             new Keyboard.Key("М"),
             new Keyboard.Key("И"),
             new Keyboard.Key("Т"),
-            new Keyboard.Key("Ь"),
             new Keyboard.Key("Б"),
+            new Keyboard.Key("Ю"),
             new Keyboard.Key("Ь"),
             new Keyboard.Key("Del", LetterStatus.GRAY)
 
     );
+
+
+        // Получаем переданное значение
+       // 6 - значение по умолчанию
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         binding = ActivityGameBinding.inflate(getLayoutInflater());
-
+        int WORD_LENGTH = getIntent().getIntExtra("WORD_LENGTH", 6);
         // Инициализация логики игры (6 попыток)
         gameLogic = new GameLogic(MAX_ATTEMPTS);
         String[] words = {"птица", // п, т, и, ц, а
@@ -112,7 +108,48 @@ public class GameActivity extends AppCompatActivity {
                 "рубеж", // р, у, б, е, ж
                 "нитка", // н, и, т, к, а
                 "блоки", // б, л, о, к, и
-                "фронт"  // ф, р, о, н, т
+                "фронт", // ф, р, о, н, т
+                "камни", // к, а, м, н, и
+                "дверь", // д, в, е, р, ь
+                "птица", // п, т, и, ц, а
+                "книга", // к, н, и, г, а
+                "ручка", // р, у, ч, к, а
+                "карта", // к, а, р, т, а
+                "город", // г, о, р, о, д
+                "зверь", // з, в, е, р, ь
+                "масло", // м, а, с, л, о
+                "сонет", // с, о, н, е, т
+                "фильм", // ф, и, л, ь, м
+                "музей", // м, у, з, е, й
+                "театр", // т, е, а, т, р
+                "киоск", // к, и, о, с, к
+                "парус", // п, а, р, у, с
+                "бочка", // б, о, ч, к, а
+                "мужик", // м, у, ж, и, к
+                "делец", // д, е, л, е, ц
+                "диван", // д, и, в, а, н
+                "комод", // к, о, м, о, д
+                "панда", // п, а, н, д, а
+                "мышка", // м, ы, ш, к, а
+                "пчела", // п, ч, е, л, а
+                "зайка", // з, а, й, к, а
+                "огонь", // о, г, о, н, ь
+                "песня", // п, е, с, н, я
+                "весна", // в, е, с, н, а
+                "осень", // о, с, е, н, ь
+                "белка", // б, е, л, к, а
+                "рыбак", // р, ы, б, а, к
+                "берег", // б, е, р, е, г
+                "сокол", // с, о, к, о, л
+                "молот", // м, о, л, о, т
+                "печка", // п, е, ч, к, а
+                "завод", // з, а, в, о, д
+                "конус", // к, о, н, у, с
+                "весло", // в, е, с, л, о
+                "стена", // с, т, е, н, а
+                "радио", // р, а, д, и, о
+                "лапша"  // л, а, п, ш, а
+
         };
         // Пример: загадано слово "ВАГОН"
         gameLogic.startNewGame(words[(int) (Math.random() * words.length)]);
@@ -128,19 +165,31 @@ public class GameActivity extends AppCompatActivity {
             int screenHeight = displayMetrics.heightPixels;
             int screenWidth = displayMetrics.widthPixels;
 
-            int cubeHeight = (int) ((screenHeight * 0.7f) / MAX_ATTEMPTS - (screenWidth / 40));
-            int cubeWidth = (int) (screenWidth / WORD_LENGTH - (screenWidth / 30));
+            float availableHeight = screenHeight * 0.7f; // 70% высоты экрана
+            float availableWidth = screenWidth * 0.9f;   // 90% ширины экрана (оставляем небольшие отступы)
 
+// Вычисляем размер кубика по ширине и высоте
+            int cubeHeight = (int) (availableHeight / MAX_ATTEMPTS);
+            int cubeWidth;
+            if (4==WORD_LENGTH){
+                 cubeWidth = (int) (availableWidth / (WORD_LENGTH + 1));;}
+            else{ cubeWidth = (int) (availableWidth / WORD_LENGTH);}
+
+// Выбираем минимальное значение, чтобы кубики не выходили за границы
             int cubeSize = Math.min(cubeWidth, cubeHeight);
+
+// Добавляем небольшой отступ между кубиками (например, 5% от cubeSize)
+            int padding = (int) (cubeSize * 0.05f);
+            cubeSize -= padding;
 
             params.width = cubeSize;
             params.height = cubeSize;
-            params.setMargins(8, 8, 8, 8);
+            params.setMargins(6, 8, 6, 8);
             cell.setLayoutParams(params);
             cell.setGravity(Gravity.CENTER);
-            cell.setTextSize(24);
+            cell.setTextSize(28);
 
-            cell.setBackgroundResource(R.drawable.cell_background);
+            cell.setBackgroundResource(R.drawable.cell_background_undefined);
             gridLetters.addView(cell);
             letterCells.add(cell);
         }
@@ -149,6 +198,14 @@ public class GameActivity extends AppCompatActivity {
         GridLayout layout = findViewById(R.id.gridLetters);
 
         layout.setColumnCount(WORD_LENGTH);
+        ImageView exit_button = findViewById(R.id.exit_button);
+        exit_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish(); // Завершает текущую активность
+            }
+        });
+
 
         View.OnClickListener letterClickListener = new View.OnClickListener() {
             @Override
@@ -161,6 +218,7 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
         };
+
 
         keyboard = new Keyboard(findViewById(R.id.keyboard), keyList);
 
@@ -190,6 +248,10 @@ public class GameActivity extends AppCompatActivity {
 
         KeyboardAdapter adapter = keyboard.getKeyboardAdapter();
 
+
+
+
+
         // Кнопка проверки
         Button btnCheck = findViewById(R.id.btnCheck);
         btnCheck.setOnClickListener(new View.OnClickListener() {
@@ -208,6 +270,16 @@ public class GameActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Введите слово из " + WORD_LENGTH + " букв!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                int tr=0;
+                for (int i=0;i<words.length;i++){
+                    if (words[i].equalsIgnoreCase(guess)) {
+                        tr=1;
+                    }
+                }
+                if (tr==0) {
+                    Toast.makeText(getApplicationContext(), "Похоже я не знаю такого слова", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 try {
                     AttemptResult result = gameLogic.checkWord(guess);
@@ -223,22 +295,19 @@ public class GameActivity extends AppCompatActivity {
                                     key.setStatus(LetterStatus.GREEN);
                                     keyboard.notifyKeyChanged(key);
                                 }
-                                cell.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
-                                break;
+                                cell.setBackgroundResource(R.drawable.cell_background_green);                                break;
                             case YELLOW:
                                 if (key != null && key.getStatus() == LetterStatus.UNDEFINED) {
                                     key.setStatus(LetterStatus.YELLOW);
                                     keyboard.notifyKeyChanged(key);
                                 }
-                                cell.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.yellow));
-                                break;
+                                cell.setBackgroundResource(R.drawable.cell_background_yellow);                                                break;
                             case GRAY:
                                 if (key != null && key.getStatus() == LetterStatus.UNDEFINED) {
                                     key.setStatus(LetterStatus.GRAY);
                                     keyboard.notifyKeyChanged(key);
                                 }
-                                cell.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.gray));
-                                break;
+                                cell.setBackgroundResource(R.drawable.cell_background_grey);                                                break;
                         }
                     }
 

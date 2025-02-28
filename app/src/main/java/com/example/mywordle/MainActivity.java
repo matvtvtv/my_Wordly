@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageView settings_button_main;
     private ImageView home_button_main;
     private ImageView profile_button_main;
-    private ImageView travel_button;
     private int frame = 1;
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -48,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         getAllId();
         change(new FragmentMain());
         // При старте устанавливаем для home_button_main выбранное изображение
-        home_button_main.setImageDrawable(getDrawable(R.drawable.home_button_selected));
+        home_button_main.setImageDrawable(getDrawable(R.drawable.home_button_unselected));
 
         settings_button_main.setOnClickListener(v -> {
             animIcon(v);
@@ -120,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         settings_button_main = findViewById(R.id.settings_button_main);
         home_button_main = findViewById(R.id.home_button_main);
         profile_button_main = findViewById(R.id.profile_button_main);
-        travel_button = findViewById(R.id.travel_button);
+
     }
 
 
@@ -140,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         profile_button_main.setScaleY(1f);
 
         // Устанавливаем изображение для home_button_main в состояние "невыбранное"
-        home_button_main.setImageDrawable(getDrawable(R.drawable.home_button_unselected));
+        home_button_main.setImageDrawable(getDrawable(R.drawable.home_button_selected));
     }
 
     private void animIcon(View v) {
