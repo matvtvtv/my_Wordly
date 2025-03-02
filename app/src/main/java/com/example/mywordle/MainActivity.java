@@ -46,11 +46,10 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         getAllId();
         change(new FragmentMain());
-        // При старте устанавливаем для home_button_main выбранное изображение
-        home_button_main.setImageDrawable(getDrawable(R.drawable.home_button_unselected));
+        home_button_main.setScaleX(1.5f);
+        home_button_main.setScaleY(1.5f);
 
         settings_button_main.setOnClickListener(v -> {
-            animIcon(v);
             Animation clickAnim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.button_click);
             v.startAnimation(clickAnim);
             clickAnim.setAnimationListener(new Animation.AnimationListener() {
@@ -58,18 +57,25 @@ public class MainActivity extends AppCompatActivity {
                 @Override public void onAnimationRepeat(Animation animation) { }
                 @Override
                 public void onAnimationEnd(Animation animation) {
+
                     if (frame != 2) {
+                        resetIcons(home_button_main,0);
+                        resetIcons(profile_button_main,0);
+                        animIcon(v);
+
                         change(new FragmentSettings());
                         frame = 2;
                     }
+                    else{resetIcons(home_button_main,300);
+                         resetIcons(profile_button_main,300);
+
+                    }
+
                 }
             });
-            resetIcons();
         });
 
         home_button_main.setOnClickListener(v -> {
-            resetIcons();
-            animIcon(v);
             Animation clickAnim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.button_click);
             v.startAnimation(clickAnim);
             clickAnim.setAnimationListener(new Animation.AnimationListener() {
@@ -77,17 +83,24 @@ public class MainActivity extends AppCompatActivity {
                 @Override public void onAnimationRepeat(Animation animation) { }
                 @Override
                 public void onAnimationEnd(Animation animation) {
+
                     if (frame != 1) {
+                        animIcon(v);
+                        resetIcons(profile_button_main,0);
+                        resetIcons(settings_button_main,0);
+
                         change(new FragmentMain());
                         frame = 1;
                     }
+                     else{   resetIcons(profile_button_main,300);
+                        resetIcons(settings_button_main,300);
+                        }
                 }
             });
-            resetIcons();
         });
 
         profile_button_main.setOnClickListener(v -> {
-            animIcon(v);
+
             Animation clickAnim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.button_click);
             v.startAnimation(clickAnim);
             clickAnim.setAnimationListener(new Animation.AnimationListener() {
@@ -95,13 +108,20 @@ public class MainActivity extends AppCompatActivity {
                 @Override public void onAnimationRepeat(Animation animation) { }
                 @Override
                 public void onAnimationEnd(Animation animation) {
+
                     if (frame != 0) {
+                        resetIcons(home_button_main,0);
+                        resetIcons(settings_button_main,0);
+                        animIcon(v);
                         change(new FragmentProfile());
                         frame = 0;
                     }
+                    else{resetIcons(home_button_main,300);
+                        resetIcons(settings_button_main,300);
+                    }
                 }
             });
-            resetIcons();
+
         });
 
 
@@ -125,21 +145,18 @@ public class MainActivity extends AppCompatActivity {
 
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    private void resetIcons() {
+    private void resetIcons(View v, int i) {
         // Сброс цветовых фильтров и масштабов для всех иконок
-        settings_button_main.clearColorFilter();
-        home_button_main.clearColorFilter();
-        profile_button_main.clearColorFilter();
 
-        settings_button_main.setScaleX(1f);
-        settings_button_main.setScaleY(1f);
-        home_button_main.setScaleX(1f);
-        home_button_main.setScaleY(1f);
-        profile_button_main.setScaleX(1f);
-        profile_button_main.setScaleY(1f);
 
-        // Устанавливаем изображение для home_button_main в состояние "невыбранное"
-        home_button_main.setImageDrawable(getDrawable(R.drawable.home_button_selected));
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(v, "scaleX", 1.5f, 1f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(v, "scaleY", 1.5f, 1f);
+        scaleX.setDuration(i);
+        scaleY.setDuration(i);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(scaleX, scaleY);
+        animatorSet.start();
     }
 
     private void animIcon(View v) {

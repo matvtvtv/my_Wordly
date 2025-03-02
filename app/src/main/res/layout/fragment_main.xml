@@ -79,14 +79,97 @@
         app:srcCompat="@drawable/letter_7_free_game" />
 
     <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="7 letters"
+        app:layout_constraintBottom_toBottomOf="@+id/letter_7_free"
+        app:layout_constraintEnd_toEndOf="@+id/letter_7_free"
+        app:layout_constraintStart_toStartOf="@+id/letter_7_free"
+        app:layout_constraintTop_toTopOf="@+id/letter_7_free" />
+
+    <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text="Free lessons"
         app:layout_constraintBottom_toTopOf="@+id/letter_4_free"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView"
         app:layout_constraintVertical_bias="0.53" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Travel"
+        app:layout_constraintBottom_toBottomOf="@+id/travel_button"
+        app:layout_constraintEnd_toEndOf="@+id/travel_button"
+        app:layout_constraintStart_toStartOf="@+id/travel_button"
+        app:layout_constraintTop_toTopOf="@+id/travel_button" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        app:layout_constraintEnd_toStartOf="@+id/textView3"
+        app:layout_constraintStart_toStartOf="@+id/travel_button"
+        app:layout_constraintTop_toTopOf="@+id/travel_button"
+        app:srcCompat="@drawable/fi_rr_plane" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/travel_button"
+        app:layout_constraintEnd_toEndOf="@+id/travel_button"
+        app:layout_constraintHorizontal_bias="0.319"
+        app:layout_constraintStart_toStartOf="@+id/travel_button"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+        app:layout_constraintVertical_bias="0.531"
+        app:srcCompat="@drawable/fi_rr_car" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/travel_button"
+        app:layout_constraintEnd_toEndOf="@+id/travel_button"
+        app:layout_constraintHorizontal_bias="0.466"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toTopOf="@+id/travel_button"
+        app:srcCompat="@drawable/fi_rr_ship" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="4 letters"
+        app:layout_constraintBottom_toBottomOf="@+id/letter_4_free"
+        app:layout_constraintEnd_toEndOf="@+id/letter_4_free"
+        app:layout_constraintStart_toStartOf="@+id/letter_4_free"
+        app:layout_constraintTop_toTopOf="@+id/letter_4_free" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5 letters"
+        app:layout_constraintBottom_toBottomOf="@+id/letter_5_free"
+        app:layout_constraintEnd_toEndOf="@+id/letter_5_free"
+        app:layout_constraintStart_toStartOf="@+id/letter_5_free"
+        app:layout_constraintTop_toTopOf="@+id/letter_5_free" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="6 letters"
+        app:layout_constraintBottom_toBottomOf="@+id/letter_6_free"
+        app:layout_constraintEnd_toEndOf="@+id/letter_6_free"
+        app:layout_constraintStart_toStartOf="@+id/letter_6_free"
+        app:layout_constraintTop_toTopOf="@+id/letter_6_free" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
