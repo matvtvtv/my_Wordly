@@ -51,10 +51,11 @@ public class MainActivity extends AppCompatActivity {
          if (isFirstRun) {
              wordsRepository.importWordsFromFile(this);
                     // Если это первый запуск, открываем RegistrationActivity
-             Intent intent = new Intent(getContext(), com.example.mywordle.ui.RegistrationActivity.class);
+             Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
              startActivity(intent);
 
-                    // После первого запуска изменяем флаг, чтобы не запускать RegistrationActivity снова
+
+             // После первого запуска изменяем флаг, чтобы не запускать RegistrationActivity снова
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putBoolean("isFirstRun", false);
                     editor.apply();
