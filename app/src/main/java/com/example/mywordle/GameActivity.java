@@ -1,7 +1,10 @@
 package com.example.mywordle;
 
+import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.service.autofill.UserData;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -14,8 +17,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mywordle.Keyboard.Keyboard;
+import com.example.mywordle.data.model.PlayerModel;
 import com.example.mywordle.data.model.WordsModel;
 import com.example.mywordle.data.repository.DatabaseHelper;
+import com.example.mywordle.data.repository.PlayerRepository;
 import com.example.mywordle.data.repository.WordsRepository;
 import com.example.mywordle.databinding.ActivityGameBinding;
 
@@ -48,6 +53,7 @@ public class GameActivity extends AppCompatActivity {
             new Keyboard.Key("Del", LetterStatus.GRAY)
     );
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +66,7 @@ public class GameActivity extends AppCompatActivity {
         wordLength = getIntent().getIntExtra("WORD_LENGTH", 5);
 
         // Инициализация репозитория для работы с базой данных
-        DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(getApplicationContext());
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         wordsRepository = new WordsRepository(db);
 
@@ -189,6 +195,15 @@ public class GameActivity extends AppCompatActivity {
 
                 if (gameLogic.isGameWon()) {
                     Toast.makeText(getApplicationContext(), "Поздравляем, вы выиграли!", Toast.LENGTH_SHORT).show();
+                    PlayerRepository playerRepository = PlayerRepository.getInstance(getApplicationContext());
+                    int userId = playerRepository.getCurrentUserId();
+                    PlayerModel user = playerRepository.getUserData(userId);
+                    user.setLevel(user.getLevel() + 5);
+                    ContentValues values = new ContentValues();
+                    values.put("level", user.getLevel());
+                    playerRepository.updateUserData(userId, values);
+                    Toast.makeText(getApplicationContext(),"level: " + user.getLevel(), Toast.LENGTH_SHORT).show();
+
                 } else if (gameLogic.isGameOver()) {
                     Toast.makeText(getApplicationContext(), "Попытки закончились! Загаданное слово: " + gameLogic.getHiddenWord(), Toast.LENGTH_SHORT).show();
                 } else {

@@ -1,6 +1,9 @@
 package com.example.mywordle;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,6 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.example.mywordle.data.model.PlayerModel;
+import com.example.mywordle.data.repository.PlayerRepository;
 
 
 public class FragmentMain extends Fragment {
@@ -18,6 +25,7 @@ public class FragmentMain extends Fragment {
     private ImageView letter_5_free;
     private ImageView letter_6_free;
     private ImageView letter_7_free;
+    private TextView level;
    private int WORD_LENGTH=0;
 
 @Override
@@ -34,6 +42,19 @@ public class FragmentMain extends Fragment {
             intent.putExtra("WORD_LENGTH", WORD_LENGTH); // Передаем значение
             startActivity(intent);
         });
+
+        PlayerRepository playerRepository = PlayerRepository.getInstance(getContext());
+        int userId = playerRepository.getCurrentUserId();
+        PlayerModel user = playerRepository.getUserData(userId);
+        level.setText(String.valueOf(user.getLevel()));
+        playerRepository.addOnDataUpdateListener(values -> {
+            Integer newLevel = (Integer) values.get("level");
+            if (newLevel != null) {
+                level.setText(String.valueOf(newLevel));
+            }
+        });
+
+
         letter_4_free.setOnClickListener(v->{
 
             Intent intent = new Intent(getContext(), GameActivity.class);
@@ -69,13 +90,12 @@ public class FragmentMain extends Fragment {
     return view;
     }
     private void getAllId(View view) {
-
-        travel_button = view.findViewById(R.id.travel_button);
-        letter_4_free= view.findViewById(R.id.letter_4_free);
-        letter_5_free= view.findViewById(R.id.letter_5_free);
-        letter_6_free= view.findViewById(R.id.letter_6_free);
-        letter_7_free= view.findViewById(R.id.letter_7_free);
-
+        travel_button       = view.findViewById(R.id.travel_button);
+        letter_4_free       = view.findViewById(R.id.letter_4_free);
+        letter_5_free       = view.findViewById(R.id.letter_5_free);
+        letter_6_free       = view.findViewById(R.id.letter_6_free);
+        letter_7_free       = view.findViewById(R.id.letter_7_free);
+        level               = view.findViewById(R.id.Level);
     }
 
 
