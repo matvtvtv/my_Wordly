@@ -26,6 +26,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.example.mywordle.data.repository.DatabaseHelper;
+import com.example.mywordle.data.repository.PlayerRepository;
 import com.example.mywordle.data.repository.WordsRepository;
 import com.example.mywordle.databinding.ActivityMainBinding;
 
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(getApplicationContext());
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         WordsRepository wordsRepository = new WordsRepository(db);
         // Enable edge-to-edge content

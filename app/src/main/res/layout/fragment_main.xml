@@ -172,4 +172,14 @@
         app:layout_constraintStart_toStartOf="@+id/letter_6_free"
         app:layout_constraintTop_toTopOf="@+id/letter_6_free" />
 
+    <TextView
+        android:id="@+id/Level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/travel_button"
+        app:layout_constraintEnd_toEndOf="@+id/travel_button"
+        app:layout_constraintStart_toStartOf="@+id/travel_button"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
