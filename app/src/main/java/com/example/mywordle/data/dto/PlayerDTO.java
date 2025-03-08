@@ -21,6 +21,7 @@ public class PlayerDTO {
     private int fourAttempt;
     private int fiveAttempt;
     private int sixAttempt;
+    private int money;
 
 
 

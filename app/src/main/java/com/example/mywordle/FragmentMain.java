@@ -1,9 +1,6 @@
 package com.example.mywordle;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -26,7 +23,9 @@ public class FragmentMain extends Fragment {
     private ImageView letter_6_free;
     private ImageView letter_7_free;
     private TextView level;
-   private int WORD_LENGTH=0;
+    private TextView moneyText;
+
+    private int WORD_LENGTH=0;
 
 @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,6 +53,14 @@ public class FragmentMain extends Fragment {
             }
         });
 
+        moneyText.setText(String.valueOf(user.getMoney()));
+        playerRepository.addOnDataUpdateListener(values -> {
+        Integer newMoney = (Integer) values.get("money");
+        if (newMoney != null) {
+            moneyText.setText(String.valueOf(newMoney));
+        }
+        });
+
 
         letter_4_free.setOnClickListener(v->{
 
@@ -62,28 +69,28 @@ public class FragmentMain extends Fragment {
             intent.putExtra("WORD_LENGTH", WORD_LENGTH); // Передаем значение
             startActivity(intent);
         });
-    letter_5_free.setOnClickListener(v->{
+        letter_5_free.setOnClickListener(v->{
 
         Intent intent = new Intent(getContext(), GameActivity.class);
         WORD_LENGTH=5;
         intent.putExtra("WORD_LENGTH", WORD_LENGTH); // Передаем значение
         startActivity(intent);
-    });
+         });
 
-    letter_6_free.setOnClickListener(v->{
+        letter_6_free.setOnClickListener(v->{
 
         Intent intent = new Intent(getContext(), GameActivity.class);
         WORD_LENGTH=6;
         intent.putExtra("WORD_LENGTH", WORD_LENGTH); // Передаем значение
         startActivity(intent);
-    });
-    letter_7_free.setOnClickListener(v->{
+        });
+        letter_7_free.setOnClickListener(v->{
 
         Intent intent = new Intent(getContext(), GameActivity.class);
         WORD_LENGTH=7;
         intent.putExtra("WORD_LENGTH", WORD_LENGTH); // Передаем значение
         startActivity(intent);
-    });
+        });
 
 
 
@@ -96,6 +103,7 @@ public class FragmentMain extends Fragment {
         letter_6_free       = view.findViewById(R.id.letter_6_free);
         letter_7_free       = view.findViewById(R.id.letter_7_free);
         level               = view.findViewById(R.id.Level);
+        moneyText           =view.findViewById(R.id.moneyText);
     }
 
 

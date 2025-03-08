@@ -87,9 +87,6 @@ public class MainActivity extends AppCompatActivity {
         getAllId(); // Get references to the buttons
 
 
-
-
-
         // Change fragment initially to FragmentMain
         change(new FragmentMain());
         home_button_main.setScaleX(1.5f);
@@ -111,9 +108,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 if (frame != targetFrame) {
-                    resetIcons(home_button_main, 0);
-                    resetIcons(profile_button_main, 0);
-                    resetIcons(settings_button_main, 0);
+                    //добавить if для анимаций в зависимости от фреейма на котором находится игрок сейчас
+                    resetIcons(home_button_main, 100);
+                    resetIcons(profile_button_main, 100);
+                    resetIcons(settings_button_main, 100);
                     animIcon(v); // Animate the icon for the clicked button
                     change(fragment); // Change the fragment
                     frame = targetFrame; // Update the frame state
@@ -161,23 +159,13 @@ public class MainActivity extends AppCompatActivity {
         scaleX.setDuration(300);
         scaleY.setDuration(300);
 
-        ValueAnimator colorAnimator = getColorAnimator(v, R.color.original_color, R.color.pressed_color);
+
 
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(scaleX, scaleY, colorAnimator);
+        animatorSet.playTogether(scaleX, scaleY);
         animatorSet.start();
     }
 
-    // Create a color transition animation
-    private ValueAnimator getColorAnimator(View v, @ColorRes int from, @ColorRes int to) {
-        int startColor = ContextCompat.getColor(this, from);
-        int endColor = ContextCompat.getColor(this, to);
-        ValueAnimator colorAnimator = ValueAnimator.ofObject(new ArgbEvaluator(), startColor, endColor);
-        colorAnimator.setDuration(300);
-        colorAnimator.addUpdateListener(animation -> {
-            int animatedValue = (int) animation.getAnimatedValue();
-            ((ImageView) v).setColorFilter(animatedValue);
-        });
-        return colorAnimator;
-    }
+
+
 }

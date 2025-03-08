@@ -23,5 +23,6 @@ public class PlayerModel {
     private int fourAttempt;
     private int fiveAttempt;
     private int sixAttempt;
+    private int money;
 
 }

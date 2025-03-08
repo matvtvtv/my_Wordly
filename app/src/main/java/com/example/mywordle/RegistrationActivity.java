@@ -32,6 +32,7 @@ public class RegistrationActivity extends AppCompatActivity {
         editTextLogin = findViewById(R.id.editTextLogin);
         editTextPassword = findViewById(R.id.editTextPassword);
         Button btnRegister = findViewById(R.id.btnRegister);
+        Button btnLog = findViewById(R.id.btnLog);
         textViewMessage = findViewById(R.id.textViewMessage);
 
         playerRepository = PlayerRepository.getInstance(this);
@@ -40,6 +41,12 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 registerUser();
+            }
+        });
+        btnLog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginUser();
             }
         });
     }

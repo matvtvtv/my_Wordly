@@ -32,6 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_USER_FOUR_ATTEMPT= "fourAttempt";
     public static final String COLUMN_USER_FIVE_ATTEMPT= "fiveAttempt";
     public static final String COLUMN_USER_SIX_ATTEMPT= "sixAttempt";
+    public static final String COLUMN_USER_MONEY = "money";
 
 
 
@@ -51,7 +52,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             COLUMN_USER_THREE_ATTEMPT + " INTEGER, " +
             COLUMN_USER_FOUR_ATTEMPT + " INTEGER, " +
             COLUMN_USER_FIVE_ATTEMPT + " INTEGER, " +
-            COLUMN_USER_SIX_ATTEMPT + " INTEGER )";
+            COLUMN_USER_SIX_ATTEMPT + " INTEGER, " +
+            COLUMN_USER_MONEY + " INTEGER )";
 
     private static final String CREATE_TABLE_WORDS= "CREATE TABLE " + WORD_TABLE + " ( " +
             COLUMN_ID_WORDS + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -79,8 +81,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-       // db.execSQL("DROP TABLE IF EXISTS " + WORD_TABLE);
-       // db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + WORD_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE);
         onCreate(db);
     }
 }

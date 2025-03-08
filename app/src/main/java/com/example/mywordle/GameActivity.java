@@ -3,6 +3,7 @@ package com.example.mywordle;
 import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.service.autofill.UserData;
 import android.util.DisplayMetrics;
@@ -195,17 +196,32 @@ public class GameActivity extends AppCompatActivity {
 
                 if (gameLogic.isGameWon()) {
                     Toast.makeText(getApplicationContext(), "Поздравляем, вы выиграли!", Toast.LENGTH_SHORT).show();
+                    MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.e377e9b8d135e68);
+                    mediaPlayer.start();
                     PlayerRepository playerRepository = PlayerRepository.getInstance(getApplicationContext());
                     int userId = playerRepository.getCurrentUserId();
                     PlayerModel user = playerRepository.getUserData(userId);
                     user.setLevel(user.getLevel() + 5);
+                    user.setMoney(user.getMoney() + 15);
                     ContentValues values = new ContentValues();
                     values.put("level", user.getLevel());
+                    values.put("money", user.getMoney());
                     playerRepository.updateUserData(userId, values);
                     Toast.makeText(getApplicationContext(),"level: " + user.getLevel(), Toast.LENGTH_SHORT).show();
 
                 } else if (gameLogic.isGameOver()) {
                     Toast.makeText(getApplicationContext(), "Попытки закончились! Загаданное слово: " + gameLogic.getHiddenWord(), Toast.LENGTH_SHORT).show();
+                    MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.e377e9b8d135e68);
+                    mediaPlayer.start();
+                    PlayerRepository playerRepository = PlayerRepository.getInstance(getApplicationContext());
+                    int userId = playerRepository.getCurrentUserId();
+                    PlayerModel user = playerRepository.getUserData(userId);
+                    if(user.getLevel()>5){user.setLevel(user.getLevel() - 5);}
+                    else{user.setLevel(0);}
+                    ContentValues values = new ContentValues();
+                    values.put("level", user.getLevel());
+                    playerRepository.updateUserData(userId, values);
+                    Toast.makeText(getApplicationContext(),"level: " + user.getLevel(), Toast.LENGTH_SHORT).show();
                 } else {
                     currentAttemptIndex++;
                 }
@@ -213,5 +229,6 @@ public class GameActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 }

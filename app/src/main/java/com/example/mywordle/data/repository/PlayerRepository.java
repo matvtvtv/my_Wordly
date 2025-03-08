@@ -51,6 +51,7 @@ public class PlayerRepository {
         values.put("fourAttempt", 0);
         values.put("fiveAttempt", 0);
         values.put("sixAttempt", 0);
+        values.put("money", 50);
 
         int userId = (int) db.insert("user", null, values);
         if (userId != -1) {
@@ -75,13 +76,15 @@ public class PlayerRepository {
     public long getUserIdByLogin(String login) {
         int userId = -1;
         //  String query = "SELECT * FROM " + DatabaseHelper.WORD_TABLE + " WHERE " + DatabaseHelper.COLUMN_LENGTH_WORDS + " = ?";
+        //String query = "SELECT COUNT(*) FROM " + DatabaseHelper.USER_TABLE + " WHERE "+ DatabaseHelper.COLUMN_USER_ID + " = ?";
 
-        String query = "SELECT id FROM user WHERE login = ?";
+        String query = "SELECT "+ DatabaseHelper.COLUMN_USER_ID + " FROM " + DatabaseHelper.USER_TABLE + " WHERE "+ DatabaseHelper.COLUMN_USER_LOGIN + " = ?";
         Cursor cursor = db.rawQuery(query, new String[]{login});
         if (cursor.moveToFirst()) {
             userId = cursor.getInt(0);
         }
         cursor.close();
+        saveUserId(userId); // Сохраняем ID нового пользователя
         return userId;
     }
 
@@ -129,7 +132,8 @@ public class PlayerRepository {
                     cursor.getInt(11),  // threeAttempt
                     cursor.getInt(12), // fourAttempt
                     cursor.getInt(13),  // fiveAttempt
-                    cursor.getInt(14) // sixAttempt
+                    cursor.getInt(14),// sixAttempt
+                    cursor.getInt(15)//money
 
             );
         }
