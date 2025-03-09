@@ -1,8 +1,12 @@
 package com.example.mywordle;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.service.autofill.UserData;
@@ -10,8 +14,11 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,11 +33,13 @@ import com.example.mywordle.data.repository.WordsRepository;
 import com.example.mywordle.databinding.ActivityGameBinding;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class GameActivity extends AppCompatActivity {
 
-    // Инициализируем ViewBinding
+
     ActivityGameBinding binding;
     private GridLayout gridLetters;
     private List<TextView> letterCells;
@@ -40,8 +49,10 @@ public class GameActivity extends AppCompatActivity {
     private final int MAX_ATTEMPTS = 6;
     private GameLogic gameLogic;
     private WordsRepository wordsRepository;
+    private TextView popupGameOver;
+    private TextView popupGameWin;
 
-    // Инициализация клавиш для клавиатуры
+
     private List<Keyboard.Key> keyList = java.util.Arrays.asList(
             new Keyboard.Key("Й"), new Keyboard.Key("Ц"), new Keyboard.Key("У"), new Keyboard.Key("К"),
             new Keyboard.Key("Е"), new Keyboard.Key("Н"), new Keyboard.Key("Г"), new Keyboard.Key("Ш"),
@@ -59,32 +70,26 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Инициализация ViewBinding
+
         binding = ActivityGameBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Получаем параметр длины слова через Intent
         wordLength = getIntent().getIntExtra("WORD_LENGTH", 5);
 
-        // Инициализация репозитория для работы с базой данных
         DatabaseHelper databaseHelper = DatabaseHelper.getInstance(getApplicationContext());
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         wordsRepository = new WordsRepository(db);
 
-        // Получаем список допустимых слов из базы данных
-        List<WordsModel> validWords = wordsRepository.getFilteredWordsFree(wordLength); // -1 для игнорирования сложности
+        List<WordsModel> validWords = wordsRepository.getFilteredWordsFree(wordLength);
 
 
 
-        // Выбираем случайное слово
         int randomIndex = (int) (Math.random() * validWords.size());
         WordsModel selectedWord = validWords.get(randomIndex);
 
-        // Инициализируем игровую логику
         gameLogic = new GameLogic(MAX_ATTEMPTS);
         gameLogic.startNewGame(selectedWord.getWord());
 
-        // Инициализация сетки для ввода букв
         gridLetters = findViewById(R.id.gridLetters);
         letterCells = new ArrayList<>();
         for (int i = 0; i < MAX_ATTEMPTS * wordLength; i++) {
@@ -120,10 +125,10 @@ public class GameActivity extends AppCompatActivity {
         layout.setColumnCount(wordLength);
 
 
-        // Обработчик кнопки выхода
-        binding.exitButton.setOnClickListener(v -> finish());
+//        binding.exitButton.setOnClickListener(v -> finish());
+//        binding.btnHint.setOnClickListener(v -> showHintDialog());
 
-        // Настройка клавиатуры
+
         Keyboard keyboard = new Keyboard(binding.keyboard, keyList);
         keyboard.setOnKeyClickListener(v -> {
             Button btn = (Button) v;
@@ -142,7 +147,6 @@ public class GameActivity extends AppCompatActivity {
         });
         keyboard.create(this, binding.getRoot());
 
-        // Обработка нажатия кнопки "Проверить"
         Button btnCheck = binding.btnCheck;
         btnCheck.setOnClickListener(v -> {
             int start = currentAttemptIndex * wordLength;
@@ -208,7 +212,6 @@ public class GameActivity extends AppCompatActivity {
 
     }
     private void playerWin(){
-        Toast.makeText(getApplicationContext(), "Поздравляем, вы выиграли!", Toast.LENGTH_SHORT).show();
         MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.e377e9b8d135e68);
         mediaPlayer.start();
         PlayerRepository playerRepository = PlayerRepository.getInstance(getApplicationContext());
@@ -249,10 +252,9 @@ public class GameActivity extends AppCompatActivity {
         values.put("bestAttempt",user.getBestAttempt());
 
         playerRepository.updateUserData(userId, values);
-        Toast.makeText(getApplicationContext(),"level: " + user.getLevel(), Toast.LENGTH_SHORT).show();
+        showGameWinDialog();
     }
     private void playerLose(){
-        Toast.makeText(getApplicationContext(), "Попытки закончились! Загаданное слово: " + gameLogic.getHiddenWord(), Toast.LENGTH_SHORT).show();
 
         PlayerRepository playerRepository = PlayerRepository.getInstance(getApplicationContext());
         int userId = playerRepository.getCurrentUserId();
@@ -260,11 +262,118 @@ public class GameActivity extends AppCompatActivity {
         if(user.getLevel()>5){user.setLevel(user.getLevel() - 5);}
         else{user.setLevel(0);}
         user.setAllGames(user.getAllGames() + 1);
+        if(user.getMaxSeriesWins()<user.getCurrentSeriesWins()){user.setMaxSeriesWins(user.getCurrentSeriesWins());}
+        user.setCurrentSeriesWins(0);
+
         ContentValues values = new ContentValues();
         values.put("level", user.getLevel());
         values.put("money", user.getMoney());
         values.put("allGames", user.getAllGames());
         playerRepository.updateUserData(userId, values);
-        Toast.makeText(getApplicationContext(),"level: " + user.getLevel(), Toast.LENGTH_SHORT).show();
+
+        showGameOverDialog();
     }
+
+    private Set<Integer> hintedIndexes = new HashSet<>();
+    private void showGameOverDialog() {
+
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.popup_game_over);
+        dialog.setCancelable(false);
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        TextView popupGameOver = dialog.findViewById(R.id.popupGameOverText);
+        Button btnRestart = dialog.findViewById(R.id.btnRestart);
+        Button btnMainMenu = dialog.findViewById(R.id.btnMainMenu);
+
+        popupGameOver.setText( gameLogic.getHiddenWord());
+
+
+        btnRestart.setOnClickListener(v -> {
+            dialog.dismiss();
+            recreate();
+        });
+
+
+        btnMainMenu.setOnClickListener(v -> {
+            dialog.dismiss();
+            finish();
+        });
+
+        dialog.show();
+    }
+    private void showGameWinDialog() {
+
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.popup_game_win);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        TextView popupGameWin = dialog.findViewById(R.id.popupGameWinText);
+        Button btnRestart = dialog.findViewById(R.id.btnRestart);
+        Button btnMainMenu = dialog.findViewById(R.id.btnMainMenu);
+
+        popupGameWin.setText( gameLogic.getHiddenWord());
+
+
+        btnRestart.setOnClickListener(v -> {
+            dialog.dismiss();
+            recreate();
+        });
+
+
+        btnMainMenu.setOnClickListener(v -> {
+            dialog.dismiss();
+            finish();
+        });
+
+        dialog.show();
+    }
+//    private void showHintDialog() {
+//        List<Integer> unopenedIndexes = new ArrayList<>();
+//
+//        // Находим все не раскрытые буквы, для которых подсказка еще не была использована
+//        for (int i = 0; i < wordLength; i++) {
+//            if (letterCells.get(i).getText().toString().isEmpty() && gameLogic.getLetterStatus(i) == LetterStatus.UNDEFINED && !hintedIndexes.contains(i)) {
+//                unopenedIndexes.add(i);
+//            }
+//        }
+//
+//        if (!unopenedIndexes.isEmpty()) {
+//            // Выбираем случайную букву из нераскрытых
+//            int randomIndex = (int) (Math.random() * unopenedIndexes.size());
+//            int hintIndex = unopenedIndexes.get(randomIndex);
+//            String hintLetter = gameLogic.getHiddenWord().substring(hintIndex, hintIndex + 1);
+//
+//            // Сохраняем, что подсказка для этой буквы была использована
+//            hintedIndexes.add(hintIndex);
+//
+//            // Показываем диалог с подсказкой
+//            Dialog hintDialog = new Dialog(this);
+//            hintDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//            hintDialog.setContentView(R.layout.popup_hint);
+//            hintDialog.setCancelable(true);
+//            hintDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//
+//            TextView popupHint = hintDialog.findViewById(R.id.popupHintText);
+//            popupHint.setText("Подсказка: буква " + hintLetter + " на месте " + (hintIndex + 1));
+//
+//            Button btnCloseHint = hintDialog.findViewById(R.id.btnCloseHint);
+//            btnCloseHint.setOnClickListener(v -> hintDialog.dismiss());
+//
+//            hintDialog.show();
+//        } else {
+//            Toast.makeText(getApplicationContext(), "Все буквы уже открыты или подсказки использованы!", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+
+
+
+
+
+
+
 }

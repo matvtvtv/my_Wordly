@@ -17,13 +17,13 @@
             android:layout_height="wrap_content"
             android:src="@drawable/all_games"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageView7"
+            app:layout_constraintEnd_toStartOf="@+id/gamesWonView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profileStatistics"
             app:layout_constraintVertical_bias="0.13" />
 
         <ImageView
-            android:id="@+id/imageView7"
+            android:id="@+id/gamesWonView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/games_won_"
@@ -34,13 +34,13 @@
             app:layout_constraintVertical_bias="0.13" />
 
         <ImageView
-            android:id="@+id/imageView9"
+            android:id="@+id/percentOfWinView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/__of_wins_"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView7"
+            app:layout_constraintStart_toEndOf="@+id/gamesWonView"
             app:layout_constraintTop_toBottomOf="@+id/profileStatistics"
             app:layout_constraintVertical_bias="0.13" />
 
@@ -55,18 +55,116 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.07999998" />
 
+        <ImageView
+            android:id="@+id/bestAttemptView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/the_best_attempt_"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/bestEpisodeView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gamesWonView"
+            app:layout_constraintVertical_bias="0.13" />
+
+        <ImageView
+            android:id="@+id/bestEpisodeView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/the_best_episode_"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gamesWonView"
+            app:layout_constraintVertical_bias="0.13" />
+
+        <ImageView
+            android:id="@+id/currentSeriesView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/current_series_"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/bestEpisodeView"
+            app:layout_constraintTop_toBottomOf="@+id/gamesWonView"
+            app:layout_constraintVertical_bias="0.13" />
+
         <TextView
             android:id="@+id/all_games_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
             android:text="TextView"
+            android:textColor="@color/black"
             android:textSize="20sp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/all_games_view"
             app:layout_constraintEnd_toEndOf="@+id/all_games_view"
             app:layout_constraintStart_toStartOf="@+id/all_games_view"
             app:layout_constraintTop_toTopOf="@+id/all_games_view"
-            app:layout_constraintVertical_bias="0.61" />
+            app:layout_constraintVertical_bias="0.7" />
+
+        <TextView
+            android:id="@+id/gamesWonText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/gamesWonView"
+            app:layout_constraintEnd_toEndOf="@+id/gamesWonView"
+            app:layout_constraintStart_toStartOf="@+id/gamesWonView"
+            app:layout_constraintTop_toTopOf="@+id/gamesWonView"
+            app:layout_constraintVertical_bias="0.7" />
+
+        <TextView
+            android:id="@+id/percentOfWinText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/percentOfWinView"
+            app:layout_constraintEnd_toEndOf="@+id/percentOfWinView"
+            app:layout_constraintStart_toStartOf="@+id/percentOfWinView"
+            app:layout_constraintTop_toTopOf="@+id/percentOfWinView"
+            app:layout_constraintVertical_bias="0.7" />
+
+        <TextView
+            android:id="@+id/bestAttemptText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/bestAttemptView"
+            app:layout_constraintEnd_toEndOf="@+id/bestAttemptView"
+            app:layout_constraintStart_toStartOf="@+id/bestAttemptView"
+            app:layout_constraintTop_toTopOf="@+id/bestAttemptView"
+            app:layout_constraintVertical_bias="0.7" />
+
+        <TextView
+            android:id="@+id/bestEpisodeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/bestEpisodeView"
+            app:layout_constraintEnd_toEndOf="@+id/bestEpisodeView"
+            app:layout_constraintStart_toStartOf="@+id/bestEpisodeView"
+            app:layout_constraintTop_toTopOf="@+id/bestEpisodeView"
+            app:layout_constraintVertical_bias="0.7" />
+
+        <TextView
+            android:id="@+id/currentSeriesText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/currentSeriesView"
+            app:layout_constraintEnd_toEndOf="@+id/currentSeriesView"
+            app:layout_constraintStart_toStartOf="@+id/currentSeriesView"
+            app:layout_constraintTop_toTopOf="@+id/currentSeriesView"
+            app:layout_constraintVertical_bias="0.7" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

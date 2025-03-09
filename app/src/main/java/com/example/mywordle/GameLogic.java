@@ -58,7 +58,6 @@ public class GameLogic {
         char[] guessChars = guess.toCharArray();
         boolean[] used = new boolean[length];
 
-        // Сначала помечаем GREEN для совпадающих по позиции букв
         for (int i = 0; i < length; i++) {
             if (guessChars[i] == hiddenChars[i]) {
                 result[i] = LetterStatus.GREEN;
@@ -68,7 +67,6 @@ public class GameLogic {
             }
         }
 
-        // Помечаем YELLOW для букв, присутствующих в слове, но не в этой позиции
         for (int i = 0; i < length; i++) {
             if (result[i] == LetterStatus.GREEN) continue;
             for (int j = 0; j < length; j++) {

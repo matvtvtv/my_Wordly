@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:gravity="center">
+
+    <!-- Текст подсказки -->
+    <TextView
+        android:id="@+id/popupHintText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Подсказка: буква X на месте Y"
+        android:textSize="18sp"
+        android:textColor="#000000"
+        android:padding="8dp"/>
+
+    <!-- Кнопка для закрытия подсказки -->
+    <Button
+        android:id="@+id/btnCloseHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Закрыть"
+        android:textColor="#FFFFFF"
+        android:background="#00796b"
+        android:padding="8dp"/>
+
+</LinearLayout>

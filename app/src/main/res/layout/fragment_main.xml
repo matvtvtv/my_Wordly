@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
 
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
 
     <!-- Кнопка-переход (Travel) -->
 
@@ -105,8 +107,8 @@
         android:layout_height="47dp"
         android:gravity="center"
         android:text="Travel"
-        android:textSize="24sp"
         android:textColor="@color/black"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="@+id/travel_button"
         app:layout_constraintStart_toStartOf="@+id/travel_button"
         app:layout_constraintTop_toTopOf="@+id/travel_button" />
