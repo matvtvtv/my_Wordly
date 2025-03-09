@@ -62,7 +62,8 @@ public class RegistrationActivity extends AppCompatActivity {
 
         if (playerRepository.isValidUser(login)) {
             textViewMessage.setText("Логин уже существует!");
-        } else {
+        }
+        else {
             playerRepository.userRegistration(login, password);
 
             Toast.makeText(this, "Регистрация успешна!", Toast.LENGTH_SHORT).show();
@@ -77,7 +78,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private void saveUserId(int userId) {
         SharedPreferences preferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putLong("userId", userId);
+        editor.putInt("userId", userId);
         editor.apply();
     }
     private void loginUser() {
@@ -90,17 +91,24 @@ public class RegistrationActivity extends AppCompatActivity {
         }
 
         int userId = playerRepository.getCurrentUserId();
+        if (playerRepository.isValidUser(login)) {
+            if (userId != -1) {
+                saveUserId(userId); // Сохраняем ID пользователя
+                playerRepository.getUserIdByLogin(login);
 
-        if (userId != -1) {
-            saveUserId(userId); // Сохраняем ID пользователя
-            Toast.makeText(this, "Вход выполнен!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Вход выполнен!", Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
+                Intent intent = new Intent(this, MainActivity.class);
+
+                startActivity(intent);
+                finish();
+            } else {
+                textViewMessage.setText("Неверный логин или пароль!");
+            }
+        }else {
             textViewMessage.setText("Неверный логин или пароль!");
         }
+
     }
 
 

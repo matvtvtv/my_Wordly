@@ -25,6 +25,7 @@ public class FragmentMain extends Fragment {
     private TextView level;
     private TextView moneyText;
 
+
     private int WORD_LENGTH=0;
 
 @Override
@@ -60,7 +61,7 @@ public class FragmentMain extends Fragment {
             moneyText.setText(String.valueOf(newMoney));
         }
         });
-
+        
 
         letter_4_free.setOnClickListener(v->{
 

@@ -195,33 +195,9 @@ public class GameActivity extends AppCompatActivity {
                 }
 
                 if (gameLogic.isGameWon()) {
-                    Toast.makeText(getApplicationContext(), "Поздравляем, вы выиграли!", Toast.LENGTH_SHORT).show();
-                    MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.e377e9b8d135e68);
-                    mediaPlayer.start();
-                    PlayerRepository playerRepository = PlayerRepository.getInstance(getApplicationContext());
-                    int userId = playerRepository.getCurrentUserId();
-                    PlayerModel user = playerRepository.getUserData(userId);
-                    user.setLevel(user.getLevel() + 5);
-                    user.setMoney(user.getMoney() + 15);
-                    ContentValues values = new ContentValues();
-                    values.put("level", user.getLevel());
-                    values.put("money", user.getMoney());
-                    playerRepository.updateUserData(userId, values);
-                    Toast.makeText(getApplicationContext(),"level: " + user.getLevel(), Toast.LENGTH_SHORT).show();
-
+                   playerWin();
                 } else if (gameLogic.isGameOver()) {
-                    Toast.makeText(getApplicationContext(), "Попытки закончились! Загаданное слово: " + gameLogic.getHiddenWord(), Toast.LENGTH_SHORT).show();
-                    MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.e377e9b8d135e68);
-                    mediaPlayer.start();
-                    PlayerRepository playerRepository = PlayerRepository.getInstance(getApplicationContext());
-                    int userId = playerRepository.getCurrentUserId();
-                    PlayerModel user = playerRepository.getUserData(userId);
-                    if(user.getLevel()>5){user.setLevel(user.getLevel() - 5);}
-                    else{user.setLevel(0);}
-                    ContentValues values = new ContentValues();
-                    values.put("level", user.getLevel());
-                    playerRepository.updateUserData(userId, values);
-                    Toast.makeText(getApplicationContext(),"level: " + user.getLevel(), Toast.LENGTH_SHORT).show();
+                    playerLose();
                 } else {
                     currentAttemptIndex++;
                 }
@@ -230,5 +206,65 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+    }
+    private void playerWin(){
+        Toast.makeText(getApplicationContext(), "Поздравляем, вы выиграли!", Toast.LENGTH_SHORT).show();
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.e377e9b8d135e68);
+        mediaPlayer.start();
+        PlayerRepository playerRepository = PlayerRepository.getInstance(getApplicationContext());
+        int userId = playerRepository.getCurrentUserId();
+        PlayerModel user = playerRepository.getUserData(userId);
+        user.setLevel(user.getLevel() + 5);
+        user.setMoney(user.getMoney() + 15);
+        user.setAllGames(user.getAllGames() + 1);
+        user.setGamesWin(user.getGamesWin() + 1);
+        user.setCurrentSeriesWins(user.getCurrentSeriesWins()+1);
+        switch (currentAttemptIndex) {
+            case 0:user.setOneAttempt(user.getOneAttempt() + 1);break;
+            case 1:user.setOneAttempt(user.getTwoAttempt() + 1);break;
+            case 2:user.setOneAttempt(user.getThreeAttempt() + 1);break;
+            case 3:user.setOneAttempt(user.getFourAttempt() + 1);break;
+            case 4:user.setOneAttempt(user.getFiveAttempt() + 1);break;
+            case 5:user.setOneAttempt(user.getSixAttempt() + 1);break;
+        }
+        ContentValues values = new ContentValues();
+        if(user.getBestAttempt()!=0 || user.getBestAttempt()< currentAttemptIndex+1){
+            user.setBestAttempt(currentAttemptIndex+1);
+        }
+
+        values.put("level", user.getLevel());
+        values.put("money", user.getMoney());
+        values.put("allGames", user.getAllGames());
+        values.put("gamesWin", user.getGamesWin());
+        values.put("currentSeriesWins",user.getCurrentSeriesWins());
+        switch (currentAttemptIndex) {
+            case 0: values.put("oneAttempt",user.getOneAttempt());break;
+            case 1: values.put("twoAttempt",user.getOneAttempt());break;
+            case 2: values.put("threeAttempt",user.getOneAttempt());break;
+            case 3: values.put("fourAttempt",user.getOneAttempt());break;
+            case 4: values.put("fiveAttempt",user.getOneAttempt());break;
+            case 5: values.put("sixAttempt",user.getOneAttempt());break;
+        }
+        values.put("currentSeriesWins",user.getCurrentSeriesWins());
+        values.put("bestAttempt",user.getBestAttempt());
+
+        playerRepository.updateUserData(userId, values);
+        Toast.makeText(getApplicationContext(),"level: " + user.getLevel(), Toast.LENGTH_SHORT).show();
+    }
+    private void playerLose(){
+        Toast.makeText(getApplicationContext(), "Попытки закончились! Загаданное слово: " + gameLogic.getHiddenWord(), Toast.LENGTH_SHORT).show();
+
+        PlayerRepository playerRepository = PlayerRepository.getInstance(getApplicationContext());
+        int userId = playerRepository.getCurrentUserId();
+        PlayerModel user = playerRepository.getUserData(userId);
+        if(user.getLevel()>5){user.setLevel(user.getLevel() - 5);}
+        else{user.setLevel(0);}
+        user.setAllGames(user.getAllGames() + 1);
+        ContentValues values = new ContentValues();
+        values.put("level", user.getLevel());
+        values.put("money", user.getMoney());
+        values.put("allGames", user.getAllGames());
+        playerRepository.updateUserData(userId, values);
+        Toast.makeText(getApplicationContext(),"level: " + user.getLevel(), Toast.LENGTH_SHORT).show();
     }
 }

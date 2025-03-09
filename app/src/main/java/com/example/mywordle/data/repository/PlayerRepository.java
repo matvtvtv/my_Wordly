@@ -5,15 +5,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.widget.DatePicker;
 
 import com.example.mywordle.OnDataUpdateListener;
 import com.example.mywordle.data.model.PlayerModel;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import lombok.Setter;
 
 public class PlayerRepository {
     private static PlayerRepository instance;
@@ -62,7 +59,7 @@ public class PlayerRepository {
     // Проверка, существует ли пользователь
     public boolean isValidUser(String login) {
         //  String query = "SELECT * FROM " + DatabaseHelper.WORD_TABLE + " WHERE " + DatabaseHelper.COLUMN_LENGTH_WORDS + " = ?";
-        String query = "SELECT COUNT(*) FROM " + DatabaseHelper.USER_TABLE + " WHERE "+ DatabaseHelper.COLUMN_USER_ID + " = ?";
+        String query = "SELECT * FROM " + DatabaseHelper.USER_TABLE + " WHERE "+ DatabaseHelper.COLUMN_USER_LOGIN + " = ?";
         Cursor cursor = db.rawQuery(query, new String[]{login});
         boolean exists = false;
         if (cursor.moveToFirst()) {
@@ -73,19 +70,20 @@ public class PlayerRepository {
     }
 
     // Получение userId по логину (например, при авторизации)
-    public long getUserIdByLogin(String login) {
+    public void getUserIdByLogin(String login) {
         int userId = -1;
         //  String query = "SELECT * FROM " + DatabaseHelper.WORD_TABLE + " WHERE " + DatabaseHelper.COLUMN_LENGTH_WORDS + " = ?";
         //String query = "SELECT COUNT(*) FROM " + DatabaseHelper.USER_TABLE + " WHERE "+ DatabaseHelper.COLUMN_USER_ID + " = ?";
 
-        String query = "SELECT "+ DatabaseHelper.COLUMN_USER_ID + " FROM " + DatabaseHelper.USER_TABLE + " WHERE "+ DatabaseHelper.COLUMN_USER_LOGIN + " = ?";
+        String query = "SELECT * FROM " + DatabaseHelper.USER_TABLE + " WHERE "+ DatabaseHelper.COLUMN_USER_LOGIN + " = ?";
         Cursor cursor = db.rawQuery(query, new String[]{login});
         if (cursor.moveToFirst()) {
             userId = cursor.getInt(0);
         }
-        cursor.close();
+        else {userId = -1;}
+
         saveUserId(userId); // Сохраняем ID нового пользователя
-        return userId;
+         cursor.close();
     }
 
     // Сохранение userId в SharedPreferences
