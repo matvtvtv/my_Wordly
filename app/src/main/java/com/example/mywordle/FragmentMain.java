@@ -1,5 +1,6 @@
 package com.example.mywordle;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -28,6 +29,7 @@ public class FragmentMain extends Fragment {
 
     private int WORD_LENGTH=0;
 
+@SuppressLint("SetTextI18n")
 @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,11 +48,13 @@ public class FragmentMain extends Fragment {
         PlayerRepository playerRepository = PlayerRepository.getInstance(getContext());
         int userId = playerRepository.getCurrentUserId();
         PlayerModel user = playerRepository.getUserData(userId);
-        level.setText(String.valueOf(user.getLevel()));
+
+        level.setText("Level № "+ String.valueOf(user.getLevel()));
         playerRepository.addOnDataUpdateListener(values -> {
             Integer newLevel = (Integer) values.get("level");
             if (newLevel != null) {
-                level.setText(String.valueOf(newLevel));
+                level.setText("Level № "+ String.valueOf(newLevel));
+                //String.format("%.2f %%", (gamesWin /  allGames) * 100))
             }
         });
 

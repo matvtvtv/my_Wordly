@@ -1,24 +1,18 @@
 package com.example.mywordle;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ContentValues;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.service.autofill.UserData;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.GridLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +27,7 @@ import com.example.mywordle.data.repository.WordsRepository;
 import com.example.mywordle.databinding.ActivityGameBinding;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -125,8 +120,8 @@ public class GameActivity extends AppCompatActivity {
         layout.setColumnCount(wordLength);
 
 
-//        binding.exitButton.setOnClickListener(v -> finish());
-//        binding.btnHint.setOnClickListener(v -> showHintDialog());
+        binding.exitButton.setOnClickListener(v -> finish());
+        binding.btnHint.setOnClickListener(v -> showHintDialog());
 
 
         Keyboard keyboard = new Keyboard(binding.keyboard, keyList);
@@ -269,12 +264,15 @@ public class GameActivity extends AppCompatActivity {
         values.put("level", user.getLevel());
         values.put("money", user.getMoney());
         values.put("allGames", user.getAllGames());
+        values.put("currentSeriesWins", user.getCurrentSeriesWins());
+        values.put("maxSeriesWins", user.getMaxSeriesWins());
         playerRepository.updateUserData(userId, values);
 
         showGameOverDialog();
     }
 
     private Set<Integer> hintedIndexes = new HashSet<>();
+
     private void showGameOverDialog() {
 
         Dialog dialog = new Dialog(this);
@@ -332,43 +330,73 @@ public class GameActivity extends AppCompatActivity {
 
         dialog.show();
     }
-//    private void showHintDialog() {
-//        List<Integer> unopenedIndexes = new ArrayList<>();
-//
-//        // Находим все не раскрытые буквы, для которых подсказка еще не была использована
-//        for (int i = 0; i < wordLength; i++) {
-//            if (letterCells.get(i).getText().toString().isEmpty() && gameLogic.getLetterStatus(i) == LetterStatus.UNDEFINED && !hintedIndexes.contains(i)) {
-//                unopenedIndexes.add(i);
-//            }
-//        }
-//
-//        if (!unopenedIndexes.isEmpty()) {
-//            // Выбираем случайную букву из нераскрытых
-//            int randomIndex = (int) (Math.random() * unopenedIndexes.size());
-//            int hintIndex = unopenedIndexes.get(randomIndex);
-//            String hintLetter = gameLogic.getHiddenWord().substring(hintIndex, hintIndex + 1);
-//
-//            // Сохраняем, что подсказка для этой буквы была использована
-//            hintedIndexes.add(hintIndex);
-//
-//            // Показываем диалог с подсказкой
-//            Dialog hintDialog = new Dialog(this);
-//            hintDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//            hintDialog.setContentView(R.layout.popup_hint);
-//            hintDialog.setCancelable(true);
-//            hintDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//
-//            TextView popupHint = hintDialog.findViewById(R.id.popupHintText);
-//            popupHint.setText("Подсказка: буква " + hintLetter + " на месте " + (hintIndex + 1));
-//
-//            Button btnCloseHint = hintDialog.findViewById(R.id.btnCloseHint);
-//            btnCloseHint.setOnClickListener(v -> hintDialog.dismiss());
-//
-//            hintDialog.show();
-//        } else {
-//            Toast.makeText(getApplicationContext(), "Все буквы уже открыты или подсказки использованы!", Toast.LENGTH_SHORT).show();
-//        }
-//    }
+
+
+
+
+    private char[] hintWord;
+
+
+    private void initializeHintWord(int wordLength) {
+        if (wordLength > 0) {
+            hintWord = new char[wordLength];
+            Arrays.fill(hintWord, '*');
+        } else {
+            Log.e("GameActivity", "Invalid word length: " + wordLength);
+        }
+    }
+
+    private void showHintDialog() {
+        // Make sure hintWord is initialized
+        if (hintWord == null) {
+            Log.e("GameActivity", "hintWord is null! Initializing...");
+            initializeHintWord(wordLength);
+        }
+
+
+        Dialog hintDialog = new Dialog(this);
+        hintDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        hintDialog.setContentView(R.layout.popup_hint);
+        hintDialog.setCancelable(true);
+        hintDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        TextView popupHint = hintDialog.findViewById(R.id.popupHintText);
+        popupHint.setText("Подсказка: " + new String(hintWord));
+
+        hintDialog.findViewById(R.id.btnUpdateHint).setOnClickListener(v -> updateHint(popupHint));
+        hintDialog.findViewById(R.id.btnCloseHint).setOnClickListener(v -> hintDialog.dismiss());
+
+        hintDialog.show();
+    }
+
+
+    private void updateHint(TextView popupHint) {
+        List<Integer> unopenedIndexes = computeUnopenedIndexes();
+        if (unopenedIndexes.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Все возможные подсказки использованы!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        int hintIndex = unopenedIndexes.get((int) (Math.random() * unopenedIndexes.size()));
+        hintWord[hintIndex] = gameLogic.getHiddenWord().charAt(hintIndex);
+        hintedIndexes.add(hintIndex);
+        popupHint.setText("Подсказка: " + new String(hintWord));
+    }
+
+
+    private List<Integer> computeUnopenedIndexes() {
+        List<Integer> unopenedIndexes = new ArrayList<>();
+        for (int i = 0; i < wordLength; i++) {
+            if (!hintedIndexes.contains(i) && !isLetterGuessed(i)) {
+                unopenedIndexes.add(i);
+            }
+        }
+        return unopenedIndexes;
+    }
+    private boolean isLetterGuessed(int index) {
+        return hintWord[index] != '*';
+    }
+
 
 
 

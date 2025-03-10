@@ -1,29 +1,24 @@
 package com.example.mywordle;
 
-import static java.security.AccessController.getContext;
-
-import android.animation.ArgbEvaluator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
+
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.ColorRes;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import com.example.mywordle.data.repository.DatabaseHelper;
 import com.example.mywordle.data.repository.PlayerRepository;
@@ -36,69 +31,66 @@ public class MainActivity extends AppCompatActivity {
     private ImageView settings_button_main;
     private ImageView home_button_main;
     private ImageView profile_button_main;
-
     private int frame = 1; // 0 - profile, 1 - home, 2 - settings
+    private SharedPreferences preferences;
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        preferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        int isUserLoggedIn = preferences.getInt("userId", -1); // Проверка авторизации
+        boolean isFirstRun = preferences.getBoolean("isFirstRun", true);
         DatabaseHelper databaseHelper = DatabaseHelper.getInstance(getApplicationContext());
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         WordsRepository wordsRepository = new WordsRepository(db);
-        // Enable edge-to-edge content
-         SharedPreferences preferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
-                boolean isFirstRun = preferences.getBoolean("isFirstRun", true);
-         if (isFirstRun) {
-             wordsRepository.importWordsFromFile(this);
-                    // Если это первый запуск, открываем RegistrationActivity
-             Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
-             startActivity(intent);
+        if (isFirstRun) {
+            wordsRepository.importWordsFromFile(this);
+            // Обновляем флаг
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("isFirstRun", false);
+            editor.apply();
+        }
+        if (isUserLoggedIn==-1) {
+
+            Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
+            startActivity(intent);
+                        return;  // Прекращаем выполнение onCreate()
+        }
 
 
-             // После первого запуска изменяем флаг, чтобы не запускать RegistrationActivity снова
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putBoolean("isFirstRun", false);
-                    editor.apply();
-                }
+
+
+
+
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        // Set up the window insets
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // Create an instance of DatabaseHelper for accessing the database
-
-        // Create an instance of WordsRepository and pass the context
-
-
-        if(wordsRepository.isTableEmpty()){
-
-        }
-
-        // Initialize view binding
+        // Инициализация view binding
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        getAllId(); // Get references to the buttons
+        getAllId(); // Получаем ссылки на кнопки
 
-
-        // Change fragment initially to FragmentMain
+        // Изначально загружаем FragmentMain
         change(new FragmentMain());
         home_button_main.setScaleX(1.5f);
         home_button_main.setScaleY(1.5f);
 
-        // Set up listeners for buttons with animations
+        // Устанавливаем слушатели кнопок
         settings_button_main.setOnClickListener(v -> handleFragmentChange(v, new FragmentSettings(), 2));
         home_button_main.setOnClickListener(v -> handleFragmentChange(v, new FragmentMain(), 1));
         profile_button_main.setOnClickListener(v -> handleFragmentChange(v, new FragmentProfile(), 0));
     }
 
-    // Generic method for changing fragments and handling icon animations
+    // Метод для обработки смены фрагментов и анимации иконок
     private void handleFragmentChange(View v, Fragment fragment, int targetFrame) {
         Animation clickAnim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.button_click);
         v.startAnimation(clickAnim);
@@ -108,13 +100,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 if (frame != targetFrame) {
-                    //добавить if для анимаций в зависимости от фреейма на котором находится игрок сейчас
                     resetIcons(home_button_main, 100);
                     resetIcons(profile_button_main, 100);
                     resetIcons(settings_button_main, 100);
-                    animIcon(v); // Animate the icon for the clicked button
-                    change(fragment); // Change the fragment
-                    frame = targetFrame; // Update the frame state
+                    animIcon(v);
+                    change(fragment);
+                    frame = targetFrame;
                 } else {
                     resetIcons(home_button_main, 300);
                     resetIcons(profile_button_main, 300);
@@ -124,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // Change the displayed fragment
+    // Метод для смены фрагментов
     private void change(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.fragment_in, R.anim.fragment_out);
@@ -132,15 +123,14 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    // Get references to the buttons
+    // Получение ссылок на кнопки
     private void getAllId() {
         settings_button_main = findViewById(R.id.settings_button_main);
         home_button_main = findViewById(R.id.home_button_main);
         profile_button_main = findViewById(R.id.profile_button_main);
     }
 
-    // Reset icon's color and size when switching
-    @SuppressLint("UseCompatLoadingForDrawables")
+    // Метод для сброса анимации иконок
     private void resetIcons(View v, int duration) {
         ObjectAnimator scaleX = ObjectAnimator.ofFloat(v, "scaleX", 1.5f, 1f);
         ObjectAnimator scaleY = ObjectAnimator.ofFloat(v, "scaleY", 1.5f, 1f);
@@ -152,20 +142,15 @@ public class MainActivity extends AppCompatActivity {
         animatorSet.start();
     }
 
-    // Animate the selected icon (enlarge and change color)
+    // Метод для анимации выбранной иконки
     private void animIcon(View v) {
         ObjectAnimator scaleX = ObjectAnimator.ofFloat(v, "scaleX", 1f, 1.5f);
         ObjectAnimator scaleY = ObjectAnimator.ofFloat(v, "scaleY", 1f, 1.5f);
         scaleX.setDuration(300);
         scaleY.setDuration(300);
 
-
-
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(scaleX, scaleY);
         animatorSet.start();
     }
-
-
-
 }
