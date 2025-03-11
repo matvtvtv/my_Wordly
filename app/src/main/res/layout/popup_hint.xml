@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/btnUpdate"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -7,36 +9,86 @@
     android:orientation="vertical"
     android:padding="20dp">
 
-    <!-- Текст подсказки -->
     <TextView
         android:id="@+id/popupHintText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center"
         android:padding="8dp"
         android:text="Подсказка: буква X на месте Y"
         android:textColor="#000000"
         android:textSize="18sp" />
-
-    <!-- Кнопка для закрытия подсказки -->
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/moneyCost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
+        android:gravity="center"
+        android:textColor="#000000"
         android:text="TextView" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="89dp"
+            android:layout_height="47dp"
+
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/key_background" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="34dp"
+            android:layout_height="35dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/imageView2"
+            app:layout_constraintHorizontal_bias="0.93"
+            app:layout_constraintStart_toStartOf="@+id/imageView2"
+            app:layout_constraintTop_toTopOf="@+id/imageView2"
+            app:srcCompat="@drawable/fi_rr_bulb" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="36dp"
+            android:layout_height="16dp"
+            android:gravity="center|center_horizontal|center_vertical"
+            android:text="TextView"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView6"
+            app:layout_constraintStart_toStartOf="@+id/imageView2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.40" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/btnUpdateHint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Открыть букву" />
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/yellow"
+        android:gravity="center"
+        android:text="Открыть букву"
+        android:textColor="@android:color/white" />
 
     <Button
         android:id="@+id/btnCloseHint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/green"
-        android:padding="8dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:backgroundTint="@color/green"
         android:text="Закрыть"
-        android:textColor="#FFFFFF" />
+        android:textColor="@android:color/white" />
 
 </LinearLayout>

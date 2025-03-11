@@ -10,16 +10,154 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background">
+        android:background="@color/background"
+        android:foregroundTint="@color/green"
+        android:outlineAmbientShadowColor="@color/green"
+        android:outlineSpotShadowColor="@color/green">
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button"
+            android:src="@drawable/group_1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.07" />
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/green"
+            android:src="@drawable/rectangle_46"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView7"
+            app:layout_constraintVertical_bias="0.07999998" />
+
+        <ImageView
+            android:id="@+id/profCard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/key_background"
+            android:src="@drawable/_4208458_717"
+            app:circularflow_radiusInDP="20"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView9"
+            app:layout_constraintEnd_toEndOf="@+id/imageView9"
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintStart_toStartOf="@+id/imageView9"
+            app:layout_constraintTop_toTopOf="@+id/imageView9" />
+
+        <TextView
+            android:id="@+id/yourLog"
+            android:layout_width="112dp"
+            android:layout_height="20dp"
+            android:text="your user name"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView9"
+            app:layout_constraintEnd_toEndOf="@+id/imageView9"
+            app:layout_constraintHorizontal_bias="0.06"
+            app:layout_constraintStart_toEndOf="@+id/profCard"
+            app:layout_constraintTop_toTopOf="@+id/imageView9"
+            app:layout_constraintVertical_bias="0.13" />
+
+        <TextView
+            android:id="@+id/yourLogin"
+            android:layout_width="112dp"
+            android:layout_height="20dp"
+            android:text="your user name"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView9"
+            app:layout_constraintEnd_toEndOf="@+id/imageView9"
+            app:layout_constraintHorizontal_bias="0.22"
+            app:layout_constraintStart_toEndOf="@+id/profCard"
+            app:layout_constraintTop_toTopOf="@+id/imageView9"
+            app:layout_constraintVertical_bias="0.39" />
+
+        <ImageView
+            android:id="@+id/gameSound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/rectangle_48"        android:layout_marginTop="10dp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView9" />
+
+        <TextView
+            android:id="@+id/gameSoundText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Звук игры"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/gameSound"
+            app:layout_constraintEnd_toEndOf="@+id/gameSound"
+            app:layout_constraintHorizontal_bias="0.17"
+            app:layout_constraintStart_toStartOf="@+id/gameSound"
+            app:layout_constraintTop_toTopOf="@+id/gameSound" />
+
+        <Switch
+            android:id="@+id/gameSoundSwitch"
+            android:layout_width="62dp"
+            android:layout_height="35dp"
+            android:thumbTint="@color/green"
+            android:trackTint="@color/original_color"
+            app:layout_constraintBottom_toBottomOf="@+id/gameSound"
+            app:layout_constraintEnd_toEndOf="@+id/gameSound"
+            app:layout_constraintStart_toEndOf="@+id/gameSoundText"
+            app:layout_constraintTop_toTopOf="@+id/gameSound" />
+
+        <ImageView
+            android:id="@+id/accountExit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/group_2"        android:layout_marginTop="10dp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gameSound" />
+
+        <TextView
+            android:id="@+id/accountExitText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Выход из аккаунта"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/accountExit"
+            app:layout_constraintEnd_toEndOf="@+id/accountExit"
+            app:layout_constraintHorizontal_bias="0.18"
+            app:layout_constraintStart_toStartOf="@+id/accountExit"
+            app:layout_constraintTop_toTopOf="@+id/accountExit"
+            app:layout_constraintVertical_bias="0.521" />
+
+        <ImageView
+            android:id="@+id/bugReport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/group_3"        android:layout_marginTop="10dp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/accountExit" />
+
+        <TextView
+            android:id="@+id/bugReportText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Сообщить об ошике"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/bugReport"
+            app:layout_constraintEnd_toEndOf="@+id/bugReport"
+            app:layout_constraintHorizontal_bias="0.21"
+            app:layout_constraintStart_toStartOf="@+id/bugReport"
+            app:layout_constraintTop_toTopOf="@+id/bugReport" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

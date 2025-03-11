@@ -1,5 +1,8 @@
 package com.example.mywordle;
 
+import static java.security.AccessController.getContext;
+
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,6 +13,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.GridLayout;
@@ -30,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class GameActivity extends AppCompatActivity {
@@ -47,6 +52,9 @@ public class GameActivity extends AppCompatActivity {
     private TextView popupGameOver;
     private TextView popupGameWin;
 
+    private TextView moneyText;
+
+
 
     private List<Keyboard.Key> keyList = java.util.Arrays.asList(
             new Keyboard.Key("Й"), new Keyboard.Key("Ц"), new Keyboard.Key("У"), new Keyboard.Key("К"),
@@ -61,9 +69,11 @@ public class GameActivity extends AppCompatActivity {
     );
 
 
+    @SuppressLint({"SetTextI18n", "CutPasteId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
 
         binding = ActivityGameBinding.inflate(getLayoutInflater());
@@ -76,6 +86,11 @@ public class GameActivity extends AppCompatActivity {
         wordsRepository = new WordsRepository(db);
 
         List<WordsModel> validWords = wordsRepository.getFilteredWordsFree(wordLength);
+
+        PlayerRepository playerRepository = PlayerRepository.getInstance(getApplicationContext());
+        int userId = playerRepository.getCurrentUserId();
+        PlayerModel user = playerRepository.getUserData(userId);
+
 
 
 
@@ -122,6 +137,9 @@ public class GameActivity extends AppCompatActivity {
 
         binding.exitButton.setOnClickListener(v -> finish());
         binding.btnHint.setOnClickListener(v -> showHintDialog());
+
+        TextView level=findViewById(R.id.levelGameText);
+        level.setText("Level № "+String.valueOf(user.getLevel()));
 
 
         Keyboard keyboard = new Keyboard(binding.keyboard, keyList);
@@ -345,9 +363,8 @@ public class GameActivity extends AppCompatActivity {
             Log.e("GameActivity", "Invalid word length: " + wordLength);
         }
     }
-
+    int hintCount=1;
     private void showHintDialog() {
-        // Make sure hintWord is initialized
         if (hintWord == null) {
             Log.e("GameActivity", "hintWord is null! Initializing...");
             initializeHintWord(wordLength);
@@ -362,15 +379,39 @@ public class GameActivity extends AppCompatActivity {
 
         TextView popupHint = hintDialog.findViewById(R.id.popupHintText);
         popupHint.setText("Подсказка: " + new String(hintWord));
+        TextView moneyText = hintDialog.findViewById(R.id.moneyCost);
+        moneyText.setText("Стоимость подсказки : " + String.valueOf(hintCount*5));
+        PlayerRepository playerRepository = PlayerRepository.getInstance(getApplicationContext());
+        int userId = playerRepository.getCurrentUserId();
+        PlayerModel user = playerRepository.getUserData(userId);
 
-        hintDialog.findViewById(R.id.btnUpdateHint).setOnClickListener(v -> updateHint(popupHint));
-        hintDialog.findViewById(R.id.btnCloseHint).setOnClickListener(v -> hintDialog.dismiss());
+        TextView money2 = hintDialog.findViewById(R.id.textView);
+        money2.setText(  String.valueOf(user.getMoney()+"X"));
+
+        hintDialog.findViewById(R.id.btnUpdateHint).setOnClickListener(v -> {
+            if (user.getMoney() > (hintCount + 1) * 5) {
+                updateHint(popupHint, moneyText, money2);
+            }
+            else{  Toast.makeText(getApplicationContext(), "Недостаточно монет для получения подсказки !", Toast.LENGTH_SHORT).show();}
+        });
+
+        hintDialog.findViewById(R.id.btnCloseHint).setOnClickListener(v ->
+                hintDialog.dismiss());
 
         hintDialog.show();
     }
 
 
-    private void updateHint(TextView popupHint) {
+    @SuppressLint("SetTextI18n")
+    private void updateHint(TextView popupHint,TextView moneyText,TextView money2) {
+        PlayerRepository playerRepository = PlayerRepository.getInstance(getApplicationContext());
+        int userId = playerRepository.getCurrentUserId();
+        PlayerModel user = playerRepository.getUserData(userId);
+        user.setMoney(user.getMoney()-(hintCount*5));
+        ContentValues values = new ContentValues();
+        values.put("money", user.getMoney());
+        playerRepository.updateUserData(userId, values);
+        hintCount++;
         List<Integer> unopenedIndexes = computeUnopenedIndexes();
         if (unopenedIndexes.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Все возможные подсказки использованы!", Toast.LENGTH_SHORT).show();
@@ -381,6 +422,10 @@ public class GameActivity extends AppCompatActivity {
         hintWord[hintIndex] = gameLogic.getHiddenWord().charAt(hintIndex);
         hintedIndexes.add(hintIndex);
         popupHint.setText("Подсказка: " + new String(hintWord));
+
+        moneyText.setText("Стоимость подсказки : " + hintCount*5);
+
+        money2.setText(user.getMoney()+"X");
     }
 
 

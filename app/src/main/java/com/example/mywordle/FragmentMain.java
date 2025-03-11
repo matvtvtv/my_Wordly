@@ -50,6 +50,7 @@ public class FragmentMain extends Fragment {
         PlayerModel user = playerRepository.getUserData(userId);
 
         level.setText("Level № "+ String.valueOf(user.getLevel()));
+
         playerRepository.addOnDataUpdateListener(values -> {
             Integer newLevel = (Integer) values.get("level");
             if (newLevel != null) {

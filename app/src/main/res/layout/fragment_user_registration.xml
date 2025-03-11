@@ -2,9 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="top"
     android:orientation="vertical"
-    android:padding="20dp"
-    android:gravity="center">
+    android:padding="20dp">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="100dp" />
 
     <EditText
         android:id="@+id/editTextLogin"
@@ -17,16 +21,16 @@
         android:id="@+id/editTextPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:hint="Введите пароль"
-        android:inputType="textPassword"
-        android:layout_marginTop="10dp"/>
+        android:inputType="textPassword" />
 
     <Button
         android:id="@+id/btnRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Зарегистрироваться"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:text="Зарегистрироваться" />
 
     <Button
         android:id="@+id/btnLog"
@@ -44,4 +48,5 @@
         android:text=""
         android:textColor="@android:color/holo_red_dark"
         android:textSize="16sp" />
+
 </LinearLayout>

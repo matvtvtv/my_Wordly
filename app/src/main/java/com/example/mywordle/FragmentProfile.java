@@ -51,7 +51,8 @@ public class FragmentProfile extends Fragment {
     //percentOfWinText.setText((Integer.parseInt(String.valueOf(user.getGamesWin()))/Integer.parseInt(String.valueOf(user.getAllGames())))*100);
 
 //
-
+//    Switch mySwitch = findViewById(R.id.mySwitch);
+//    mySwitch.setChecked(true);
     return view;
 
 }
