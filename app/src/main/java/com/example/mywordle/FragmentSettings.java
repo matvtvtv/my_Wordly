@@ -1,5 +1,6 @@
 package com.example.mywordle;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -13,11 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.mywordle.data.model.PlayerModel;
 import com.example.mywordle.data.repository.PlayerRepository;
 
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class FragmentSettings extends Fragment {
@@ -26,6 +30,7 @@ public class FragmentSettings extends Fragment {
     private TextView login;
     private ImageView accountExit;
     private ImageView bugRep;
+    private Switch mySwitch;
 
     private PlayerRepository playerRepository;
 
@@ -44,6 +49,18 @@ public class FragmentSettings extends Fragment {
         int userId = playerRepository.getCurrentUserId();
         PlayerModel user = playerRepository.getUserData(userId);
 
+
+        int sound = (Integer) user.getSound();
+        mySwitch.setChecked(sound == 1);
+        mySwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            int newSoundValue = isChecked ? 1 : 0; // Если включен — 1, если выключен — 0
+
+            ContentValues values = new ContentValues();
+            values.put("sound", newSoundValue); // Используем ContentValues для обновления
+
+            playerRepository.updateUserData(userId, values);
+        });
+
         if (user != null) {
             login.setText(user.getLogin());
         }
@@ -59,6 +76,7 @@ public class FragmentSettings extends Fragment {
             Intent intent = new Intent(getContext(), RegistrationActivity.class);
             startActivity(intent);
         });
+
 
         bugRep.setOnClickListener(v -> sendEmailToAgency());
 
@@ -77,6 +95,7 @@ public class FragmentSettings extends Fragment {
         accountExit =view.findViewById(R.id.accountExit);
         bugRep =view.findViewById(R.id.bugReport);
        login=view.findViewById(R.id.yourLogin);
+        mySwitch=view.findViewById(R.id.gameSoundSwitch);
     }
     private static final String AGENCY_EMAIL = "matveicharniauski@gmail.com";
 

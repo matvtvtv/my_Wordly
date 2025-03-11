@@ -1,7 +1,5 @@
 package com.example.mywordle;
 
-import static java.security.AccessController.getContext;
-
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ContentValues;
@@ -13,7 +11,6 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.GridLayout;
@@ -34,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 public class GameActivity extends AppCompatActivity {
@@ -144,6 +140,10 @@ public class GameActivity extends AppCompatActivity {
 
         Keyboard keyboard = new Keyboard(binding.keyboard, keyList);
         keyboard.setOnKeyClickListener(v -> {
+            if(user.getSound()==1){
+            MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.keyboard_sound);
+            mediaPlayer.start();}
+
             Button btn = (Button) v;
             String letter = btn.getText().toString();
             if (letter.equals("Del")) {
@@ -225,8 +225,7 @@ public class GameActivity extends AppCompatActivity {
 
     }
     private void playerWin(){
-        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.e377e9b8d135e68);
-        mediaPlayer.start();
+
         PlayerRepository playerRepository = PlayerRepository.getInstance(getApplicationContext());
         int userId = playerRepository.getCurrentUserId();
         PlayerModel user = playerRepository.getUserData(userId);
@@ -235,6 +234,10 @@ public class GameActivity extends AppCompatActivity {
         user.setAllGames(user.getAllGames() + 1);
         user.setGamesWin(user.getGamesWin() + 1);
         user.setCurrentSeriesWins(user.getCurrentSeriesWins()+1);
+        if(user.getSound()==1) {
+            MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.game_win_sound);
+            mediaPlayer.start();
+        }
         switch (currentAttemptIndex) {
             case 0:user.setOneAttempt(user.getOneAttempt() + 1);break;
             case 1:user.setOneAttempt(user.getTwoAttempt() + 1);break;
@@ -269,6 +272,7 @@ public class GameActivity extends AppCompatActivity {
     }
     private void playerLose(){
 
+
         PlayerRepository playerRepository = PlayerRepository.getInstance(getApplicationContext());
         int userId = playerRepository.getCurrentUserId();
         PlayerModel user = playerRepository.getUserData(userId);
@@ -277,6 +281,9 @@ public class GameActivity extends AppCompatActivity {
         user.setAllGames(user.getAllGames() + 1);
         if(user.getMaxSeriesWins()<user.getCurrentSeriesWins()){user.setMaxSeriesWins(user.getCurrentSeriesWins());}
         user.setCurrentSeriesWins(0);
+        if(user.getSound()==1){
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.game_lose_sound);
+        mediaPlayer.start();}
 
         ContentValues values = new ContentValues();
         values.put("level", user.getLevel());

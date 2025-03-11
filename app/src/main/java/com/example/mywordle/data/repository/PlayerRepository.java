@@ -49,6 +49,7 @@ public class PlayerRepository {
         values.put("fiveAttempt", 0);
         values.put("sixAttempt", 0);
         values.put("money", 50);
+        values.put("sound", 1);
 
         int userId = (int) db.insert("user", null, values);
         if (userId != -1) {
@@ -131,7 +132,8 @@ public class PlayerRepository {
                     cursor.getInt(12), // fourAttempt
                     cursor.getInt(13),  // fiveAttempt
                     cursor.getInt(14),// sixAttempt
-                    cursor.getInt(15)//money
+                    cursor.getInt(15),//money
+                    cursor.getInt(16)//money
 
             );
         }

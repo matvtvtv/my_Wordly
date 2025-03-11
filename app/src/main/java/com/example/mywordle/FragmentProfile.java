@@ -38,6 +38,7 @@ public class FragmentProfile extends Fragment {
         }
 
     });
+
     allGamesText.setText(String.valueOf(user.getAllGames()));
     gamesWonText.setText(String.valueOf(user.getGamesWin()));
     float allGames=user.getAllGames();
