@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Словариум</string>
+    <string name="delete">Удал</string>
+    <string name="keyText">Удал</string>
+</resources>

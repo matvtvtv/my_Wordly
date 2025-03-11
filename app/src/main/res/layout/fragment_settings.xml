@@ -102,12 +102,13 @@
 
         <Switch
             android:id="@+id/gameSoundSwitch"
-            android:layout_width="62dp"
-            android:layout_height="35dp"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             android:thumbTint="@color/green"
             android:trackTint="@color/original_color"
             app:layout_constraintBottom_toBottomOf="@+id/gameSound"
             app:layout_constraintEnd_toEndOf="@+id/gameSound"
+            app:layout_constraintHorizontal_bias="0.79"
             app:layout_constraintStart_toEndOf="@+id/gameSoundText"
             app:layout_constraintTop_toTopOf="@+id/gameSound" />
 
@@ -115,7 +116,8 @@
             android:id="@+id/accountExit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/group_2"        android:layout_marginTop="10dp"
+            android:src="@drawable/group_2"
+            android:layout_marginTop="10dp"
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

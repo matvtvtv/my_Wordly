@@ -370,7 +370,7 @@ public class GameActivity extends AppCompatActivity {
             Log.e("GameActivity", "Invalid word length: " + wordLength);
         }
     }
-    int hintCount=1;
+    int hintCount=0;
     private void showHintDialog() {
         if (hintWord == null) {
             Log.e("GameActivity", "hintWord is null! Initializing...");
@@ -387,43 +387,52 @@ public class GameActivity extends AppCompatActivity {
         TextView popupHint = hintDialog.findViewById(R.id.popupHintText);
         popupHint.setText("Подсказка: " + new String(hintWord));
         TextView moneyText = hintDialog.findViewById(R.id.moneyCost);
-        moneyText.setText("Стоимость подсказки : " + String.valueOf(hintCount*5));
+        moneyText.setText("Стоимость подсказки : " + String.valueOf((hintCount+1)*5));
         PlayerRepository playerRepository = PlayerRepository.getInstance(getApplicationContext());
         int userId = playerRepository.getCurrentUserId();
         PlayerModel user = playerRepository.getUserData(userId);
 
         TextView money2 = hintDialog.findViewById(R.id.textView);
         money2.setText(  String.valueOf(user.getMoney()+"X"));
+        hintDialog.show();
+
 
         hintDialog.findViewById(R.id.btnUpdateHint).setOnClickListener(v -> {
-            if (user.getMoney() > (hintCount + 1) * 5) {
-                updateHint(popupHint, moneyText, money2);
-            }
-            else{  Toast.makeText(getApplicationContext(), "Недостаточно монет для получения подсказки !", Toast.LENGTH_SHORT).show();}
+            hintCount++;
+            updateHint(popupHint, moneyText, money2);
         });
+
 
         hintDialog.findViewById(R.id.btnCloseHint).setOnClickListener(v ->
                 hintDialog.dismiss());
 
-        hintDialog.show();
+
     }
 
 
     @SuppressLint("SetTextI18n")
     private void updateHint(TextView popupHint,TextView moneyText,TextView money2) {
-        PlayerRepository playerRepository = PlayerRepository.getInstance(getApplicationContext());
-        int userId = playerRepository.getCurrentUserId();
-        PlayerModel user = playerRepository.getUserData(userId);
-        user.setMoney(user.getMoney()-(hintCount*5));
-        ContentValues values = new ContentValues();
-        values.put("money", user.getMoney());
-        playerRepository.updateUserData(userId, values);
-        hintCount++;
         List<Integer> unopenedIndexes = computeUnopenedIndexes();
         if (unopenedIndexes.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Все возможные подсказки использованы!", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        PlayerRepository playerRepository = PlayerRepository.getInstance(getApplicationContext());
+        int userId = playerRepository.getCurrentUserId();
+        PlayerModel user = playerRepository.getUserData(userId);
+        if (user.getMoney() >= (hintCount) * 5) {
+        user.setMoney(user.getMoney()-((hintCount)*5));
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Недостаточно монет для получения подсказки !", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        ContentValues values = new ContentValues();
+        values.put("money", user.getMoney());
+        playerRepository.updateUserData(userId, values);
+
 
         int hintIndex = unopenedIndexes.get((int) (Math.random() * unopenedIndexes.size()));
         hintWord[hintIndex] = gameLogic.getHiddenWord().charAt(hintIndex);
