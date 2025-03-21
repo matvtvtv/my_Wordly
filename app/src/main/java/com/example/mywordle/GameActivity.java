@@ -3,6 +3,7 @@ package com.example.mywordle;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -131,7 +132,15 @@ public class GameActivity extends AppCompatActivity {
         layout.setColumnCount(wordLength);
 
 
-        binding.exitButton.setOnClickListener(v -> finish());
+        binding.exitButton.setOnClickListener(v -> {
+            Intent intent = new Intent(GameActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        });
+
+
+
+
         binding.btnHint.setOnClickListener(v -> showHintDialog());
 
         TextView level=findViewById(R.id.levelGameText);

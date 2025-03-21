@@ -1,5 +1,7 @@
 package com.example.mywordle.data.dto;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -23,6 +25,7 @@ public class PlayerDTO {
     private int sixAttempt;
     private int money;
     private int sound;
+    private String wordDay;
 
 
 

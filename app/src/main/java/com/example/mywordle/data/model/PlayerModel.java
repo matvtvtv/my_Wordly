@@ -1,5 +1,7 @@
 package com.example.mywordle.data.model;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -25,5 +27,6 @@ public class PlayerModel {
     private int sixAttempt;
     private int money;
     private int sound;
+    private String wordDay;
 
 }

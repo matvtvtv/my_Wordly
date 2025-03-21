@@ -73,9 +73,10 @@
             android:src="@drawable/the_best_episode_"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/gamesWonView"
-            app:layout_constraintVertical_bias="0.13" />
+            app:layout_constraintVertical_bias="0.129" />
 
         <ImageView
             android:id="@+id/currentSeriesView"
@@ -101,6 +102,117 @@
             app:layout_constraintStart_toStartOf="@+id/all_games_view"
             app:layout_constraintTop_toTopOf="@+id/all_games_view"
             app:layout_constraintVertical_bias="0.7" />
+
+        <TextView
+            android:id="@+id/all_games_text3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:text="всего\nигр"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/all_games_view"
+            app:layout_constraintEnd_toEndOf="@+id/all_games_view"
+            app:layout_constraintStart_toStartOf="@+id/all_games_view"
+            app:layout_constraintTop_toTopOf="@+id/all_games_view"
+            app:layout_constraintVertical_bias="0.188" />
+
+        <TextView
+            android:id="@+id/all_games_text4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:text="текущая\nсерия "
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/currentSeriesView"
+            app:layout_constraintEnd_toEndOf="@+id/currentSeriesView"
+            app:layout_constraintStart_toStartOf="@+id/currentSeriesView"
+            app:layout_constraintTop_toTopOf="@+id/currentSeriesView"
+            app:layout_constraintVertical_bias="0.18" />
+
+        <TextView
+            android:id="@+id/all_games_text8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:text="лучшая\nсерия"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/bestEpisodeView"
+            app:layout_constraintEnd_toEndOf="@+id/bestEpisodeView"
+            app:layout_constraintStart_toStartOf="@+id/bestEpisodeView"
+            app:layout_constraintTop_toTopOf="@+id/bestEpisodeView"
+            app:layout_constraintVertical_bias="0.18" />
+
+        <TextView
+            android:id="@+id/all_games_text7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:text="лучшая\nпопытка"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/bestAttemptView"
+            app:layout_constraintEnd_toEndOf="@+id/bestAttemptView"
+            app:layout_constraintStart_toStartOf="@+id/bestAttemptView"
+            app:layout_constraintTop_toTopOf="@+id/bestAttemptView"
+            app:layout_constraintVertical_bias="0.18" />
+
+        <TextView
+            android:id="@+id/all_games_text6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:text="процент\nпобед"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/percentOfWinView"
+            app:layout_constraintEnd_toEndOf="@+id/percentOfWinView"
+            app:layout_constraintStart_toStartOf="@+id/percentOfWinView"
+            app:layout_constraintTop_toTopOf="@+id/percentOfWinView"
+            app:layout_constraintVertical_bias="0.18" />
+
+        <TextView
+            android:id="@+id/all_games_text5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:text="игр\nвыйграно"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/gamesWonView"
+            app:layout_constraintEnd_toEndOf="@+id/gamesWonView"
+            app:layout_constraintStart_toStartOf="@+id/gamesWonView"
+            app:layout_constraintTop_toTopOf="@+id/gamesWonView"
+            app:layout_constraintVertical_bias="0.18" />
+
+        <TextView
+            android:id="@+id/all_games_text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="Статистика"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/profileStatistics"
+            app:layout_constraintEnd_toEndOf="@+id/profileStatistics"
+            app:layout_constraintStart_toStartOf="@+id/profileStatistics"
+            app:layout_constraintTop_toTopOf="@+id/profileStatistics" />
 
         <TextView
             android:id="@+id/gamesWonText"

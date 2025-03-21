@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/</item>
+        <item>@font/abeezee_italic</item>
+        <item>@font/abel</item>
+        <item>@font/artifika</item>
+        <item>@font/calligraffitti</item>
+        <item>@font/montserrat</item>
+        <item>@font/montserrat_alternates</item>
+    </array>
+</resources>

@@ -34,6 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_USER_SIX_ATTEMPT= "sixAttempt";
     public static final String COLUMN_USER_MONEY = "money";
     public static final String COLUMN_USER_SOUND = "sound";
+    public static final String COLUMN_USER_WORDDAY = "wordDay";
 
 
 
@@ -55,7 +56,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             COLUMN_USER_FIVE_ATTEMPT + " INTEGER, " +
             COLUMN_USER_SIX_ATTEMPT + " INTEGER, " +
             COLUMN_USER_MONEY + " INTEGER, " +
-            COLUMN_USER_SOUND + " INTEGER )";
+            COLUMN_USER_SOUND + " INTEGER, " +
+            COLUMN_USER_WORDDAY + " TEXT )";
 
     private static final String CREATE_TABLE_WORDS= "CREATE TABLE " + WORD_TABLE + " ( " +
             COLUMN_ID_WORDS + " INTEGER PRIMARY KEY AUTOINCREMENT, " +

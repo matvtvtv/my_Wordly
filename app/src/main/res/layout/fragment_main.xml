@@ -1,214 +1,199 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:fillViewport="true"> <!-- Заполняет весь экран -->
 
-
-    <!-- Кнопка-переход (Travel) -->
-
-    <!-- Текстовая подпись под кнопкой -->
-
-    <ImageView
-        android:id="@+id/travel_button"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/background">
 
-        android:src="@drawable/travel_button"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <!-- Кнопка-путешествие -->
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.94"
-        app:srcCompat="@drawable/free_game_background" />
+        <ImageView
+            android:id="@+id/travel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/travel_button"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.26999998" />
 
-    <ImageView
-        android:id="@+id/letter_6_free"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20px"
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/travel_button"
+            app:layout_constraintVertical_bias="0.83"
+            app:srcCompat="@drawable/free_game_background" />
 
-        app:layout_constraintBottom_toTopOf="@+id/letter_7_free"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/letter_6_free_game" />
+        <!-- Кнопки выбора длины слова -->
+        <ImageView
+            android:id="@+id/letter_4_free"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            app:layout_constraintBottom_toTopOf="@id/letter_5_free"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/letter_4_free_game" />
 
-    <ImageView
-        android:id="@+id/letter_4_free"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20px"
+        <ImageView
+            android:id="@+id/letter_5_free"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            app:layout_constraintBottom_toTopOf="@id/letter_6_free"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/letter_5_free_game" />
 
-        app:layout_constraintBottom_toTopOf="@+id/letter_5_free"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/letter_4_free_game" />
+        <ImageView
+            android:id="@+id/letter_6_free"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            app:layout_constraintBottom_toTopOf="@id/letter_7_free"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/letter_6_free_game" />
 
-    <ImageView
-        android:id="@+id/letter_5_free"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20px"
+        <ImageView
+            android:id="@+id/letter_7_free"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            app:layout_constraintBottom_toBottomOf="@id/imageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/letter_7_free_game" />
 
-        app:layout_constraintBottom_toTopOf="@+id/letter_6_free"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/letter_5_free_game" />
+        <!-- Подписи к кнопкам -->
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="Тренировка"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/imageView" />
 
-    <ImageView
-        android:id="@+id/letter_7_free"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20px"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:text="Путешествие"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@id/travel_button"
+            app:layout_constraintEnd_toEndOf="@id/travel_button"
+            app:layout_constraintStart_toStartOf="@id/travel_button"
+            app:layout_constraintTop_toTopOf="@id/travel_button"
+            app:layout_constraintVertical_bias="0.43" />
 
-        app:srcCompat="@drawable/letter_7_free_game" />
+        <!-- Уровень игрока -->
 
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="7 букв"
-        app:layout_constraintBottom_toBottomOf="@+id/letter_7_free"
-        app:layout_constraintEnd_toEndOf="@+id/letter_7_free"
-        app:layout_constraintStart_toStartOf="@+id/letter_7_free"
-        app:layout_constraintTop_toTopOf="@+id/letter_7_free" />
+        <TextView
+            android:id="@+id/Level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="@id/travel_button"
+            app:layout_constraintEnd_toEndOf="@id/travel_button"
+            app:layout_constraintStart_toStartOf="@id/travel_button"
+            app:layout_constraintTop_toBottomOf="@id/textView3"
+            app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Тренировка"
-        app:layout_constraintBottom_toTopOf="@+id/letter_4_free"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.53" />
+        <!-- Деньги игрока -->
+        <TextView
+            android:id="@+id/moneyText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:layout_marginTop="20dp"
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Путешествие"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="@+id/travel_button"
-        app:layout_constraintStart_toStartOf="@+id/travel_button"
-        app:layout_constraintTop_toTopOf="@+id/travel_button" />
+            app:layout_constraintBottom_toTopOf="@id/word_day"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.85"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="34dp"
-        android:layout_height="38dp"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@+id/textView3"
-        app:layout_constraintHorizontal_bias="0.38"
-        app:layout_constraintStart_toStartOf="@+id/travel_button"
-        app:layout_constraintTop_toTopOf="@+id/travel_button"
-        app:srcCompat="@drawable/fi_rr_plane" />
+        <ImageView
+            android:id="@+id/imageView8"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/word_day"
+            app:layout_constraintEnd_toStartOf="@+id/moneyText"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/coin" />
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        <!-- Описание тренировочного режима -->
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:text="В этом режиме уменьшено количество получаемых\nмонет и итог не отображается на уровне игрока"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toTopOf="@id/letter_4_free"
+            app:layout_constraintEnd_toEndOf="@+id/imageView"
+            app:layout_constraintStart_toStartOf="@id/imageView"
+            app:layout_constraintTop_toBottomOf="@id/textView2" />
 
-        app:layout_constraintBottom_toBottomOf="@+id/travel_button"
-        app:layout_constraintEnd_toEndOf="@+id/travel_button"
-        app:layout_constraintHorizontal_bias="0.319"
-        app:layout_constraintStart_toStartOf="@+id/travel_button"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3"
-        app:layout_constraintVertical_bias="0.531"
-        app:srcCompat="@drawable/fi_rr_car" />
+        <!-- Изображение с текстом "Слово дня" -->
+        <ImageView
+            android:id="@+id/word_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/travel_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.65"
+            app:srcCompat="@drawable/word_of_day__1_" />
 
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/travel_button"
-        app:layout_constraintEnd_toEndOf="@+id/travel_button"
-        app:layout_constraintHorizontal_bias="0.466"
-        app:layout_constraintStart_toEndOf="@+id/textView3"
-        app:layout_constraintTop_toTopOf="@+id/travel_button"
-        app:srcCompat="@drawable/fi_rr_ship" />
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="31dp"
+            android:layout_height="29dp"
+            app:layout_constraintBottom_toBottomOf="@+id/travel_button"
+            app:layout_constraintEnd_toStartOf="@+id/textView3"
+            app:layout_constraintHorizontal_bias="0.54"
+            app:layout_constraintStart_toStartOf="@+id/travel_button"
+            app:layout_constraintTop_toTopOf="@+id/travel_button"
+            app:layout_constraintVertical_bias="0.43"
+            app:srcCompat="@drawable/fi_rr_backpack" />
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="4 букв"
-        app:layout_constraintBottom_toBottomOf="@+id/letter_4_free"
-        app:layout_constraintEnd_toEndOf="@+id/letter_4_free"
-        app:layout_constraintStart_toStartOf="@+id/letter_4_free"
-        app:layout_constraintTop_toTopOf="@+id/letter_4_free" />
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:text="Слово дня"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/word_day"
+            app:layout_constraintEnd_toEndOf="@+id/word_day"
+            app:layout_constraintStart_toStartOf="@+id/word_day"
+            app:layout_constraintTop_toTopOf="@+id/word_day" />
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="5 букв"
-        app:layout_constraintBottom_toBottomOf="@+id/letter_5_free"
-        app:layout_constraintEnd_toEndOf="@+id/letter_5_free"
-        app:layout_constraintStart_toStartOf="@+id/letter_5_free"
-        app:layout_constraintTop_toTopOf="@+id/letter_5_free" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="6 букв"
-        app:layout_constraintBottom_toBottomOf="@+id/letter_6_free"
-        app:layout_constraintEnd_toEndOf="@+id/letter_6_free"
-        app:layout_constraintStart_toStartOf="@+id/letter_6_free"
-        app:layout_constraintTop_toTopOf="@+id/letter_6_free" />
-
-    <TextView
-        android:id="@+id/Level"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/travel_button"
-        app:layout_constraintEnd_toEndOf="@+id/travel_button"
-        app:layout_constraintStart_toStartOf="@+id/travel_button"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:layout_constraintVertical_bias="0.19999999" />
-
-    <TextView
-        android:id="@+id/moneyText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/travel_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.85"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.75" />
-
-    <ImageView
-        android:id="@+id/imageView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/travel_button"
-        app:layout_constraintEnd_toStartOf="@+id/moneyText"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.81"
-        app:srcCompat="@drawable/coin" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
