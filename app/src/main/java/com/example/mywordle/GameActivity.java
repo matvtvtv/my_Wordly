@@ -278,7 +278,7 @@ public class GameActivity extends AppCompatActivity {
             case 5:user.setOneAttempt(user.getSixAttempt() + 1);break;
         }
         ContentValues values = new ContentValues();
-        if(user.getBestAttempt()!=0 || user.getBestAttempt()< currentAttemptIndex+1){
+        if(user.getBestAttempt()!=0 || user.getBestAttempt()> currentAttemptIndex+1){
             user.setBestAttempt(currentAttemptIndex+1);
         }
 
@@ -307,8 +307,11 @@ public class GameActivity extends AppCompatActivity {
         PlayerRepository playerRepository = PlayerRepository.getInstance(getApplicationContext());
         int userId = playerRepository.getCurrentUserId();
         PlayerModel user = playerRepository.getUserData(userId);
-        if(user.getLevel()>5){user.setLevel(user.getLevel() - 1);}
-        else{user.setLevel(0);}
+        if(game_mode==2) {
+            if(user.getLevel()<0){user.setLevel(user.getLevel() - 1);}
+            else {user.setLevel(0);}
+        }
+
         if(game_mode==2) {
             user.setAllGames(user.getAllGames() + 1);
         }
@@ -350,7 +353,6 @@ public class GameActivity extends AppCompatActivity {
         resoult_lose.setText(" ");
 
         btnRestart.setOnClickListener(v -> {
-            //dialog.dismiss();
             if(game_mode==1){
                 Toast.makeText(this, "Вы уже играли слово дня", Toast.LENGTH_SHORT).show();
 
@@ -457,7 +459,7 @@ public class GameActivity extends AppCompatActivity {
         PlayerModel user = playerRepository.getUserData(userId);
 
         TextView money2 = hintDialog.findViewById(R.id.textView);
-        money2.setText(  String.valueOf(user.getMoney()+"X"));
+        money2.setText(  user.getMoney()+"X");
         hintDialog.show();
 
 

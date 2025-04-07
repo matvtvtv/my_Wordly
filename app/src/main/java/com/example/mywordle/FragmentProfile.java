@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -21,12 +22,18 @@ public class FragmentProfile extends Fragment {
     private TextView bestAttemptText;
     private TextView bestEpisodeText;
     private TextView currentEpisodeText;
+    private ProgressBar progressBar_1_attempt;
+    private ProgressBar progressBar_2_attempt;
+    private ProgressBar progressBar_3_attempt;
+    private ProgressBar progressBar_4_attempt;
+    private ProgressBar progressBar_5_attempt;
+    private ProgressBar progressBar_6_attempt;
 
 
 @SuppressLint("SetTextI18n")
 @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup contaner, Bundle savedInstanceState){
-    View view = inflater.inflate(R.layout.fragment_profile,contaner,false);
+    View view = inflater.inflate(R.layout.fragment_statistics,contaner,false);
     getAllId(view);
     PlayerRepository playerRepository = PlayerRepository.getInstance(getContext());
     int userId = playerRepository.getCurrentUserId();
@@ -49,11 +56,13 @@ public class FragmentProfile extends Fragment {
     bestAttemptText.setText(String.valueOf(user.getBestAttempt()));
     bestEpisodeText.setText(String.valueOf(user.getMaxSeriesWins()));
     currentEpisodeText.setText(String.valueOf(user.getCurrentSeriesWins()));
-    //percentOfWinText.setText((Integer.parseInt(String.valueOf(user.getGamesWin()))/Integer.parseInt(String.valueOf(user.getAllGames())))*100);
 
-//
-//    Switch mySwitch = findViewById(R.id.mySwitch);
-//    mySwitch.setChecked(true);
+    progressBar_1_attempt.setProgress((int) (user.getOneAttempt() * 100.0 / gamesWin));
+    progressBar_2_attempt.setProgress((int) (user.getTwoAttempt() * 100.0 / gamesWin));
+    progressBar_3_attempt.setProgress((int) (user.getThreeAttempt() * 100.0 / gamesWin));
+    progressBar_4_attempt.setProgress((int) (user.getFourAttempt() * 100.0 / gamesWin));
+    progressBar_5_attempt.setProgress((int) (user.getFiveAttempt() * 100.0 / gamesWin));
+    progressBar_6_attempt.setProgress((int) (user.getSixAttempt() * 100.0 / gamesWin));
     return view;
 
 }
@@ -64,6 +73,12 @@ public class FragmentProfile extends Fragment {
         bestAttemptText       =view.findViewById(R.id.bestAttemptText);
         bestEpisodeText       =view.findViewById(R.id.bestEpisodeText);
         currentEpisodeText       =view.findViewById(R.id.currentSeriesText);
+        progressBar_1_attempt =view.findViewById(R.id.progressBar_1_attempt);
+        progressBar_2_attempt =view.findViewById(R.id.progressBar_2_attempt);
+        progressBar_3_attempt =view.findViewById(R.id.progressBar_3_attempt);
+        progressBar_4_attempt =view.findViewById(R.id.progressBar_4_attempt);
+        progressBar_5_attempt =view.findViewById(R.id.progressBar_5_attempt);
+        progressBar_6_attempt =view.findViewById(R.id.progressBar_6_attempt);
 
     }
 
