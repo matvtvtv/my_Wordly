@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         WordsRepository wordsRepository = new WordsRepository(db);
         if (isFirstRun) {
+            
             wordsRepository.importWordsFromFile(this);
             // Обновляем флаг
             SharedPreferences.Editor editor = preferences.edit();
@@ -56,9 +57,22 @@ public class MainActivity extends AppCompatActivity {
 
             Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
             startActivity(intent);
-                        return;  // Прекращаем выполнение onCreate()
+            return;  // Прекращаем выполнение onCreate()
         }
 
+
+
+
+
+
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
 
 

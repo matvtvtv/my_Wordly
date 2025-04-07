@@ -38,11 +38,13 @@
             app:srcCompat="@drawable/free_game_background" />
 
         <!-- Кнопки выбора длины слова -->
+
         <ImageView
             android:id="@+id/letter_4_free"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
+            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@id/letter_5_free"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -107,6 +109,62 @@
             app:layout_constraintVertical_bias="0.43" />
 
         <!-- Уровень игрока -->
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:text="Слова 4 буквы"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/letter_4_free"
+            app:layout_constraintEnd_toEndOf="@+id/letter_4_free"
+            app:layout_constraintStart_toStartOf="@+id/letter_4_free"
+            app:layout_constraintTop_toTopOf="@+id/letter_4_free" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:text="Слова 5 буквы"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/letter_5_free"
+            app:layout_constraintEnd_toEndOf="@+id/letter_5_free"
+            app:layout_constraintStart_toStartOf="@+id/letter_5_free"
+            app:layout_constraintTop_toTopOf="@+id/letter_5_free" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:text="Слова 6 буквы"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/letter_6_free"
+            app:layout_constraintEnd_toEndOf="@+id/letter_6_free"
+            app:layout_constraintStart_toStartOf="@+id/letter_6_free"
+            app:layout_constraintTop_toTopOf="@+id/letter_6_free" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:text="Слова 7 буквы"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/letter_7_free"
+            app:layout_constraintEnd_toEndOf="@+id/letter_7_free"
+            app:layout_constraintStart_toStartOf="@+id/letter_7_free"
+            app:layout_constraintTop_toTopOf="@+id/letter_7_free" />
 
         <TextView
             android:id="@+id/Level"

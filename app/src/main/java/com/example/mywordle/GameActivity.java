@@ -1,5 +1,7 @@
 package com.example.mywordle;
 
+import static java.security.AccessController.getContext;
+
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ContentValues;
@@ -43,6 +45,7 @@ public class GameActivity extends AppCompatActivity {
     private int currentCellIndex = 0;
     private int currentAttemptIndex = 0;
     private int wordLength;
+    private int game_mode;
     private final int MAX_ATTEMPTS = 6;
     private GameLogic gameLogic;
     private WordsRepository wordsRepository;
@@ -75,21 +78,34 @@ public class GameActivity extends AppCompatActivity {
 
         binding = ActivityGameBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        wordLength = getIntent().getIntExtra("WORD_LENGTH", 5);
-
-        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(getApplicationContext());
-        SQLiteDatabase db = databaseHelper.getWritableDatabase();
-        wordsRepository = new WordsRepository(db);
-
-        List<WordsModel> validWords = wordsRepository.getFilteredWordsFree(wordLength);
-
         PlayerRepository playerRepository = PlayerRepository.getInstance(getApplicationContext());
         int userId = playerRepository.getCurrentUserId();
         PlayerModel user = playerRepository.getUserData(userId);
 
 
 
+
+
+
+        game_mode= getIntent().getIntExtra("GAME_MODE", 2);
+        if(game_mode==2){
+            switch ((user.getLevel()/10)) {
+
+                case 0:wordLength=4;break;
+                case 1:wordLength=5;break;
+                case 2:wordLength=6;break;
+                case 3:wordLength=7;break;
+                default:wordLength=7;break;
+            }
+        }
+        else {
+            wordLength = getIntent().getIntExtra("WORD_LENGTH", 5);
+        }
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(getApplicationContext());
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        wordsRepository = new WordsRepository(db);
+
+        List<WordsModel> validWords = wordsRepository.getFilteredWordsFree(wordLength);
 
         int randomIndex = (int) (Math.random() * validWords.size());
         WordsModel selectedWord = validWords.get(randomIndex);
@@ -238,8 +254,14 @@ public class GameActivity extends AppCompatActivity {
         PlayerRepository playerRepository = PlayerRepository.getInstance(getApplicationContext());
         int userId = playerRepository.getCurrentUserId();
         PlayerModel user = playerRepository.getUserData(userId);
-        user.setLevel(user.getLevel() + 5);
-        user.setMoney(user.getMoney() + 15);
+        if(game_mode==2) {
+            user.setLevel(user.getLevel() + 1);
+        }
+        switch (game_mode){
+            case 1:user.setMoney(user.getMoney() + 20);break;
+            case 2:user.setMoney(user.getMoney() + 10);break;
+            case 3:user.setMoney(user.getMoney() + 5);break;
+        }
         user.setAllGames(user.getAllGames() + 1);
         user.setGamesWin(user.getGamesWin() + 1);
         user.setCurrentSeriesWins(user.getCurrentSeriesWins()+1);
@@ -285,9 +307,11 @@ public class GameActivity extends AppCompatActivity {
         PlayerRepository playerRepository = PlayerRepository.getInstance(getApplicationContext());
         int userId = playerRepository.getCurrentUserId();
         PlayerModel user = playerRepository.getUserData(userId);
-        if(user.getLevel()>5){user.setLevel(user.getLevel() - 5);}
+        if(user.getLevel()>5){user.setLevel(user.getLevel() - 1);}
         else{user.setLevel(0);}
-        user.setAllGames(user.getAllGames() + 1);
+        if(game_mode==2) {
+            user.setAllGames(user.getAllGames() + 1);
+        }
         if(user.getMaxSeriesWins()<user.getCurrentSeriesWins()){user.setMaxSeriesWins(user.getCurrentSeriesWins());}
         user.setCurrentSeriesWins(0);
         if(user.getSound()==1){
@@ -321,17 +345,31 @@ public class GameActivity extends AppCompatActivity {
         Button btnMainMenu = dialog.findViewById(R.id.btnMainMenu);
 
         popupGameOver.setText( gameLogic.getHiddenWord());
+        TextView resoult_lose = dialog.findViewById(R.id.resoult_lose);
 
+        resoult_lose.setText(" ");
 
         btnRestart.setOnClickListener(v -> {
-            dialog.dismiss();
-            recreate();
+            //dialog.dismiss();
+            if(game_mode==1){
+                Toast.makeText(this, "Вы уже играли слово дня", Toast.LENGTH_SHORT).show();
+
+            }
+            else{
+                finish();
+                Intent intent = new Intent(this, GameActivity.class);
+                startActivity(intent);
+            }
+
+            //надо изменить закрытите
         });
 
 
         btnMainMenu.setOnClickListener(v -> {
             dialog.dismiss();
             finish();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         });
 
         dialog.show();
@@ -350,16 +388,33 @@ public class GameActivity extends AppCompatActivity {
 
         popupGameWin.setText( gameLogic.getHiddenWord());
 
+        TextView resoult_win = dialog.findViewById(R.id.resoult_win);
+        switch (game_mode){
+            case 1:resoult_win.setText("Вы получили : 20 монет");break;
+            case 2:resoult_win.setText("Вы получили : 10 монет");break;
+            case 3:resoult_win.setText("Вы получили : 5 монет");break;
+        }
 
         btnRestart.setOnClickListener(v -> {
-            dialog.dismiss();
-            recreate();
-        });
+            //dialog.dismiss();
+            if(game_mode==1){
+                Toast.makeText(this, "Вы уже играли слово дня", Toast.LENGTH_SHORT).show();
 
+            }
+            else{
+                finish();
+                Intent intent = new Intent(this, GameActivity.class);
+                startActivity(intent);
+            }
+
+
+        });
 
         btnMainMenu.setOnClickListener(v -> {
             dialog.dismiss();
             finish();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         });
 
         dialog.show();

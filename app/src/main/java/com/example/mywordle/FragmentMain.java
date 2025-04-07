@@ -35,7 +35,7 @@ public class FragmentMain extends Fragment {
     private TextView level;
     private TextView moneyText;
 
-
+    private int GAME_MODE=2;
     private int WORD_LENGTH=0;
 
 @SuppressLint("SetTextI18n")
@@ -82,9 +82,12 @@ public class FragmentMain extends Fragment {
             if(!Objects.equals(user.getWordDay(), formattedDate)){
                 values.put("wordDay",formattedDate);
                 playerRepository.updateUserData(userId, values);
-                Intent intent = new Intent(getContext(), GameActivity.class);
                 WORD_LENGTH=5;
-                intent.putExtra("WORD_LENGTH", WORD_LENGTH); // Передаем значение
+                Intent intent = new Intent(getContext(), GameActivity.class);
+                intent.putExtra("WORD_LENGTH", WORD_LENGTH);
+                GAME_MODE=1;
+                intent.putExtra("GAME_MODE", GAME_MODE);
+
                 requireActivity().finish();
                 startActivity(intent);
             }
@@ -98,20 +101,10 @@ public class FragmentMain extends Fragment {
             Intent intent = new Intent(getContext(), GameActivity.class);
 
 
-
-                switch ((user.getLevel()/10)) {
-
-                case 0: intent.putExtra("WORD_LENGTH", 4);break;
-               // case -1: intent.putExtra("WORD_LENGTH", 4);break;
-                case 1:intent.putExtra("WORD_LENGTH", 5);break;
-                case 2:intent.putExtra("WORD_LENGTH", 6);break;
-                case 3:intent.putExtra("WORD_LENGTH", 7);break;
-
-                }
+            GAME_MODE=2;
+            intent.putExtra("GAME_MODE", GAME_MODE);
 
 
-
-            //intent.putExtra("WORD_LENGTH", WORD_LENGTH); // Передаем значение
             requireActivity().finish();
             startActivity(intent);
         });
@@ -120,6 +113,8 @@ public class FragmentMain extends Fragment {
             Intent intent = new Intent(getContext(), GameActivity.class);
             WORD_LENGTH=4;
             intent.putExtra("WORD_LENGTH", WORD_LENGTH); // Передаем значение
+            GAME_MODE=3;
+            intent.putExtra("GAME_MODE", GAME_MODE);
             requireActivity().finish();
             startActivity(intent);
         });
@@ -129,6 +124,8 @@ public class FragmentMain extends Fragment {
             Intent intent = new Intent(getContext(), GameActivity.class);
             WORD_LENGTH=5;
             intent.putExtra("WORD_LENGTH", WORD_LENGTH); // Передаем значение
+            GAME_MODE=3;
+            intent.putExtra("GAME_MODE", GAME_MODE);
             requireActivity().finish();
             startActivity(intent);
          });
@@ -137,6 +134,8 @@ public class FragmentMain extends Fragment {
             Intent intent = new Intent(getContext(), GameActivity.class);
             WORD_LENGTH=6;
             intent.putExtra("WORD_LENGTH", WORD_LENGTH); // Передаем значение
+            GAME_MODE=3;
+            intent.putExtra("GAME_MODE", GAME_MODE);
             requireActivity().finish();
             startActivity(intent);
         });
@@ -145,6 +144,8 @@ public class FragmentMain extends Fragment {
             Intent intent = new Intent(getContext(), GameActivity.class);
             WORD_LENGTH=7;
             intent.putExtra("WORD_LENGTH", WORD_LENGTH); // Передаем значение
+            GAME_MODE=3;
+            intent.putExtra("GAME_MODE", GAME_MODE);
             requireActivity().finish();
             startActivity(intent);
         });
@@ -160,7 +161,7 @@ public class FragmentMain extends Fragment {
         letter_6_free       = view.findViewById(R.id.letter_6_free);
         letter_7_free       = view.findViewById(R.id.letter_7_free);
         level               = view.findViewById(R.id.Level);
-        moneyText           =view.findViewById(R.id.moneyText);
+        moneyText           = view.findViewById(R.id.moneyText);
         word_day            = view.findViewById(R.id.word_day);
     }
 

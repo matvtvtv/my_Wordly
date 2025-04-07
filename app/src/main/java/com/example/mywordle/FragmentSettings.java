@@ -60,7 +60,7 @@ public class FragmentSettings extends Fragment {
 
             playerRepository.updateUserData(userId, values);
         });
-
+        login.setSelected(true);
         if (user != null) {
             login.setText(user.getLogin());
         }
