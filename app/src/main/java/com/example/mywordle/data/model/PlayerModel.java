@@ -28,5 +28,6 @@ public class PlayerModel {
     private int money;
     private int sound;
     private String wordDay;
+    private byte[] profileImage;
 
 }

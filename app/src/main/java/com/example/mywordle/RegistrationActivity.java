@@ -55,6 +55,9 @@ public class RegistrationActivity extends AppCompatActivity {
         String login = editTextLogin.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
+        // Инициализируем переменную для хранения изображения (по умолчанию null)
+        byte[] profileImage = null;
+
         if (login.isEmpty() || password.isEmpty()) {
             textViewMessage.setText("Введите логин и пароль!");
             return;
@@ -62,9 +65,9 @@ public class RegistrationActivity extends AppCompatActivity {
 
         if (playerRepository.isValidUser(login)) {
             textViewMessage.setText("Логин уже существует!");
-        }
-        else {
-            playerRepository.userRegistration(login, password);
+        } else {
+            // Передаем null, если пользователь не загрузил изображение
+            playerRepository.userRegistration(login, password, profileImage, this);
 
             Toast.makeText(this, "Регистрация успешна!", Toast.LENGTH_SHORT).show();
 
@@ -73,6 +76,7 @@ public class RegistrationActivity extends AppCompatActivity {
             finish();
         }
     }
+
 
     // Метод для сохранения ID пользователя
     private void saveUserId(int userId) {

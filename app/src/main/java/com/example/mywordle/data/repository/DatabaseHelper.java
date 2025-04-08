@@ -35,6 +35,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_USER_MONEY = "money";
     public static final String COLUMN_USER_SOUND = "sound";
     public static final String COLUMN_USER_WORDDAY = "wordDay";
+    public static final String COLUMN_USER_PICTURE = "profileImage";
+
 
 
 
@@ -57,7 +59,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             COLUMN_USER_SIX_ATTEMPT + " INTEGER, " +
             COLUMN_USER_MONEY + " INTEGER, " +
             COLUMN_USER_SOUND + " INTEGER, " +
-            COLUMN_USER_WORDDAY + " TEXT )";
+            COLUMN_USER_WORDDAY + " INTEGER, " +
+            COLUMN_USER_PICTURE + " BLOB )";
+
 
     private static final String CREATE_TABLE_WORDS= "CREATE TABLE " + WORD_TABLE + " ( " +
             COLUMN_ID_WORDS + " INTEGER PRIMARY KEY AUTOINCREMENT, " +

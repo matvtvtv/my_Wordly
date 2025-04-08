@@ -5,10 +5,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.example.mywordle.OnDataUpdateListener;
+import com.example.mywordle.R;
 import com.example.mywordle.data.model.PlayerModel;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +36,7 @@ public class PlayerRepository {
     }
 
     // Регистрация нового пользователя
-    public void userRegistration(String login, String password) {
+    public void userRegistration(String login, String password,byte[] profileImage, Context context) {
         ContentValues values = new ContentValues();
         values.put("login", login);
         values.put("password", password);
@@ -51,6 +55,9 @@ public class PlayerRepository {
         values.put("money", 50);
         values.put("sound", 1);
         values.put("wordDay", 1);
+        if (profileImage == null) {
+            profileImage = getDefaultProfileImage(context);
+        }
 
         int userId = (int) db.insert("user", null, values);
         if (userId != -1) {
@@ -117,6 +124,7 @@ public class PlayerRepository {
 //                DatabaseHelper.COLUMN_USER_FOUR_ATTEMPT, DatabaseHelper.COLUMN_USER_FIVE_ATTEMPT,
 //                DatabaseHelper.COLUMN_USER_SIX_ATTEMPT},DatabaseHelper.COLUMN_USER_ID + "=");
         if (cursor.moveToFirst()) {
+            //byte[] imageData = cursor.getBlob(18);
             player = new PlayerModel(
                     cursor.getInt(0),  // ID
                     cursor.getString(1), // Login
@@ -135,8 +143,8 @@ public class PlayerRepository {
                     cursor.getInt(14),// sixAttempt
                     cursor.getInt(15),//money
                     cursor.getInt(16),//money
-                    cursor.getString(17)//word day
-
+                    cursor.getString(17),//word day
+                    cursor.getBlob(18)
             );
         }
         cursor.close();
@@ -157,5 +165,11 @@ public class PlayerRepository {
         for (OnDataUpdateListener listener: onDataUpdateListeners) {
             listener.onUpdate(values);
         }
+    }
+    private byte[] getDefaultProfileImage(Context context) {
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.default_profile);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        return stream.toByteArray();
     }
 }
