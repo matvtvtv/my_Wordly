@@ -1,5 +1,6 @@
 package com.example.mywordle;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,16 +13,12 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.app.Activity;
-import android.content.Intent;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.mywordle.data.model.PlayerModel;
 import com.example.mywordle.data.repository.PlayerRepository;
@@ -70,13 +67,6 @@ public class FragmentSettings extends Fragment {
             login.setText(user.getLogin());
         }
 
-        playerRepository.addOnDataUpdateListener(values -> {
-            String newLogin = (String) values.get("login");
-            if (newLogin != null) {
-                login.setText(newLogin);
-            }
-        });
-
         accountExit.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), RegistrationActivity.class);
             startActivity(intent);
@@ -93,8 +83,6 @@ public class FragmentSettings extends Fragment {
         picture_prof.setClipToOutline(true);
 
         picture_prof.setOnClickListener(v -> openGallery());
-
-
 
         return view;
     }
@@ -134,11 +122,7 @@ public class FragmentSettings extends Fragment {
         }
     }
 
-    private byte[] convertBitmapToByteArray(Bitmap bitmap) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        return stream.toByteArray();
-    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -146,34 +130,53 @@ public class FragmentSettings extends Fragment {
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             Uri imageUri = data.getData();
+
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-                picture_prof.setImageBitmap(bitmap);
 
-                // Сохраняем изображение в БД
-                saveImageToDatabase(bitmap);
+                int width = bitmap.getWidth();
+                int height = bitmap.getHeight();
 
+                Toast.makeText(getContext(), width + "-" + height, Toast.LENGTH_SHORT).show();
+
+                Bitmap resizedBitmap = cropAndResizeBitmap(bitmap, 3000, 3000);
+
+                saveImageToDatabase(resizedBitmap);
+
+                picture_prof.setImageBitmap(resizedBitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
+    private Bitmap cropAndResizeBitmap(Bitmap originalBitmap, int width, int height) {
+        int originalWidth = originalBitmap.getWidth();
+        int originalHeight = originalBitmap.getHeight();
+
+        int cropWidth = Math.min(originalWidth, width);
+        int cropHeight = Math.min(originalHeight, height);
+
+        int cropX = (originalWidth - cropWidth) / 2;
+        int cropY = (originalHeight - cropHeight) / 2;
+
+        Bitmap croppedBitmap = Bitmap.createBitmap(originalBitmap, cropX, cropY, cropWidth, cropHeight);
+
+        return Bitmap.createScaledBitmap(croppedBitmap, width, height, true);
+    }
+
     private void saveImageToDatabase(Bitmap bitmap) {
-        // Изменяем размер изображения
-        Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 512, 512, true);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        //bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+
+        byte[] imageBytes = byteArrayOutputStream.toByteArray();
 
         int userId = playerRepository.getCurrentUserId();
-        byte[] imageBytes = convertBitmapToByteArray(resizedBitmap);
-
         ContentValues values = new ContentValues();
         values.put("profileImage", imageBytes);
 
         playerRepository.updateUserData(userId, values);
 
         Toast.makeText(getContext(), "Изображение сохранено!", Toast.LENGTH_SHORT).show();
-        picture_prof.setImageBitmap(resizedBitmap);
-
     }
-
 }
