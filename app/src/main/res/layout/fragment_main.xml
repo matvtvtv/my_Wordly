@@ -237,7 +237,7 @@
             app:layout_constraintStart_toStartOf="@+id/travel_button"
             app:layout_constraintTop_toTopOf="@+id/travel_button"
             app:layout_constraintVertical_bias="0.43"
-            app:srcCompat="@drawable/fi_rr_backpack" />
+            app:srcCompat="@drawable/backpack" />
 
         <TextView
             android:id="@+id/textView4"

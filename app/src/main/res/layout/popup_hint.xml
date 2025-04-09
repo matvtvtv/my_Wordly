@@ -55,7 +55,7 @@
             app:layout_constraintHorizontal_bias="0.93"
             app:layout_constraintStart_toStartOf="@+id/imageView2"
             app:layout_constraintTop_toTopOf="@+id/imageView2"
-            app:srcCompat="@drawable/fi_rr_bulb" />
+            app:srcCompat="@drawable/hint" />
 
         <TextView
             android:id="@+id/textView"

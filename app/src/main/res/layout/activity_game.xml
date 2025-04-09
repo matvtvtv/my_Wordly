@@ -39,7 +39,7 @@
             app:layout_constraintHorizontal_bias="0.6"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/fi_rr_sign_in_alt" />
+            app:srcCompat="@drawable/exit_game_activity" />
 
         <ImageView
             android:id="@+id/btnHint"
@@ -52,7 +52,7 @@
             app:layout_constraintHorizontal_bias="0.4"
             app:layout_constraintStart_toEndOf="@+id/levelGameText"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/fi_rr_bulb" />
+            app:srcCompat="@drawable/hint" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

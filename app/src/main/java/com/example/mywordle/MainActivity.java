@@ -3,16 +3,19 @@ package com.example.mywordle;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -21,9 +24,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.mywordle.data.repository.DatabaseHelper;
-import com.example.mywordle.data.repository.PlayerRepository;
 import com.example.mywordle.data.repository.WordsRepository;
 import com.example.mywordle.databinding.ActivityMainBinding;
+
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,50 +50,19 @@ public class MainActivity extends AppCompatActivity {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         WordsRepository wordsRepository = new WordsRepository(db);
         if (isFirstRun) {
-            
             wordsRepository.importWordsFromFile(this);
             // Обновляем флаг
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean("isFirstRun", false);
             editor.apply();
         }
-        if (isUserLoggedIn==-1) {
-
+        if (isUserLoggedIn == -1) {
             Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
             startActivity(intent);
             return;  // Прекращаем выполнение onCreate()
         }
 
-
-
-
-
-
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
-
-
-
-
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
-        // Инициализация view binding
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
 
         getAllId(); // Получаем ссылки на кнопки
 
@@ -102,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         settings_button_main.setOnClickListener(v -> handleFragmentChange(v, new FragmentSettings(), 2));
         home_button_main.setOnClickListener(v -> handleFragmentChange(v, new FragmentMain(), 1));
         profile_button_main.setOnClickListener(v -> handleFragmentChange(v, new FragmentProfile(), 0));
+       // scheduleNotification(); // Устанавливаем уведомление
     }
 
     // Метод для обработки смены фрагментов и анимации иконок
@@ -167,4 +141,28 @@ public class MainActivity extends AppCompatActivity {
         animatorSet.playTogether(scaleX, scaleY);
         animatorSet.start();
     }
+
+//    @SuppressLint("ScheduleExactAlarm")
+//    private void scheduleNotification() {
+//
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(Calendar.HOUR_OF_DAY, 11);
+//        calendar.set(Calendar.MINUTE, 10);
+//        calendar.set(Calendar.SECOND, 0);
+//
+//
+//
+//        Intent intent = new Intent(this, NotificationReceiver.class);
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+//
+//
+//        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//        if (alarmManager != null) {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+//            } else {
+//                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+//            }
+//        }
+//    }
 }

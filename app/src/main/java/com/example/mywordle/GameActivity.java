@@ -19,7 +19,10 @@ import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.content.Context;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mywordle.Keyboard.Keyboard;
@@ -168,7 +171,7 @@ public class GameActivity extends AppCompatActivity {
             if(user.getSound()==1){
             MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.keyboard_sound);
             mediaPlayer.start();}
-
+            vibrateDevice(this,80);
             Button btn = (Button) v;
             String letter = btn.getText().toString();
             if (letter.equals("Del")) {
@@ -525,7 +528,16 @@ public class GameActivity extends AppCompatActivity {
     }
 
 
-
+    public void vibrateDevice(Context context, long milliseconds) {
+        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        if (vibrator != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(VibrationEffect.createOneShot(milliseconds, VibrationEffect.DEFAULT_AMPLITUDE));
+            } else {
+                vibrator.vibrate(milliseconds);
+            }
+        }
+    }
 
 
 

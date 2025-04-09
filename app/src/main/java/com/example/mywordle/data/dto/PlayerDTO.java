@@ -24,7 +24,7 @@ public class PlayerDTO {
     private int fiveAttempt;
     private int sixAttempt;
     private int money;
-    private int sound;
+
     private String wordDay;
 
 
