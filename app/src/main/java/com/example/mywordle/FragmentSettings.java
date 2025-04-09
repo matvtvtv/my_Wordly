@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -138,10 +139,10 @@ public class FragmentSettings extends Fragment {
                 int height = bitmap.getHeight();
 
                 Toast.makeText(getContext(), width + "-" + height, Toast.LENGTH_SHORT).show();
+                int img_min=Math.min(width,height);
+                Bitmap resizedBitmap = cropAndResizeBitmap(bitmap, img_min, img_min);
 
-                Bitmap resizedBitmap = cropAndResizeBitmap(bitmap, 3000, 3000);
-
-                saveImageToDatabase(resizedBitmap);
+                saveImageToDatabase(resizedBitmap,img_min);
 
                 picture_prof.setImageBitmap(resizedBitmap);
             } catch (IOException e) {
@@ -165,9 +166,18 @@ public class FragmentSettings extends Fragment {
         return Bitmap.createScaledBitmap(croppedBitmap, width, height, true);
     }
 
-    private void saveImageToDatabase(Bitmap bitmap) {
+    private void saveImageToDatabase(Bitmap bitmap, int size_img) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        if(size_img>512){
+            int compression= (int) (1000/size_img)*100;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) { // API 30+
+                bitmap.compress(Bitmap.CompressFormat.WEBP_LOSSY, compression, byteArrayOutputStream);
+            }
+            else {
+                bitmap.compress(Bitmap.CompressFormat.WEBP, compression, byteArrayOutputStream); // Поддерживается с API 17
+            }
+        }
+        else{bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);}
 
         byte[] imageBytes = byteArrayOutputStream.toByteArray();
 
