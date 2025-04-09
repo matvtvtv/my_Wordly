@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             return;  // Прекращаем выполнение onCreate()
         }
-
         setContentView(R.layout.activity_main);
 
         getAllId(); // Получаем ссылки на кнопки

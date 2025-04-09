@@ -27,9 +27,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mywordle.Keyboard.Keyboard;
 import com.example.mywordle.data.model.PlayerModel;
+import com.example.mywordle.data.model.PlayerSettingsModel;
 import com.example.mywordle.data.model.WordsModel;
 import com.example.mywordle.data.repository.DatabaseHelper;
 import com.example.mywordle.data.repository.PlayerRepository;
+import com.example.mywordle.data.repository.PlayerSettingsRepository;
 import com.example.mywordle.data.repository.WordsRepository;
 import com.example.mywordle.databinding.ActivityGameBinding;
 
@@ -56,6 +58,7 @@ public class GameActivity extends AppCompatActivity {
     private TextView popupGameWin;
 
     private TextView moneyText;
+    private PlayerSettingsRepository playerSettingsRepository;
 
 
 
@@ -164,11 +167,13 @@ public class GameActivity extends AppCompatActivity {
 
         TextView level=findViewById(R.id.levelGameText);
         level.setText("Level № "+String.valueOf(user.getLevel()));
-
+        playerSettingsRepository = PlayerSettingsRepository.getInstance(getApplicationContext());
+        int user_Id = playerSettingsRepository.getCurrentUserId();
+        PlayerSettingsModel user_Ac = playerSettingsRepository.getUserData(user_Id);
 
         Keyboard keyboard = new Keyboard(binding.keyboard, keyList);
         keyboard.setOnKeyClickListener(v -> {
-            if(user.getSound()==1){
+            if(user_Ac.getSound()==1){
             MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.keyboard_sound);
             mediaPlayer.start();}
             vibrateDevice(this,80);
@@ -268,7 +273,10 @@ public class GameActivity extends AppCompatActivity {
         user.setAllGames(user.getAllGames() + 1);
         user.setGamesWin(user.getGamesWin() + 1);
         user.setCurrentSeriesWins(user.getCurrentSeriesWins()+1);
-        if(user.getSound()==1) {
+        playerSettingsRepository = PlayerSettingsRepository.getInstance(getApplicationContext());
+        int user_Id = playerSettingsRepository.getCurrentUserId();
+        PlayerSettingsModel user_Ac = playerSettingsRepository.getUserData(user_Id);
+        if(user_Ac.getSound()==1) {
             MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.game_win_sound);
             mediaPlayer.start();
         }
@@ -320,7 +328,10 @@ public class GameActivity extends AppCompatActivity {
         }
         if(user.getMaxSeriesWins()<user.getCurrentSeriesWins()){user.setMaxSeriesWins(user.getCurrentSeriesWins());}
         user.setCurrentSeriesWins(0);
-        if(user.getSound()==1){
+        playerSettingsRepository = PlayerSettingsRepository.getInstance(getApplicationContext());
+        int user_Id = playerSettingsRepository.getCurrentUserId();
+        PlayerSettingsModel user_Ac = playerSettingsRepository.getUserData(user_Id);
+        if(user_Ac.getSound()==1) {
         MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.game_lose_sound);
         mediaPlayer.start();}
 

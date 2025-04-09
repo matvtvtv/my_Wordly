@@ -16,13 +16,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.mywordle.MainActivity;
 import com.example.mywordle.R;
 import com.example.mywordle.data.model.PlayerModel;
+import com.example.mywordle.data.model.PlayerSettingsModel;
 import com.example.mywordle.data.repository.PlayerRepository;
+import com.example.mywordle.data.repository.PlayerSettingsRepository;
 
 public class RegistrationActivity extends AppCompatActivity {
 
     private EditText editTextLogin, editTextPassword;
     private TextView textViewMessage;
     private PlayerRepository playerRepository;
+    private PlayerSettingsRepository playerSettingsRepository;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +40,7 @@ public class RegistrationActivity extends AppCompatActivity {
         textViewMessage = findViewById(R.id.textViewMessage);
 
         playerRepository = PlayerRepository.getInstance(this);
-
+        playerSettingsRepository= PlayerSettingsRepository.getInstance(this);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,7 +60,7 @@ public class RegistrationActivity extends AppCompatActivity {
         String password = editTextPassword.getText().toString().trim();
 
         // Инициализируем переменную для хранения изображения (по умолчанию null)
-        byte[] profileImage = null;
+
 
         if (login.isEmpty() || password.isEmpty()) {
             textViewMessage.setText("Введите логин и пароль!");
@@ -66,8 +70,12 @@ public class RegistrationActivity extends AppCompatActivity {
         if (playerRepository.isValidUser(login)) {
             textViewMessage.setText("Логин уже существует!");
         } else {
-            // Передаем null, если пользователь не загрузил изображение
-            playerRepository.userRegistration(login, password, profileImage, this);
+
+            playerRepository.userRegistration(login, password, this);
+            PlayerRepository playerRepository = PlayerRepository.getInstance(getApplicationContext());
+            int userId = playerRepository.getCurrentUserId();
+            PlayerModel user = playerRepository.getUserData(userId);
+            playerSettingsRepository.userSettingsRegistration(this);
 
             Toast.makeText(this, "Регистрация успешна!", Toast.LENGTH_SHORT).show();
 

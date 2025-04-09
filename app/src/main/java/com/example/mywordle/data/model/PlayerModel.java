@@ -26,8 +26,7 @@ public class PlayerModel {
     private int fiveAttempt;
     private int sixAttempt;
     private int money;
-    private int sound;
+
     private String wordDay;
-    private byte[] profileImage;
 
 }

@@ -36,7 +36,7 @@ public class PlayerRepository {
     }
 
     // Регистрация нового пользователя
-    public void userRegistration(String login, String password,byte[] profileImage, Context context) {
+    public void userRegistration(String login, String password, Context context) {
         ContentValues values = new ContentValues();
         values.put("login", login);
         values.put("password", password);
@@ -53,11 +53,10 @@ public class PlayerRepository {
         values.put("fiveAttempt", 0);
         values.put("sixAttempt", 0);
         values.put("money", 50);
-        values.put("sound", 1);
         values.put("wordDay", 1);
-        if (profileImage == null) {
-            profileImage = getDefaultProfileImage(context);
-        }
+//        if (profileImage == null) {
+//            profileImage = getDefaultProfileImage(context);
+//        }
 
         int userId = (int) db.insert("user", null, values);
         if (userId != -1) {
@@ -81,8 +80,7 @@ public class PlayerRepository {
     // Получение userId по логину (например, при авторизации)
     public void getUserIdByLogin(String login) {
         int userId = -1;
-        //  String query = "SELECT * FROM " + DatabaseHelper.WORD_TABLE + " WHERE " + DatabaseHelper.COLUMN_LENGTH_WORDS + " = ?";
-        //String query = "SELECT COUNT(*) FROM " + DatabaseHelper.USER_TABLE + " WHERE "+ DatabaseHelper.COLUMN_USER_ID + " = ?";
+
 
         String query = "SELECT * FROM " + DatabaseHelper.USER_TABLE + " WHERE "+ DatabaseHelper.COLUMN_USER_LOGIN + " = ?";
         Cursor cursor = db.rawQuery(query, new String[]{login});
@@ -114,17 +112,9 @@ public class PlayerRepository {
         PlayerModel player = null;
         String query = "SELECT * FROM " + DatabaseHelper.USER_TABLE + " WHERE " + DatabaseHelper.COLUMN_USER_ID + " = ?";
         Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId)});
-//        Cursor cursor = db.query(DatabaseHelper.USER_TABLE, new String[]{
-//                DatabaseHelper.COLUMN_USER_ID, DatabaseHelper.COLUMN_USER_LOGIN,
-//                DatabaseHelper.COLUMN_USER_PASSWORD, DatabaseHelper.COLUMN_USER_LEVEL,
-//                DatabaseHelper.COLUMN_USER_ALL_GAMES, DatabaseHelper.COLUMN_USER_GAMES_WIN,
-//                DatabaseHelper.COLUMN_USER_MAX_SERIES_WINS, DatabaseHelper.COLUMN_USER_CURRENT_SERIES_WINS,
-//                DatabaseHelper.COLUMN_USER_BEST_ATTEMPT, DatabaseHelper.COLUMN_USER_ONE_ATTEMPT,
-//                DatabaseHelper.COLUMN_USER_TWO_ATTEMPT, DatabaseHelper.COLUMN_USER_THREE_ATTEMPT,
-//                DatabaseHelper.COLUMN_USER_FOUR_ATTEMPT, DatabaseHelper.COLUMN_USER_FIVE_ATTEMPT,
-//                DatabaseHelper.COLUMN_USER_SIX_ATTEMPT},DatabaseHelper.COLUMN_USER_ID + "=");
+//
         if (cursor.moveToFirst()) {
-            //byte[] imageData = cursor.getBlob(18);
+
             player = new PlayerModel(
                     cursor.getInt(0),  // ID
                     cursor.getString(1), // Login
@@ -142,9 +132,8 @@ public class PlayerRepository {
                     cursor.getInt(13),  // fiveAttempt
                     cursor.getInt(14),// sixAttempt
                     cursor.getInt(15),//money
-                    cursor.getInt(16),//money
-                    cursor.getString(17),//word day
-                    cursor.getBlob(18)
+                    cursor.getString(16)//word day
+
             );
         }
         cursor.close();
@@ -166,10 +155,5 @@ public class PlayerRepository {
             listener.onUpdate(values);
         }
     }
-    private byte[] getDefaultProfileImage(Context context) {
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.default_profile);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        return stream.toByteArray();
-    }
+
 }

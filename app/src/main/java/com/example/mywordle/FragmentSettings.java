@@ -22,7 +22,9 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.example.mywordle.data.model.PlayerModel;
+import com.example.mywordle.data.model.PlayerSettingsModel;
 import com.example.mywordle.data.repository.PlayerRepository;
+import com.example.mywordle.data.repository.PlayerSettingsRepository;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -36,7 +38,7 @@ public class FragmentSettings extends Fragment {
     private Switch mySwitch;
     private static final int PICK_IMAGE_REQUEST = 1;
     private PlayerRepository playerRepository;
-
+    private PlayerSettingsRepository playerSettingsRepository;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,31 +50,41 @@ public class FragmentSettings extends Fragment {
 
         getAllId(view);
 
+
+
         playerRepository = PlayerRepository.getInstance(getContext());
         int userId = playerRepository.getCurrentUserId();
-        PlayerModel user = playerRepository.getUserData(userId);
-
-        int sound = (Integer) user.getSound();
-        mySwitch.setChecked(sound == 1);
-        mySwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            int newSoundValue = isChecked ? 1 : 0;
-
-            ContentValues values = new ContentValues();
-            values.put("sound", newSoundValue);
-
-            playerRepository.updateUserData(userId, values);
-        });
+        PlayerModel player = playerRepository.getUserData(userId);
 
         login.setSelected(true);
-        if (user != null) {
-            login.setText(user.getLogin());
+        if (player != null) {
+            login.setText(player.getLogin());
         }
+
 
         accountExit.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), RegistrationActivity.class);
             startActivity(intent);
         });
 
+
+
+
+
+        playerSettingsRepository = PlayerSettingsRepository.getInstance(getContext());
+        int user_Id = playerSettingsRepository.getCurrentUserId();
+        PlayerSettingsModel user = playerSettingsRepository.getUserData(user_Id);
+
+
+        mySwitch.setChecked( user.getSound() == 1);
+        mySwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            int newSoundValue = isChecked ? 1 : 0;
+
+            ContentValues values = new ContentValues();
+            values.put("sound", newSoundValue);
+
+            playerSettingsRepository.updateUserData(user_Id, values);
+        });
         bugRep.setOnClickListener(v -> sendEmailToAgency());
 
         GradientDrawable drawable = new GradientDrawable();
@@ -112,8 +124,8 @@ public class FragmentSettings extends Fragment {
     }
 
     private void loadProfileImage() {
-        int userId = playerRepository.getCurrentUserId();
-        PlayerModel player = playerRepository.getUserData(userId);
+        int userId = playerSettingsRepository.getCurrentUserId();
+        PlayerSettingsModel player = playerSettingsRepository.getUserData(userId);
 
         if (player != null && player.getProfileImage() != null) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(player.getProfileImage(), 0, player.getProfileImage().length);
