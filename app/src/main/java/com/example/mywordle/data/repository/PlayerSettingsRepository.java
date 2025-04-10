@@ -34,10 +34,10 @@ public class PlayerSettingsRepository {
         }
         return instance;
     }
-    public void userSettingsRegistration(Context context) {
+    public void userSettingsRegistration(int user,Context context) {
         ContentValues values = new ContentValues();
 
-        values.put("userId", 1);
+        values.put("userId", user);
         values.put("sound", 1);
         values.put("vibration", 1);
         values.put("profileImage",getDefaultProfileImage(context));
@@ -95,7 +95,7 @@ public class PlayerSettingsRepository {
         return stream.toByteArray();
     }
     public void updateUserData(int userId, ContentValues values) {
-        db.update("user", values,  DatabaseHelper.COLUMN_USER_SETTINGS_ID + " = ?", new String[]{String.valueOf(userId)});
+        db.update("settings", values,  DatabaseHelper.COLUMN_USER_SETTINGS_ID + " = ?", new String[]{String.valueOf(userId)});
         notifyDataUpdated(values);
     }
     public void notifyDataUpdated(ContentValues values) {

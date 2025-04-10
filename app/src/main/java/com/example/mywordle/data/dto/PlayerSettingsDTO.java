@@ -7,7 +7,7 @@ public class PlayerSettingsDTO {
     private int sound;
     private int vibration;
     private byte[] profileImage;
-    //разменр шрифта
+    //режим дальтоника
     //тема
     //уведомление
 

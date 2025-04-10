@@ -35,7 +35,8 @@ public class FragmentSettings extends Fragment {
     private ImageView accountExit;
     private ImageView bugRep;
     private ImageView picture_prof;
-    private Switch mySwitch;
+    private Switch mySwitchSound;
+    private Switch mySwitchVibration;
     private static final int PICK_IMAGE_REQUEST = 1;
     private PlayerRepository playerRepository;
     private PlayerSettingsRepository playerSettingsRepository;
@@ -76,8 +77,8 @@ public class FragmentSettings extends Fragment {
         PlayerSettingsModel user = playerSettingsRepository.getUserData(user_Id);
 
 
-        mySwitch.setChecked( user.getSound() == 1);
-        mySwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        mySwitchSound.setChecked( user.getSound() == 1);
+        mySwitchSound.setOnCheckedChangeListener((buttonView, isChecked) -> {
             int newSoundValue = isChecked ? 1 : 0;
 
             ContentValues values = new ContentValues();
@@ -85,8 +86,19 @@ public class FragmentSettings extends Fragment {
 
             playerSettingsRepository.updateUserData(user_Id, values);
         });
-        bugRep.setOnClickListener(v -> sendEmailToAgency());
 
+        mySwitchVibration.setChecked( user.getVibration() == 1);
+        mySwitchVibration.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            int newVibrationValue = isChecked ? 1 : 0;
+
+            ContentValues values = new ContentValues();
+            values.put("vibration", newVibrationValue);
+
+            playerSettingsRepository.updateUserData(user_Id, values);
+        });
+
+        bugRep.setOnClickListener(v -> sendEmailToAgency());
+        bugRep.setOnClickListener(v -> sendEmailToAgency());
         GradientDrawable drawable = new GradientDrawable();
         drawable.setShape(GradientDrawable.RECTANGLE);
         drawable.setCornerRadius(50);
@@ -105,7 +117,9 @@ public class FragmentSettings extends Fragment {
         accountExit = view.findViewById(R.id.accountExit);
         bugRep = view.findViewById(R.id.bugReport);
         login = view.findViewById(R.id.yourLogin);
-        mySwitch = view.findViewById(R.id.gameSoundSwitch);
+        mySwitchSound = view.findViewById(R.id.gameSwitchSound);
+        mySwitchVibration = view.findViewById(R.id.gameSwitchVibration);
+
     }
 
     private static final String AGENCY_EMAIL = "matveicharniauski@gmail.com";
@@ -193,11 +207,11 @@ public class FragmentSettings extends Fragment {
 
         byte[] imageBytes = byteArrayOutputStream.toByteArray();
 
-        int userId = playerRepository.getCurrentUserId();
+       int userId = playerSettingsRepository.getCurrentUserId();
         ContentValues values = new ContentValues();
         values.put("profileImage", imageBytes);
 
-        playerRepository.updateUserData(userId, values);
+        playerSettingsRepository.updateUserData(userId, values);
 
         Toast.makeText(getContext(), "Изображение сохранено!", Toast.LENGTH_SHORT).show();
     }

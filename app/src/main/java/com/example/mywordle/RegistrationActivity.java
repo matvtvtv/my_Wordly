@@ -74,8 +74,7 @@ public class RegistrationActivity extends AppCompatActivity {
             playerRepository.userRegistration(login, password, this);
             PlayerRepository playerRepository = PlayerRepository.getInstance(getApplicationContext());
             int userId = playerRepository.getCurrentUserId();
-            PlayerModel user = playerRepository.getUserData(userId);
-            playerSettingsRepository.userSettingsRegistration(this);
+            playerSettingsRepository.userSettingsRegistration(userId, this);
 
             Toast.makeText(this, "Регистрация успешна!", Toast.LENGTH_SHORT).show();
 

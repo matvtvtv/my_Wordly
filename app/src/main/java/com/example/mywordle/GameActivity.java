@@ -176,7 +176,8 @@ public class GameActivity extends AppCompatActivity {
             if(user_Ac.getSound()==1){
             MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.keyboard_sound);
             mediaPlayer.start();}
-            vibrateDevice(this,80);
+            if(user_Ac.getVibration()==1){
+            vibrateDevice(this,80);}
             Button btn = (Button) v;
             String letter = btn.getText().toString();
             if (letter.equals("Del")) {
