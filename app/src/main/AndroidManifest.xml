@@ -3,6 +3,7 @@
     package="com.example.mywordle">
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
         android:allowBackup="true"
@@ -14,12 +15,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyWordle"
         tools:targetApi="31">
-        <receiver android:name=".NotificationReceiver"
-            android:exported="true">
+        <receiver android:name=".Notification.NotificationReceiver" android:exported="false">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="com.example.mywordle.NOTIFICATION"/>
             </intent-filter>
         </receiver>
+        <service
+            android:name=".Notification.NotificationWorker"
+            android:permission="android.permission.BLUETOOTH_ADMIN"
+            android:exported="false"
+            tools:ignore="Instantiatable" />
+
+
 
         <activity android:name=".RegistrationActivity" android:exported="true" />
 

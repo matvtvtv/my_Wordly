@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+
 }
 
 android {
@@ -35,16 +36,16 @@ android {
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.lombok)
     implementation(libs.flexbox)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
+    implementation(libs.work)
+    implementation(libs.core)
     androidTestImplementation(libs.espresso.core)
 
-    annotationProcessor(libs.lombok);
+
+    annotationProcessor(libs.lombok)
 }
