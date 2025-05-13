@@ -19,12 +19,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
@@ -74,12 +76,10 @@ public class MainActivity extends AppCompatActivity {
             // Создаем канал уведомлений (создается один раз)
             createNotificationChannel();
 
-            // Запрос на игнорирование оптимизаций батареи
-            requestIgnoreBatteryOptimizations();
 
             // Импорт слов (однократно при первом запуске)
             wordsRepository.importWordsFromFile(this);
-
+            requestNotificationPermission();
             // Сохраняем флаг первого запуска
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean("isFirstRun", false);
@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Расчет времени до следующего уведомления в 13:00
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 13);
+        calendar.set(Calendar.HOUR_OF_DAY, 14);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
 
@@ -234,9 +234,7 @@ public class MainActivity extends AppCompatActivity {
         workManager.enqueue(dailyNotificationWorkRequest);
     }
 
-    /**
-     * Метод для отправки уведомления (используется для теста и может быть вызван и из Worker).
-     */
+
     private void sendNotification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.icon_prog)
@@ -249,6 +247,33 @@ public class MainActivity extends AppCompatActivity {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if (notificationManager != null) {
             notificationManager.notify(1, builder.build());
+        }
+    }
+    private void requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.POST_NOTIFICATIONS},
+                        NOTIFICATION_PERMISSION_REQUEST_CODE);
+            } else {
+                Log.d("PermissionCheck", "Уведомления уже разрешены");
+            }
+        } else {
+            Log.d("PermissionCheck", "Запрос разрешения не требуется (Android < 13)");
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == NOTIFICATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d("PermissionCheck", "Разрешение на уведомления получено");
+            } else {
+                Log.d("PermissionCheck", "Разрешение на уведомления ОТКАЗАНО");
+            }
         }
     }
 }
