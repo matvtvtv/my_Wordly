@@ -44,6 +44,9 @@ dependencies {
     implementation(libs.flexbox)
     implementation(libs.work)
     implementation(libs.core)
+    implementation(libs.okhttp)
+    implementation(libs.convertergson)
+    implementation(libs.retrofit)
     androidTestImplementation(libs.espresso.core)
 
 

@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -39,7 +40,9 @@ import androidx.work.WorkRequest;
 
 import com.example.mywordle.Notification.NotificationReceiver;
 import com.example.mywordle.Notification.NotificationWorker;
+import com.example.mywordle.data.model.PlayerSettingsModel;
 import com.example.mywordle.data.repository.DatabaseHelper;
+import com.example.mywordle.data.repository.PlayerSettingsRepository;
 import com.example.mywordle.data.repository.WordsRepository;
 import com.example.mywordle.databinding.ActivityMainBinding;
 
@@ -57,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
     // 0 - profile, 1 - home, 2 - settings
     private int frame = 1;
     private SharedPreferences preferences;
+    private PlayerSettingsRepository playerSettingsRepository;
+
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -105,14 +110,14 @@ public class MainActivity extends AppCompatActivity {
         home_button_main.setOnClickListener(v -> handleFragmentChange(v, new FragmentMain(), 1));
         profile_button_main.setOnClickListener(v -> handleFragmentChange(v, new FragmentProfile(), 0));
 
-        // Кнопка для тестового вызова уведомления
-        Button testButton = findViewById(R.id.button);
-        testButton.setOnClickListener(v -> {
-            sendNotification();
-        });
 
-        // Планирование ежедневного уведомления через WorkManager
-        scheduleDailyNotification();
+        playerSettingsRepository = PlayerSettingsRepository.getInstance(getApplicationContext());
+        int user_Id = playerSettingsRepository.getCurrentUserId();
+        PlayerSettingsModel user_Ac = playerSettingsRepository.getUserData(user_Id);
+        if(user_Ac.getSound()==1) {
+            scheduleDailyNotification();
+        }
+        //todo notification
     }
 
     private void handleFragmentChange(View v, Fragment fragment, int targetFrame) {

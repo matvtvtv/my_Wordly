@@ -36,24 +36,24 @@ public class PlayerRepository {
     }
 
     // Регистрация нового пользователя
-    public void userRegistration(String login, String password, Context context) {
+    public void userRegistration(PlayerModel playerModel, Context context) {
         ContentValues values = new ContentValues();
-        values.put("login", login);
-        values.put("password", password);
-        values.put("level", 1);
-        values.put("allGames", 0);
-        values.put("gamesWin", 0);
-        values.put("maxSeriesWins", 0);
-        values.put("currentSeriesWins", 0);
-        values.put("bestAttempt", 0);
-        values.put("oneAttempt", 0);
-        values.put("twoAttempt", 0);
-        values.put("threeAttempt", 0);
-        values.put("fourAttempt", 0);
-        values.put("fiveAttempt", 0);
-        values.put("sixAttempt", 0);
-        values.put("money", 50);
-        values.put("wordDay", 1);
+        values.put("login", playerModel.getLogin());
+        values.put("password", playerModel.getPassword());
+        values.put("level", playerModel.getLevel());
+        values.put("allGames",playerModel.getAllGames());
+        values.put("gamesWin", playerModel.getGamesWin());
+        values.put("maxSeriesWins",playerModel.getMaxSeriesWins());
+        values.put("currentSeriesWins", playerModel.getCurrentSeriesWins());
+        values.put("bestAttempt", playerModel.getBestAttempt());
+        values.put("oneAttempt", playerModel.getOneAttempt());
+        values.put("twoAttempt",playerModel.getTwoAttempt());
+        values.put("threeAttempt", playerModel.getThreeAttempt());
+        values.put("fourAttempt", playerModel.getFourAttempt());
+        values.put("fiveAttempt", playerModel.getFiveAttempt());
+        values.put("sixAttempt", playerModel.getSixAttempt());
+        values.put("money",playerModel.getMoney());
+        values.put("wordDay", playerModel.getWordDay());
 //        if (profileImage == null) {
 //            profileImage = getDefaultProfileImage(context);
 //        }

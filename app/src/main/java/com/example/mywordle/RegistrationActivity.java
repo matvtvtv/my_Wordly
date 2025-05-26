@@ -15,10 +15,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mywordle.MainActivity;
 import com.example.mywordle.R;
+import com.example.mywordle.data.Network.CallbackUser;
+import com.example.mywordle.data.Network.DataFromUserAPI;
 import com.example.mywordle.data.model.PlayerModel;
 import com.example.mywordle.data.model.PlayerSettingsModel;
 import com.example.mywordle.data.repository.PlayerRepository;
 import com.example.mywordle.data.repository.PlayerSettingsRepository;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -27,6 +32,9 @@ public class RegistrationActivity extends AppCompatActivity {
     private PlayerRepository playerRepository;
     private PlayerSettingsRepository playerSettingsRepository;
 
+    private final ExecutorService executor = Executors.newFixedThreadPool(4);
+
+    private DataFromUserAPI dataFromUserAPI = new DataFromUserAPI();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,25 +74,37 @@ public class RegistrationActivity extends AppCompatActivity {
             textViewMessage.setText("Введите логин и пароль!");
             return;
         }
+        // todo Loading UI
+        executor.execute(()->dataFromUserAPI.getUser(login, new CallbackUser() {
+            @Override
+            public void onSuccess(PlayerModel playerModel) {
+                saveToRepository(playerModel);
+            }
+
+            @Override
+            public void onErorr(Throwable throwable) {
+                // todo erorr UI
+            }
+        }));
 
         if (playerRepository.isValidUser(login)) {
             textViewMessage.setText("Логин уже существует!");
         } else {
 
-            playerRepository.userRegistration(login, password, this);
-            PlayerRepository playerRepository = PlayerRepository.getInstance(getApplicationContext());
-            int userId = playerRepository.getCurrentUserId();
-            playerSettingsRepository.userSettingsRegistration(userId, this);
 
-            Toast.makeText(this, "Регистрация успешна!", Toast.LENGTH_SHORT).show();
-
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
         }
     }
 
+    private void saveToRepository(PlayerModel playerModel){
+        playerRepository.userRegistration(playerModel, this);
+        PlayerRepository playerRepository = PlayerRepository.getInstance(getApplicationContext());
+        int userId = playerRepository.getCurrentUserId();
+        playerSettingsRepository.userSettingsRegistration(userId, this);
 
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
     // Метод для сохранения ID пользователя
     private void saveUserId(int userId) {
         SharedPreferences preferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
@@ -101,24 +121,18 @@ public class RegistrationActivity extends AppCompatActivity {
             return;
         }
 
-        int userId = playerRepository.getCurrentUserId();
-        if (playerRepository.isValidUser(login)) {
-            if (userId != -1) {
-                saveUserId(userId); // Сохраняем ID пользователя
-                playerRepository.getUserIdByLogin(login);
-
-                Toast.makeText(this, "Вход выполнен!", Toast.LENGTH_SHORT).show();
-
-                Intent intent = new Intent(this, MainActivity.class);
-
-                startActivity(intent);
-                finish();
-            } else {
-                textViewMessage.setText("Неверный логин или пароль!");
+        // todo Loading UI
+        executor.execute(()->dataFromUserAPI.getUser(login, new CallbackUser() {
+            @Override
+            public void onSuccess(PlayerModel playerModel) {
+                saveToRepository(playerModel);
             }
-        }else {
-            textViewMessage.setText("Неверный логин или пароль!");
-        }
+
+            @Override
+            public void onErorr(Throwable throwable) {
+                // todo erorr UI
+            }
+        }));
 
     }
 
