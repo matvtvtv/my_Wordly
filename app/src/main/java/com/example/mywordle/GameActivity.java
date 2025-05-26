@@ -320,7 +320,7 @@ public class GameActivity extends AppCompatActivity {
         int userId = playerRepository.getCurrentUserId();
         PlayerModel user = playerRepository.getUserData(userId);
         if(game_mode==2) {
-            if(user.getLevel()<0){user.setLevel(user.getLevel() - 1);}
+            if(user.getLevel()>0){user.setLevel(user.getLevel() - 1);}
             else {user.setLevel(0);}
         }
 

@@ -4,5 +4,5 @@ import com.example.mywordle.data.model.PlayerModel;
 
 public interface CallbackUser {
     void onSuccess (PlayerModel playerModel);
-    void onErorr (Throwable throwable);
+    void onError(Throwable throwable);
 }

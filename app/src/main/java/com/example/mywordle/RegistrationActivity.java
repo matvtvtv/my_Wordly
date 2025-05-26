@@ -41,6 +41,7 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_user_registration);
 
+
         editTextLogin = findViewById(R.id.editTextLogin);
         editTextPassword = findViewById(R.id.editTextPassword);
         Button btnRegister = findViewById(R.id.btnRegister);
@@ -82,7 +83,7 @@ public class RegistrationActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onErorr(Throwable throwable) {
+            public void onError(Throwable throwable) {
                 // todo erorr UI
             }
         }));
@@ -93,6 +94,31 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
         }
+    }
+    private void loginUser() {
+        String login = editTextLogin.getText().toString().trim();
+        String password = editTextPassword.getText().toString().trim();
+
+        if (login.isEmpty() || password.isEmpty()) {
+            textViewMessage.setText("Введите логин и пароль!");
+            return;
+        }
+
+        // todo Loading UI
+        executor.execute(()->dataFromUserAPI.getEnter(login,password, new CallbackUser() {
+            @Override
+            public void onSuccess(PlayerModel playerModel) {
+                saveToRepository(playerModel);
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                runOnUiThread(() -> {
+                    Toast.makeText(RegistrationActivity.this, "Ошибка входа: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
+                });
+            }
+        }));
+
     }
 
     private void saveToRepository(PlayerModel playerModel){
@@ -112,29 +138,7 @@ public class RegistrationActivity extends AppCompatActivity {
         editor.putInt("userId", userId);
         editor.apply();
     }
-    private void loginUser() {
-        String login = editTextLogin.getText().toString().trim();
-        String password = editTextPassword.getText().toString().trim();
 
-        if (login.isEmpty() || password.isEmpty()) {
-            textViewMessage.setText("Введите логин и пароль!");
-            return;
-        }
-
-        // todo Loading UI
-        executor.execute(()->dataFromUserAPI.getUser(login, new CallbackUser() {
-            @Override
-            public void onSuccess(PlayerModel playerModel) {
-                saveToRepository(playerModel);
-            }
-
-            @Override
-            public void onErorr(Throwable throwable) {
-                // todo erorr UI
-            }
-        }));
-
-    }
 
 
 }

@@ -17,8 +17,21 @@ public class DataFromUserAPI {
             }
 
             @Override
-            public void onErorr(Throwable throwable) {
-                callbackUser.onErorr(throwable);
+            public void onError(Throwable throwable) {
+                callbackUser.onError(throwable);
+            }
+        });
+    };
+    public void getEnter (String login, String password, CallbackUser callbackUser){
+        userAPI.getEnter(login,password, new CallbackUser() {
+            @Override
+            public void onSuccess(PlayerModel playerModel) {
+                callbackUser.onSuccess(playerModel);
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                callbackUser.onError(throwable);
             }
         });
     };
