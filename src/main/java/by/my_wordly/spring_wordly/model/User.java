@@ -35,5 +35,5 @@ public class User {
     private int sixAttempt;
     private int money;
 
-    private String z;
+    private String wordDay;
 }

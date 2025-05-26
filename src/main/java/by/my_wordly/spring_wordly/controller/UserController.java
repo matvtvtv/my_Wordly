@@ -30,7 +30,7 @@ public class UserController {
         return service.findByLogin(login);
     }
 
-    @GetMapping ("/{login}/{password}")
+    @GetMapping ("/entrance/{login}/{password}")
     public User findByLoginAndPassword (@PathVariable String login ,@PathVariable String password){
         return service.findByLoginAndPassword (login, password);
     }
