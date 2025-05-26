@@ -25,10 +25,17 @@ public class UserController {
          service.saveUser(user);
         return "Use3r is saved";
     }
-    @GetMapping ("/{login}/{password}")
-    public User findByLogin(@PathVariable String login ,String password){
+    @GetMapping ("/{login}")
+    public User findByLogin(@PathVariable String login){
         return service.findByLogin(login);
     }
+
+    @GetMapping ("/{login}/{password}")
+    public User findByLoginAndPassword (@PathVariable String login ,@PathVariable String password){
+        return service.findByLoginAndPassword (login, password);
+    }
+
+
     @PutMapping("update_student")
     public User updateUser(@RequestBody User user){
         return service.updateUser(user);

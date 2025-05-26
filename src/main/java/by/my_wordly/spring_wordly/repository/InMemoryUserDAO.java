@@ -28,6 +28,13 @@ public class InMemoryUserDAO
                 .findFirst()
                 .orElse(null);
     }
+    public User findByLoginAndPassword (String login, String password) {
+        return USERS.stream()
+                .filter(element -> element.getLogin().equals(login))
+                .filter(element -> element.getPassword().equals(password))
+                .findFirst()
+                .orElse(null);
+    }
 
 
     public User updateUser(User user) {

@@ -29,6 +29,11 @@ private final UserRepository repository;
     }
 
     @Override
+    public User findByLoginAndPassword (String login,String password) {
+        return repository.findByLoginAndPassword (login,password);
+    }
+
+    @Override
     public User updateUser(User user) {
         return repository.save(user);
     }
