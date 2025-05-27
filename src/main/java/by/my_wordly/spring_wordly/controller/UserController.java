@@ -31,12 +31,14 @@ public class UserController {
     }
 
     @GetMapping ("/entrance/{login}/{password}")
-    public User findByLoginAndPassword (@PathVariable String login ,@PathVariable String password){
+    public User findByLoginAndPassword (@PathVariable String login , String password){
+        System.out.println("старт ентранс");
         return service.findByLoginAndPassword (login, password);
     }
 
     @GetMapping ("/registration/{login}/{password}")
-    public User registrationByLoginAndPassword (@PathVariable String login ,@PathVariable String password){
+    public User registrationByLoginAndPassword (@PathVariable String login , String password){
+        System.out.println("старт reg");
         return service.registrationByLoginAndPassword (login, password);
     }
 

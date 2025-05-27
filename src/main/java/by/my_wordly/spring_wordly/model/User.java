@@ -7,9 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "users") // как выше
 
@@ -36,4 +34,27 @@ public class User {
     private int money;
 
     private String wordDay;
+
+    public User(String login, String password, int level, int allGames, int gamesWin, int maxSeriesWins,
+            int currentSeriesWins, int bestAttempt, int oneAttempt, int twoAttempt, int threeAttempt, int fourAttempt,
+            int fiveAttempt, int sixAttempt, int money, String wordDay) {
+        this.login = login;
+        this.password = password;
+        this.level = level;
+        this.allGames = allGames;
+        this.gamesWin = gamesWin;
+        this.maxSeriesWins = maxSeriesWins;
+        this.currentSeriesWins = currentSeriesWins;
+        this.bestAttempt = bestAttempt;
+        this.oneAttempt = oneAttempt;
+        this.twoAttempt = twoAttempt;
+        this.threeAttempt = threeAttempt;
+        this.fourAttempt = fourAttempt;
+        this.fiveAttempt = fiveAttempt;
+        this.sixAttempt = sixAttempt;
+        this.money = money;
+        this.wordDay = wordDay;
+    }
+
+    
 }

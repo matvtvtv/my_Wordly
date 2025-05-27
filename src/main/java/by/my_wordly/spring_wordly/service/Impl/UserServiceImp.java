@@ -30,7 +30,15 @@ private final UserRepository repository;
     public User findByLoginAndPassword (String login,String password) {return repository.findByLoginAndPassword (login,password);}
 
     @Override
-    public User registrationByLoginAndPassword (String login,String password) {return repository.registrationByLoginAndPassword (login,password);}
+    public User registrationByLoginAndPassword (String login,String password) {
+        System.out.println("cont reg");
+        if(repository.findByLoginAndPassword (login,password) == null){
+            repository.save(new User(login,password,0,0,0,0,0,0,0,0,0,0,0,0,0,"GY"));
+            return repository.findByLoginAndPassword(login, password);
+        } else {
+            return null;
+        }
+    }
 
     @Override
     public User updateUser(User user) {

@@ -9,5 +9,4 @@ public class SpringWordlyApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringWordlyApplication.class, args);
 	}
-
 }
