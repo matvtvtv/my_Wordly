@@ -33,6 +33,11 @@ public class InMemoryUserServiceImpl implements UserService  {
     }
 
     @Override
+    public User registrationByLoginAndPassword (String login, String password){
+        return repository.registrationByLoginAndPassword(login,password);
+    }
+
+    @Override
     public User updateUser(User user) {
         return repository.updateUser(user);
     }

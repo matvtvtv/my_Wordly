@@ -24,14 +24,13 @@ private final UserRepository repository;
     }
 
     @Override
-    public User findByLogin(String login) {
-        return repository.findByLogin(login);
-    }
+    public User findByLogin(String login) {return repository.findByLogin(login);}
 
     @Override
-    public User findByLoginAndPassword (String login,String password) {
-        return repository.findByLoginAndPassword (login,password);
-    }
+    public User findByLoginAndPassword (String login,String password) {return repository.findByLoginAndPassword (login,password);}
+
+    @Override
+    public User registrationByLoginAndPassword (String login,String password) {return repository.findByLoginAndPassword (login,password);}
 
     @Override
     public User updateUser(User user) {

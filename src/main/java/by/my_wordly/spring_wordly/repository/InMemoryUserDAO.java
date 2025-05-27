@@ -1,6 +1,7 @@
 package by.my_wordly.spring_wordly.repository;
 
 import by.my_wordly.spring_wordly.model.User;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 
@@ -10,6 +11,7 @@ import java.util.stream.IntStream;
 
 import static java.util.Locale.filter;
 @Service
+@Repository
 public class InMemoryUserDAO
 {
     private final List<User> USERS =new ArrayList<>();
@@ -35,6 +37,41 @@ public class InMemoryUserDAO
                 .findFirst()
                 .orElse(null);
     }
+    public User registrationByLoginAndPassword(String login, String password) {
+       var user =findByLogin(login);
+        if (user == null){
+            User newUser = User.builder()
+                    .userId(System.currentTimeMillis()) // простая генерация ID
+                    .login(login)
+                    .password(password)
+                    .level(1)
+                    .allGames(0)
+                    .gamesWin(0)
+                    .maxSeriesWins(0)
+                    .currentSeriesWins(0)
+                    .bestAttempt(0)
+                    .oneAttempt(0)
+                    .twoAttempt(0)
+                    .threeAttempt(0)
+                    .fourAttempt(0)
+                    .fiveAttempt(0)
+                    .sixAttempt(0)
+                    .money(0)
+                    .wordDay(null)
+                    .build();
+
+            USERS.add(newUser);
+            return newUser;
+        }
+        else{
+            return null;
+        }
+
+    }
+
+
+
+
 
 
     public User updateUser(User user) {

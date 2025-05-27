@@ -19,7 +19,7 @@ public class UserController {
         return service.findAllUser();
     }
 
-    @PostMapping("save_user")
+    @PostMapping("/save_user")
     public String saveUser(@RequestBody   User user){
 
          service.saveUser(user);
@@ -35,12 +35,18 @@ public class UserController {
         return service.findByLoginAndPassword (login, password);
     }
 
+    @GetMapping ("/registration/{login}/{password}")
+    public User registrationByLoginAndPassword (@PathVariable String login ,@PathVariable String password){
+        return service.registrationByLoginAndPassword (login, password);
+    }
 
-    @PutMapping("update_student")
+
+
+    @PutMapping("/update_student")
     public User updateUser(@RequestBody User user){
         return service.updateUser(user);
     }
-    @DeleteMapping("delete_user/{login}")
+    @DeleteMapping("/delete_user/{login}")
     public void deleteUser(@PathVariable String login){
         service.deleteUser(login);
     }
