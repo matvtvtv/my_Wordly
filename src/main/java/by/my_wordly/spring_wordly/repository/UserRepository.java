@@ -4,8 +4,10 @@ import by.my_wordly.spring_wordly.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {
+
     void deleteByLogin(String login);
     User findByLogin(String login);
-    User findByLoginAndPassword (String login, String password);
 
+    User registrationByLoginAndPassword (String login, String password);
+    User findByLoginAndPassword (String login, String password);
 }

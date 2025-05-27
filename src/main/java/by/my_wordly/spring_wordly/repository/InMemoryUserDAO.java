@@ -38,6 +38,7 @@ public class InMemoryUserDAO
                 .orElse(null);
     }
     public User registrationByLoginAndPassword(String login, String password) {
+
        var user =findByLogin(login);
         if (user == null){
             User newUser = User.builder()

@@ -30,7 +30,7 @@ private final UserRepository repository;
     public User findByLoginAndPassword (String login,String password) {return repository.findByLoginAndPassword (login,password);}
 
     @Override
-    public User registrationByLoginAndPassword (String login,String password) {return repository.findByLoginAndPassword (login,password);}
+    public User registrationByLoginAndPassword (String login,String password) {return repository.registrationByLoginAndPassword (login,password);}
 
     @Override
     public User updateUser(User user) {
