@@ -24,8 +24,8 @@ public class UserAPI {
 
     }
     //public static final String Api="http://192.168.31.174:8080/api/v1/users";
-    public static final String Api="http://192.168.0.102:8080/api/v1/users";
-    //public static final String Api="http://172.20.10.2:8080/api/v1/users";
+    //public static final String Api="http://192.168.0.102:8080/api/v1/users";
+    public static final String Api="http://172.20.10.2:8080/api/v1/users";
 
     public void getEnter(String login,String password, CallbackUser callbackUser){
         OkHttpClient client= new OkHttpClient();

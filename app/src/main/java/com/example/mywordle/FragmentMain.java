@@ -16,6 +16,7 @@ import java.util.Objects;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,8 @@ public class FragmentMain extends Fragment {
     private ImageView letter_7_free;
     private TextView level;
     private TextView moneyText;
+
+    private Button button;
 
     private int GAME_MODE=2;
     private int WORD_LENGTH=0;
@@ -150,6 +153,16 @@ public class FragmentMain extends Fragment {
             startActivity(intent);
         });
 
+    button.setOnClickListener(v -> {
+
+        MultiUserList bestFragment = new MultiUserList();
+
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.lay_main, bestFragment)
+                .addToBackStack(null)
+                .commit();
+    });
 
 
     return view;
@@ -163,6 +176,7 @@ public class FragmentMain extends Fragment {
         level               = view.findViewById(R.id.Level);
         moneyText           = view.findViewById(R.id.moneyText);
         word_day            = view.findViewById(R.id.word_day);
+        button =  view.findViewById(R.id.button);
     }
 
 

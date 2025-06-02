@@ -57,9 +57,9 @@ public class PlayerTopAdapter extends RecyclerView.Adapter<PlayerTopAdapter.Play
         ImageView cup;
         public PlayerViewHolder(@NonNull View itemView) {
             super(itemView);
-            login = itemView.findViewById(R.id.player_login);
-            level = itemView.findViewById(R.id.player_level);
-            position = itemView.findViewById(R.id.position);
+            login = itemView.findViewById(R.id.player_login_guess);
+            level = itemView.findViewById(R.id.word_lenght);
+            position = itemView.findViewById(R.id.check_of_word);
             cup = itemView.findViewById(R.id.cup_medal);
         }
     }
