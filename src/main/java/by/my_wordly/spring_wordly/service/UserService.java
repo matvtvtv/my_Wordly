@@ -6,12 +6,12 @@ import java.util.List;
 
 public interface UserService {
      List<User> findAllUser();
+     List<User> findTop10ByOrderByLevelDesc();
 
-     User saveUser(User user);
-     User findByLogin(String login);
      User updateUser(User user);
+     User findByLogin(String login);
      User findByLoginAndPassword (String login, String password);
      User registrationByLoginAndPassword (String login, String password);
-     void deleteUser(String login);
+     User deleteUser(String login);
 
 }

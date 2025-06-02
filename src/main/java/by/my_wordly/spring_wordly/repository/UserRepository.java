@@ -3,9 +3,12 @@ package by.my_wordly.spring_wordly.repository;
 import by.my_wordly.spring_wordly.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+import java.util.List;
 
-    void deleteByLogin(String login);
+public interface UserRepository extends JpaRepository<User, Long> {
+    List<User> findTop10ByOrderByLevelDesc();
+
+    User deleteByLogin(String login);
     User findByLogin(String login);
     User findByLoginAndPassword (String login, String password);
 }
