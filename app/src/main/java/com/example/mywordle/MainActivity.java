@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,33 +32,37 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager2.widget.ViewPager2;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+import com.example.mywordle.Adapter.ViewPagerAdapter;
 import com.example.mywordle.Notification.NotificationWorker;
 import com.example.mywordle.data.model.PlayerSettingsModel;
 import com.example.mywordle.data.repository.DatabaseHelper;
 import com.example.mywordle.data.repository.PlayerSettingsRepository;
 import com.example.mywordle.data.repository.WordsRepository;
 import com.example.mywordle.databinding.ActivityMainBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Calendar;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-    ActivityMainBinding binding;
-    private ImageView settings_button_main;
-    private ImageView home_button_main;
-    private ImageView profile_button_main;
+
     private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 101;
 
-    // 0 - profile, 1 - home, 2 - settings
-    private int frame = 1;
+
+
     private SharedPreferences preferences;
     private PlayerSettingsRepository playerSettingsRepository;
-
+    private BottomNavigationView bottomNavigationView;
+    private int currentSelectedItemId=-1;
+    private ViewPager2 viewPager;
+    private ViewPagerAdapter adapter;
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -98,13 +103,41 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         getAllId();
-        change(new FragmentMain());
-        home_button_main.setScaleX(1.5f);
-        home_button_main.setScaleY(1.5f);
+        adapter = new ViewPagerAdapter(this);
+        viewPager.setAdapter(adapter);
+        viewPager.setUserInputEnabled(true);
+        viewPager.setOffscreenPageLimit(2);
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                bottomNavigationView.getMenu().getItem(position).setChecked(true);
+            }
+        });
 
-        settings_button_main.setOnClickListener(v -> handleFragmentChange(v, new FragmentSettings(), 2));
-        home_button_main.setOnClickListener(v -> handleFragmentChange(v, new FragmentMain(), 1));
-        profile_button_main.setOnClickListener(v -> handleFragmentChange(v, new FragmentStatistics(), 0));
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == currentSelectedItemId) {
+                return false;
+            }
+            currentSelectedItemId = itemId;
+            Toast.makeText(this, Objects.requireNonNull(item.getTitle()).toString(), Toast.LENGTH_SHORT).show();
+            switch (Objects.requireNonNull(item.getTitle()).toString()) {
+                case "Settings":
+                    viewPager.setCurrentItem(2);
+                    return true;
+                case "Home":
+                    viewPager.setCurrentItem(1);
+                    return true;
+                case "Stats":
+                    viewPager.setCurrentItem(0);
+                    return true;
+            }
+            return false;
+        });
+        if (savedInstanceState == null) {
+            viewPager.setCurrentItem(1, false);
+        }
 
 
         playerSettingsRepository = PlayerSettingsRepository.getInstance(getApplicationContext());
@@ -116,65 +149,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void handleFragmentChange(View v, Fragment fragment, int targetFrame) {
-        Animation clickAnim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.button_click);
-        v.startAnimation(clickAnim);
-        clickAnim.setAnimationListener(new Animation.AnimationListener() {
-            @Override public void onAnimationStart(Animation animation) { }
-            @Override public void onAnimationRepeat(Animation animation) { }
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                if (frame != targetFrame) {
-                    resetIcons(home_button_main, 100);
-                    resetIcons(profile_button_main, 100);
-                    resetIcons(settings_button_main, 100);
-                    animIcon(v);
-                    change(fragment);
-                    frame = targetFrame;
-                } else {
-                    resetIcons(home_button_main, 300);
-                    resetIcons(profile_button_main, 300);
-                    resetIcons(settings_button_main, 300);
-                }
-            }
-        });
-    }
 
-    private void change(Fragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.fragment_in, R.anim.fragment_out);
-        transaction.replace(R.id.frame, fragment);
-        transaction.commit();
-    }
 
     private void getAllId() {
-        settings_button_main = findViewById(R.id.settings_button_main);
-        home_button_main = findViewById(R.id.home_button_main);
-        profile_button_main = findViewById(R.id.profile_button_main);
+
+        bottomNavigationView=findViewById(R.id.bottomNavigationView);
+        viewPager=findViewById(R.id.viewPager);
     }
-
-    private void resetIcons(View v, int duration) {
-        ObjectAnimator scaleX = ObjectAnimator.ofFloat(v, "scaleX", 1.5f, 1f);
-        ObjectAnimator scaleY = ObjectAnimator.ofFloat(v, "scaleY", 1.5f, 1f);
-        scaleX.setDuration(duration);
-        scaleY.setDuration(duration);
-
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(scaleX, scaleY);
-        animatorSet.start();
-    }
-
-    private void animIcon(View v) {
-        ObjectAnimator scaleX = ObjectAnimator.ofFloat(v, "scaleX", 1f, 1.5f);
-        ObjectAnimator scaleY = ObjectAnimator.ofFloat(v, "scaleY", 1f, 1.5f);
-        scaleX.setDuration(300);
-        scaleY.setDuration(300);
-
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(scaleX, scaleY);
-        animatorSet.start();
-    }
-
     /**
      * Создает NotificationChannel для Android 8.0+
      */
@@ -197,18 +178,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Запрашивает у пользователя отключение оптимизаций батареи для данного приложения.
-     */
-    private void requestIgnoreBatteryOptimizations() {
-        String packageName = getPackageName();
-        PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
-        if (pm != null && !pm.isIgnoringBatteryOptimizations(packageName)) {
-            Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-            intent.setData(Uri.parse("package:" + packageName));
-            startActivity(intent);
-        }
-    }
 
     /**
      * Планирует выполнение уведомления в 13:00 следующего дня с использованием WorkManager.
@@ -236,20 +205,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void sendNotification() {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.icon_prog)
-                .setContentTitle("Словесный вызов!")
-                .setContentText("Пора сыграть в игру Wordly!")
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setVibrate(new long[]{0, 500, 200, 500});
 
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if (notificationManager != null) {
-            notificationManager.notify(1, builder.build());
-        }
-    }
     private void requestNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS)

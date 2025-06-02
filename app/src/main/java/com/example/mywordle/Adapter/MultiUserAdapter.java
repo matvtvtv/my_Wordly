@@ -1,5 +1,6 @@
 package com.example.mywordle.Adapter;
 
+import android.health.connect.datatypes.units.Length;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,8 +32,9 @@ public class MultiUserAdapter extends RecyclerView.Adapter<MultiUserAdapter.Mult
     @Override
     public void onBindViewHolder(@NonNull MultiUserViewHolder holder, int position) {
         MultiUserModel user = multiUser[position];
+
         holder.login.setText("Логин: ");
-        holder.level.setText("Уровень: " );
+        holder.level.setText("Длина слова: " + user.getWord().length());
         holder.word_check.setText("# " + (position + 1));
 
 

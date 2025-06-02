@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_stats"
+        android:icon="@drawable/fi_rr_chart_histogram"
+        android:title="Stats" />
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/home_button_selected"
+        android:title="Home" />
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/settings_selected"
+        android:title="Settings" />
+
+</menu>

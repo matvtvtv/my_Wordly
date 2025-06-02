@@ -36,7 +36,7 @@ public class FragmentMain extends Fragment {
     private TextView level;
     private TextView moneyText;
 
-    private Button button;
+    private ImageView multiUser;
 
     private int GAME_MODE=2;
     private int WORD_LENGTH=0;
@@ -153,7 +153,7 @@ public class FragmentMain extends Fragment {
             startActivity(intent);
         });
 
-    button.setOnClickListener(v -> {
+    multiUser.setOnClickListener(v -> {
 
         MultiUserList bestFragment = new MultiUserList();
 
@@ -176,7 +176,7 @@ public class FragmentMain extends Fragment {
         level               = view.findViewById(R.id.Level);
         moneyText           = view.findViewById(R.id.moneyText);
         word_day            = view.findViewById(R.id.word_day);
-        button =  view.findViewById(R.id.button);
+        multiUser =  view.findViewById(R.id.multiUser);
     }
 
 

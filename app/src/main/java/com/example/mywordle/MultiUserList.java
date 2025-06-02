@@ -4,10 +4,12 @@ import static android.app.PendingIntent.getActivity;
 
 import static androidx.core.content.ContentProviderCompat.requireContext;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,8 +27,11 @@ import com.example.mywordle.data.repository.PlayerRepository;
 
 public class MultiUserList extends Fragment {
 
+    public ImageView plus;
+
     public MultiUserList() {}
 
+    @SuppressLint("MissingInflatedId")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -35,12 +40,26 @@ public class MultiUserList extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_multi_user, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.recycler_multi_user);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        plus=view.findViewById(R.id.plus);
+        plus.setOnClickListener(v -> {
+
+
+
+
+
+        });
+
+
+
+
+
+
 
         PlayerRepository playerRepository = PlayerRepository.getInstance(requireContext());
         int userId = playerRepository.getCurrentUserId();
         PlayerModel user = playerRepository.getUserData(userId);
-
         DataFromMultiUserAPI api = new DataFromMultiUserAPI();
         api.getMultiUserGames(user.getLogin(), new CallbackMultiUser() {
             @Override

@@ -8,9 +8,6 @@
     android:background="@color/background"
     tools:context=".FragmentStatistics">
 <ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -187,6 +184,7 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <!-- Деньги игрока -->
+
         <TextView
             android:id="@+id/moneyText"
             android:layout_width="wrap_content"
@@ -262,15 +260,29 @@
             app:layout_constraintStart_toStartOf="@+id/word_day"
             app:layout_constraintTop_toTopOf="@+id/word_day" />
 
-        <Button
-            android:id="@+id/button"
+        <ImageView
+            android:id="@+id/multiUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button"
             app:layout_constraintBottom_toTopOf="@+id/imageView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/travel_button" />
+            app:layout_constraintTop_toBottomOf="@+id/travel_button"
+            app:srcCompat="@drawable/multi_user" />
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:text="Слова от друга"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/multiUser"
+            app:layout_constraintEnd_toEndOf="@+id/multiUser"
+            app:layout_constraintStart_toStartOf="@+id/multiUser"
+            app:layout_constraintTop_toTopOf="@+id/multiUser" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -206,8 +206,9 @@ public class FragmentSettings extends Fragment {
 
     private void saveImageToDatabase(Bitmap bitmap, int size_img) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
         if(size_img>512){
-            int compression= (int) (1000/size_img)*100;
+            int compression= (int) (1000/size_img)*5;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) { // API 30+
                 bitmap.compress(Bitmap.CompressFormat.WEBP_LOSSY, compression, byteArrayOutputStream);
             }
@@ -225,6 +226,5 @@ public class FragmentSettings extends Fragment {
 
         playerSettingsRepository.updateUserData(userId, values);
 
-        Toast.makeText(getContext(), "Изображение сохранено!", Toast.LENGTH_SHORT).show();
     }
 }
