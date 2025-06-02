@@ -26,6 +26,8 @@ import android.os.Vibrator;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mywordle.Keyboard.Keyboard;
+import com.example.mywordle.data.Network.CallbackUser;
+import com.example.mywordle.data.Network.DataFromUserAPI;
 import com.example.mywordle.data.model.PlayerModel;
 import com.example.mywordle.data.model.PlayerSettingsModel;
 import com.example.mywordle.data.model.WordsModel;
@@ -310,6 +312,20 @@ public class GameActivity extends AppCompatActivity {
         values.put("currentSeriesWins",user.getCurrentSeriesWins());
         values.put("bestAttempt",user.getBestAttempt());
 
+        DataFromUserAPI dataFromUserAPI = new DataFromUserAPI();
+        dataFromUserAPI.updateUser(user, new CallbackUser() {
+            @Override
+            public void onSuccess(PlayerModel playerModel) {
+
+
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+
+            }
+        });
+
         playerRepository.updateUserData(userId, values);
         showGameWinDialog();
     }
@@ -344,6 +360,18 @@ public class GameActivity extends AppCompatActivity {
         values.put("maxSeriesWins", user.getMaxSeriesWins());
         playerRepository.updateUserData(userId, values);
 
+        DataFromUserAPI dataFromUserAPI = new DataFromUserAPI();
+        dataFromUserAPI.updateUser(user, new CallbackUser() {
+            @Override
+            public void onSuccess(PlayerModel playerModel) {
+
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+
+            }
+        });
         showGameOverDialog();
     }
 

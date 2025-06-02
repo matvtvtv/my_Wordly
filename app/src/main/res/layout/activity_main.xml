@@ -10,6 +10,8 @@
 
     <!-- Контейнер для фрагментов -->
     <!-- Изменён размер на match_constraints (0dp) и добавлены привязки, чтобы фрейм занимал всё пространство над нижней панелью -->
+
+    <!-- Нижняя панель с кнопками -->
     <FrameLayout
         android:id="@+id/frame"
         android:name="com.example.mywordle.fragments.fragment_main"
@@ -17,10 +19,11 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/container"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
-    <!-- Нижняя панель с кнопками -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
@@ -53,6 +56,7 @@
             app:layout_constraintEnd_toStartOf="@+id/home_button_main"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/fi_rr_chart_histogram" />
 
         <ImageView

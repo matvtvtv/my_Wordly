@@ -4,8 +4,8 @@
     android:layout_height="match_parent"
     android:gravity="top"
     android:orientation="vertical"
-    android:padding="20dp">
-
+    android:padding="20dp"
+    android:background="@color/background">
     <Space
         android:layout_width="match_parent"
         android:layout_height="100dp" />
@@ -30,14 +30,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Зарегистрироваться" />
+        android:text="Зарегистрироваться"
+        android:background="@drawable/rectangle_535"
+
+        />
 
     <Button
         android:id="@+id/btnLog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Войти" />
+        android:text="Войти"
+        android:background="@drawable/rectangle_53__1_"
+        />
 
     <TextView
         android:id="@+id/textViewMessage"

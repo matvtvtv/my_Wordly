@@ -47,6 +47,7 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.convertergson)
     implementation(libs.retrofit)
+    implementation(libs.viewpeger)
     androidTestImplementation(libs.espresso.core)
 
 

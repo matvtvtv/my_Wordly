@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -63,6 +64,19 @@ public class FragmentProfile extends Fragment {
     progressBar_4_attempt.setProgress((int) (user.getFourAttempt() * 100.0 / gamesWin));
     progressBar_5_attempt.setProgress((int) (user.getFiveAttempt() * 100.0 / gamesWin));
     progressBar_6_attempt.setProgress((int) (user.getSixAttempt() * 100.0 / gamesWin));
+    Button button = view.findViewById(R.id.button);
+    button.setOnClickListener(v -> {
+        // Создаем новый экземпляр фрагмента с топ-игроками
+        Statistics_Of_Best bestFragment = new Statistics_Of_Best();
+
+        // Выполняем замену фрагмента через FragmentManager
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.lay_statistics, bestFragment)  // R.id.fragment_container — контейнер для фрагментов в твоей activity
+                .addToBackStack(null)  // чтобы можно было вернуться назад кнопкой "Назад"
+                .commit();
+    });
+
     return view;
 
 }
@@ -79,6 +93,7 @@ public class FragmentProfile extends Fragment {
         progressBar_4_attempt =view.findViewById(R.id.progressBar_4_attempt);
         progressBar_5_attempt =view.findViewById(R.id.progressBar_5_attempt);
         progressBar_6_attempt =view.findViewById(R.id.progressBar_6_attempt);
+
 
     }
 

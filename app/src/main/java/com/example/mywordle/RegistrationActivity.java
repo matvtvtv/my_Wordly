@@ -68,7 +68,6 @@ public class RegistrationActivity extends AppCompatActivity {
         String login = editTextLogin.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
-        // Инициализируем переменную для хранения изображения (по умолчанию null)
 
 
         if (login.isEmpty() || password.isEmpty()) {
@@ -76,7 +75,7 @@ public class RegistrationActivity extends AppCompatActivity {
             return;
         }
         // todo Loading UI
-        executor.execute(()->dataFromUserAPI.getUser(login, new CallbackUser() {
+        executor.execute(()->dataFromUserAPI.getRegistration(login,password, new CallbackUser() {
             @Override
             public void onSuccess(PlayerModel playerModel) {
                 saveToRepository(playerModel);
@@ -85,6 +84,7 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onError(Throwable throwable) {
                 // todo erorr UI
+                textViewMessage.setText("Логин уже существует!");
             }
         }));
 
@@ -116,6 +116,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     Toast.makeText(RegistrationActivity.this, "Ошибка входа: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
                 });
+                textViewMessage.setText("Аккаунт не найден!");
             }
         }));
 
