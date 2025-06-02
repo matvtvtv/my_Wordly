@@ -74,7 +74,6 @@ public class RegistrationActivity extends AppCompatActivity {
             textViewMessage.setText("Введите логин и пароль!");
             return;
         }
-        // todo Loading UI
         executor.execute(()->dataFromUserAPI.getRegistration(login,password, new CallbackUser() {
             @Override
             public void onSuccess(PlayerModel playerModel) {
@@ -83,7 +82,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable throwable) {
-                // todo erorr UI
                 textViewMessage.setText("Логин уже существует!");
             }
         }));

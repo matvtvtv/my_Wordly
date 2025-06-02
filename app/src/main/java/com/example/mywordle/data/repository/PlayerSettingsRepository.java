@@ -40,6 +40,7 @@ public class PlayerSettingsRepository {
         values.put("userId", user);
         values.put("sound", 1);
         values.put("vibration", 1);
+        values.put("notification", 1);
         values.put("profileImage",getDefaultProfileImage(context));
         int userId = (int) db.insert("settings", null, values);
         if (userId != -1) {
@@ -71,7 +72,8 @@ public class PlayerSettingsRepository {
                     cursor.getInt(0),  // ID
                     cursor.getInt(1),
                     cursor.getInt(2),
-                    cursor.getBlob(3)
+                    cursor.getBlob(3),
+                    cursor.getInt(4)
 
             );
         }

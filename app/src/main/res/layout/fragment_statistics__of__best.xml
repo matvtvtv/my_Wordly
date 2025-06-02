@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="top"
     android:background="@color/background"
-    tools:context=".FragmentProfile">
+    tools:context=".FragmentStatistics">
 
     <ScrollView
         android:layout_width="match_parent"

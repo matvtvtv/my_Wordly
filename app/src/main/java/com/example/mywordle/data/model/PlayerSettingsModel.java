@@ -9,4 +9,5 @@ public class PlayerSettingsModel {
     private int sound;
     private int vibration;
     private byte[] profileImage;
+    private int notification;
 }

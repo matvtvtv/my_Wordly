@@ -37,6 +37,7 @@ public class FragmentSettings extends Fragment {
     private ImageView picture_prof;
     private Switch mySwitchSound;
     private Switch mySwitchVibration;
+    private Switch mySwitchNotification;
     private static final int PICK_IMAGE_REQUEST = 1;
     private PlayerRepository playerRepository;
     private PlayerSettingsRepository playerSettingsRepository;
@@ -97,6 +98,16 @@ public class FragmentSettings extends Fragment {
             playerSettingsRepository.updateUserData(user_Id, values);
         });
 
+        mySwitchNotification.setChecked( user.getVibration() == 1);
+        mySwitchNotification.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            int newNotificationValue = isChecked ? 1 : 0;
+
+            ContentValues values = new ContentValues();
+            values.put("notification", newNotificationValue);
+
+            playerSettingsRepository.updateUserData(user_Id, values);
+        });
+
         bugRep.setOnClickListener(v -> sendEmailToAgency());
         bugRep.setOnClickListener(v -> sendEmailToAgency());
         GradientDrawable drawable = new GradientDrawable();
@@ -119,6 +130,7 @@ public class FragmentSettings extends Fragment {
         login = view.findViewById(R.id.yourLogin);
         mySwitchSound = view.findViewById(R.id.gameSwitchSound);
         mySwitchVibration = view.findViewById(R.id.gameSwitchVibration);
+        mySwitchNotification = view.findViewById(R.id.gameSwitchNotification);
 
     }
 

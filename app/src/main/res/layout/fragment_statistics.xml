@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".FragmentProfile">
+    tools:context=".FragmentStatistics">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -415,11 +415,35 @@
                         android:layout_margin="10dp"
                         android:progressDrawable="@drawable/custom_progress_bar" />
 
-                    <Button
-                        android:id="@+id/button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Button" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/topUsers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/group_1"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/all_games_text10"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="monospace"
+                            android:text="Список лучших"
+                            android:textColor="@color/black"
+                            android:textSize="24sp"
+                            android:visibility="visible"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/topUsers"
+                            app:layout_constraintHorizontal_bias="0.45"
+                            app:layout_constraintStart_toStartOf="@+id/topUsers"
+                            app:layout_constraintTop_toTopOf="@+id/topUsers" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>

@@ -45,6 +45,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_USER_SOUND = "sound";
     public static final String COLUMN_USER_VIBRATION = "vibration";
     public static final String COLUMN_USER_PICTURE = "profileImage";
+    public static final String COLUMN_USER_NOTIFICATION = "notification";
 
 
 
@@ -82,7 +83,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             COLUMN_USER_SETTINGS_ID + " INTEGER, " +
             COLUMN_USER_SOUND + " INTEGER, " +
             COLUMN_USER_VIBRATION + " INTEGER, " +
-            COLUMN_USER_PICTURE + " BLOB )";
+            COLUMN_USER_PICTURE + " BLOB ,"+
+            COLUMN_USER_NOTIFICATION + " INTEGER )";
+
 
     private DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

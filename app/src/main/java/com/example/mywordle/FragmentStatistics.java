@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -16,7 +17,7 @@ import com.example.mywordle.data.model.PlayerModel;
 import com.example.mywordle.data.repository.PlayerRepository;
 
 
-public class FragmentProfile extends Fragment {
+public class FragmentStatistics extends Fragment {
     private TextView allGamesText;
     private TextView gamesWonText;
     private TextView percentOfWinText;
@@ -29,6 +30,7 @@ public class FragmentProfile extends Fragment {
     private ProgressBar progressBar_4_attempt;
     private ProgressBar progressBar_5_attempt;
     private ProgressBar progressBar_6_attempt;
+    private ImageView topUsers;
 
 
 @SuppressLint("SetTextI18n")
@@ -64,8 +66,8 @@ public class FragmentProfile extends Fragment {
     progressBar_4_attempt.setProgress((int) (user.getFourAttempt() * 100.0 / gamesWin));
     progressBar_5_attempt.setProgress((int) (user.getFiveAttempt() * 100.0 / gamesWin));
     progressBar_6_attempt.setProgress((int) (user.getSixAttempt() * 100.0 / gamesWin));
-    Button button = view.findViewById(R.id.button);
-    button.setOnClickListener(v -> {
+
+    topUsers.setOnClickListener(v -> {
         // Создаем новый экземпляр фрагмента с топ-игроками
         Statistics_Of_Best bestFragment = new Statistics_Of_Best();
 
@@ -93,6 +95,7 @@ public class FragmentProfile extends Fragment {
         progressBar_4_attempt =view.findViewById(R.id.progressBar_4_attempt);
         progressBar_5_attempt =view.findViewById(R.id.progressBar_5_attempt);
         progressBar_6_attempt =view.findViewById(R.id.progressBar_6_attempt);
+        topUsers =view.findViewById(R.id.topUsers);
 
 
     }

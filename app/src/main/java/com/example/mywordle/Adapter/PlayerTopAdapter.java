@@ -3,6 +3,7 @@ package com.example.mywordle.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,6 +32,19 @@ public class PlayerTopAdapter extends RecyclerView.Adapter<PlayerTopAdapter.Play
         PlayerModel player = players[position];
         holder.login.setText("Логин: " + player.getLogin());
         holder.level.setText("Уровень: " + player.getLevel());
+        holder.position.setText("# " + (position+1));
+        if (position == 0) {
+            holder.cup.setVisibility(View.VISIBLE);
+            holder.cup.setImageResource(R.drawable.cup_gold);
+        } else if (position == 1) {
+            holder.cup.setVisibility(View.VISIBLE);
+            holder.cup.setImageResource(R.drawable.cup_silver);
+        } else if (position == 2) {
+            holder.cup.setVisibility(View.VISIBLE);
+            holder.cup.setImageResource(R.drawable.cup_brons);
+        } else {
+            holder.cup.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -39,12 +53,14 @@ public class PlayerTopAdapter extends RecyclerView.Adapter<PlayerTopAdapter.Play
     }
 
     static class PlayerViewHolder extends RecyclerView.ViewHolder {
-        TextView login, level;
-
+        TextView login, level,position;
+        ImageView cup;
         public PlayerViewHolder(@NonNull View itemView) {
             super(itemView);
             login = itemView.findViewById(R.id.player_login);
             level = itemView.findViewById(R.id.player_level);
+            position = itemView.findViewById(R.id.position);
+            cup = itemView.findViewById(R.id.cup_medal);
         }
     }
 }
