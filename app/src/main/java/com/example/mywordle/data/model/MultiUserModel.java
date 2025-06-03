@@ -13,6 +13,6 @@ public class MultiUserModel {
     private String loginGuessing;
     private String word;
 
-    //private int flag;
+
     private int flagOfCheck;
 }

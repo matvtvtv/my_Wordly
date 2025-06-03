@@ -53,6 +53,8 @@ public class GameActivity extends AppCompatActivity {
     private int currentAttemptIndex = 0;
     private int wordLength;
     private int game_mode;
+    private int check_of_word;
+    private String friend_word;
     private final int MAX_ATTEMPTS = 6;
     private GameLogic gameLogic;
     private WordsRepository wordsRepository;
@@ -96,6 +98,9 @@ public class GameActivity extends AppCompatActivity {
 
 
         game_mode= getIntent().getIntExtra("GAME_MODE", 2);
+        check_of_word= getIntent().getIntExtra("CHECK_OF_WORD", 1);
+        friend_word= getIntent().getStringExtra("FRIEND_WORD");
+
         if(game_mode==2){
             switch ((user.getLevel()/10)) {
 
@@ -112,14 +117,19 @@ public class GameActivity extends AppCompatActivity {
         DatabaseHelper databaseHelper = DatabaseHelper.getInstance(getApplicationContext());
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         wordsRepository = new WordsRepository(db);
+        if(game_mode!=4){
+            List<WordsModel> validWords = wordsRepository.getFilteredWordsFree(wordLength);
+            int randomIndex = (int) (Math.random() * validWords.size());
+            WordsModel selectedWord = validWords.get(randomIndex);
+            gameLogic = new GameLogic(MAX_ATTEMPTS);
+            gameLogic.startNewGame(selectedWord.getWord());}
+        else{
 
-        List<WordsModel> validWords = wordsRepository.getFilteredWordsFree(wordLength);
+            gameLogic = new GameLogic(MAX_ATTEMPTS);
+            gameLogic.startNewGame(friend_word);
+        }
 
-        int randomIndex = (int) (Math.random() * validWords.size());
-        WordsModel selectedWord = validWords.get(randomIndex);
 
-        gameLogic = new GameLogic(MAX_ATTEMPTS);
-        gameLogic.startNewGame(selectedWord.getWord());
 
         gridLetters = findViewById(R.id.gridLetters);
         letterCells = new ArrayList<>();
@@ -213,9 +223,11 @@ public class GameActivity extends AppCompatActivity {
 
             // Проверка: существует ли введённое слово в базе данных
             try {
-                if (!wordsRepository.isValidWord(guess)) {
-                    Toast.makeText(getApplicationContext(), "Похоже, я не знаю такого слова", Toast.LENGTH_SHORT).show();
-                    return;
+                if(check_of_word==1) {
+                    if (!wordsRepository.isValidWord(guess)) {
+                        Toast.makeText(getApplicationContext(), "Похоже, я не знаю такого слова", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
 
                 AttemptResult result = gameLogic.checkWord(guess);
@@ -272,6 +284,7 @@ public class GameActivity extends AppCompatActivity {
             case 1:user.setMoney(user.getMoney() + 20);break;
             case 2:user.setMoney(user.getMoney() + 10);break;
             case 3:user.setMoney(user.getMoney() + 5);break;
+            case 4:user.setMoney(user.getMoney() + 5);break;
         }
         user.setAllGames(user.getAllGames() + 1);
         user.setGamesWin(user.getGamesWin() + 1);
@@ -438,6 +451,7 @@ public class GameActivity extends AppCompatActivity {
             case 1:resoult_win.setText("Вы получили : 20 монет");break;
             case 2:resoult_win.setText("Вы получили : 10 монет");break;
             case 3:resoult_win.setText("Вы получили : 5 монет");break;
+            case 4:resoult_win.setText("Вы получили : 5 монет");break;
         }
 
         btnRestart.setOnClickListener(v -> {

@@ -13,12 +13,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mywordle.R;
 import com.example.mywordle.data.model.MultiUserModel;
 
+// MultiUserAdapter.java
 public class MultiUserAdapter extends RecyclerView.Adapter<MultiUserAdapter.MultiUserViewHolder> {
 
-    private final MultiUserModel[] multiUser;
+    public interface OnItemClickListener {
+        void onItemClick(MultiUserModel item);
+    }
 
-    public MultiUserAdapter(MultiUserModel[] multiUser) {
+    private final MultiUserModel[] multiUser;
+    private final OnItemClickListener listener;
+
+    public MultiUserAdapter(MultiUserModel[] multiUser, OnItemClickListener listener) {
         this.multiUser = multiUser;
+        this.listener = listener;
     }
 
     @NonNull
@@ -32,12 +39,15 @@ public class MultiUserAdapter extends RecyclerView.Adapter<MultiUserAdapter.Mult
     @Override
     public void onBindViewHolder(@NonNull MultiUserViewHolder holder, int position) {
         MultiUserModel user = multiUser[position];
-
-        holder.login.setText("Логин: ");
+        holder.login.setText("Логин: " + user.getLoginGuess());
         holder.level.setText("Длина слова: " + user.getWord().length());
-        holder.word_check.setText("# " + (position + 1));
+        holder.word_check.setText("#" + (position + 1));
 
-
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(user);
+            }
+        });
     }
 
     @Override
@@ -48,12 +58,11 @@ public class MultiUserAdapter extends RecyclerView.Adapter<MultiUserAdapter.Mult
     static class MultiUserViewHolder extends RecyclerView.ViewHolder {
         TextView login, level, word_check;
 
-
-        public MultiUserViewHolder(@NonNull View itemView) {
+        MultiUserViewHolder(@NonNull View itemView) {
             super(itemView);
             login = itemView.findViewById(R.id.player_login_guess);
             level = itemView.findViewById(R.id.word_lenght);
-            word_check = itemView.findViewById(R.id.check_of_word); // убедись, что в XML id = player_position
+            word_check = itemView.findViewById(R.id.check_of_word);
         }
     }
 }

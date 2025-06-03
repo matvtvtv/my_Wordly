@@ -1,7 +1,6 @@
 package com.example.mywordle.data.Network;
 
 import com.example.mywordle.data.model.MultiUserModel;
-import com.example.mywordle.data.model.PlayerModel;
 
 public class DataFromMultiUserAPI {
 
@@ -11,18 +10,34 @@ public class DataFromMultiUserAPI {
         this.multiUserAPI = new MultiUserAPI();
     }
 
-    public void getMultiUserGames(String loginGuessing, CallbackMultiUser callbackMultiUser) {
-        multiUserAPI.getMultiUserGames(loginGuessing,new CallbackMultiUser() {
+    public void getMultiUserGames(String loginGuessing, CallbackMultiUserS callbackMultiUserS) {
+        multiUserAPI.getMultiUserGames(loginGuessing,new CallbackMultiUserS() {
             @Override
             public void onSuccess(MultiUserModel[] multiUserModel) {
+                callbackMultiUserS.onSuccess(multiUserModel);
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                callbackMultiUserS.onError(throwable);
+            }
+        });
+    }
+
+    public void saveMultiUser(MultiUserModel multiUserModel, CallbackMultiUser callbackMultiUser){
+        multiUserAPI.saveMultiUser(multiUserModel, new CallbackMultiUser() {
+            @Override
+            public void onSuccess(MultiUserModel multiUserModel) {
                 callbackMultiUser.onSuccess(multiUserModel);
             }
 
             @Override
             public void onError(Throwable throwable) {
-                callbackMultiUser.onError(throwable);
+
             }
         });
+
+
     }
 
 
