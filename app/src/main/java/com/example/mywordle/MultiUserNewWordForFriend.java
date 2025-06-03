@@ -116,8 +116,7 @@ public class MultiUserNewWordForFriend extends Fragment {
                         Toast.makeText(requireContext(),
                                 "Успешно отправлено! Присвоенный ID: " + savedMultiUser.getWordId(),
                                 Toast.LENGTH_LONG).show();
-                        // Здесь можно закрыть фрагмент или перейти назад:
-                        // requireActivity().getSupportFragmentManager().popBackStack();
+
                     });
                 }
 

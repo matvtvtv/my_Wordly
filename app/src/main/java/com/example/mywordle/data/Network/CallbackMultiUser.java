@@ -4,8 +4,6 @@ import com.example.mywordle.data.model.MultiUserModel;
 
 public interface CallbackMultiUser {
 
-        void onSuccess (MultiUserModel[] multiUserModel);
-        void onError(Throwable throwable);
-
-
+    void onSuccess (MultiUserModel multiUserModel);
+    void onError(Throwable throwable);
 }
